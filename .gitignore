@@ -1,0 +1,30 @@
+# Node dependencies
+node_modules/
+.pnpm-store/
+
+# Build & Dist output
+dist/
+.next/
+out/
+build/
+
+# Turborepo cache
+.turbo/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE & OS files
+.vscode/
+.idea/
+.DS_Store
+*.log
+
+# Prisma generated files (if any standalone)
+apps/api/prisma/*.db
+apps/api/prisma/*.db-journal
+
+# Coverage / Testing
+coverage/

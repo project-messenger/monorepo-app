@@ -1,0 +1,14 @@
+{
+  "name": "web",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "echo \"[web] Mock dev server\" && node -e \"require('http').createServer((req, res) => res.end('Web OK')).listen(3000)\"",
+    "build": "echo \"Mock build web\"",
+    "lint": "echo \"Mock lint web\"",
+    "typecheck": "echo \"Mock typecheck web\""
+  },
+  "dependencies": {
+    "@app/shared": "workspace:^"
+  }
+}

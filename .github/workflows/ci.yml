@@ -1,0 +1,61 @@
+name: Monorepo CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    name: Build, Lint & Verify Contract Safety
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 1. Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 2. Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: 3. Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: "pnpm"
+
+      - name: 4. Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: 5. Check TypeScript types
+        run: pnpm typecheck
+
+      - name: 6. Check ESLint
+        run: pnpm lint
+
+      - name: 7. Build all projects
+        run: pnpm build
+
+      - name: 8. Verify Orval API Schema Freshness
+        # Запускаем NestJS бэкенд в фоне, ждем отдачи Swagger OpenAPI схемы и проверяем git diff
+        run: |
+          # Запуск бэкенда в фоновом режиме
+          pnpm --filter api start &
+
+          # Даем бэкенду время подняться
+          sleep 5
+
+          # Запуск Orval генерации на фронтенде
+          pnpm --filter web generate-api || true
+
+          # Проверяем, не изменились ли сгенерированные файлы Orval
+          if [ -n "$(git status --porcelain apps/web/src/generated)" ]; then
+            echo "❌ ERROR: Generated Orval API client is out of sync with backend Swagger schema!"
+            echo "Please run 'pnpm --filter web generate-api' locally and commit updated files."
+            git status --porcelain apps/web/src/generated
+            exit 1
+          else
+            echo "✅ Orval API client is in sync with backend schema!"
+          fi
