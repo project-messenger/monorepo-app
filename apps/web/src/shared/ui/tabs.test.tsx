@@ -18,7 +18,7 @@ function VerticalTabs() {
 }
 
 describe("Tabs", () => {
-  it("передаёт orientation в Base UI", () => {
+  it("passes orientation to Base UI", () => {
     render(<VerticalTabs />);
 
     expect(screen.getByRole("tablist")).toHaveAttribute(
@@ -27,7 +27,7 @@ describe("Tabs", () => {
     );
   });
 
-  it("в вертикальном режиме переключается стрелкой вниз", async () => {
+  it("in vertical mode, switch with the down arrow", async () => {
     render(<VerticalTabs />);
 
     await userEvent.click(screen.getByRole("tab", { name: "Чаты" }));
