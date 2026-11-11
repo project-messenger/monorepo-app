@@ -1,0 +1,67 @@
+# Фронтенд (`apps/web`)
+
+Веб-клиент командного мессенджера: чаты, канбан-задачи, интеграция с GitHub, ИИ-ассистент.
+Next.js 16 (App Router) + TypeScript, архитектура — Feature-Sliced Design.
+
+Это часть монорепы. Общие команды, порты и бэкенд — в [корневом README](../../README.md).
+
+## Быстрый старт
+
+Все команды — **из корня репозитория**, не из `apps/web`.
+
+```bash
+pnpm install                                   # зависимости всей монорепы + git-хук husky
+cp apps/web/.env.example apps/web/.env.local   # переменные фронтенда (см. ниже)
+pnpm dev:web                                   # фронтенд на http://localhost:3000
+```
+
+`pnpm dev` поднимает фронтенд и бэкенд вместе.
+
+> Ставить пакеты нужно только через pnpm и только из корня:
+> `pnpm --filter web add <пакет>` (или `add -D` для dev-зависимостей).
+> `npm install` в `apps/web` сломает монорепу: появится второй `node_modules` и `package-lock.json`.
+
+## Команды
+
+Запуск из корня: `pnpm --filter web <команда>`.
+
+| Команда                   | Что делает                                                          |
+| ------------------------- | ------------------------------------------------------------------- |
+| `verify`                  | Всё разом: typecheck + lint + Prettier + тесты. Запускайте перед PR |
+| `dev`                     | Dev-сервер Next на :3000                                            |
+| `build` / `start`         | Production-сборка и её запуск                                       |
+| `lint`                    | ESLint + проверка архитектуры FSD (steiger)                         |
+| `typecheck`               | Генерирует типы роутов Next и проверяет TypeScript                  |
+| `format` / `format:check` | Prettier: отформатировать / только проверить                        |
+| `test` / `test:watch`     | Unit- и компонентные тесты (Vitest + RTL)                           |
+| `test:e2e`                | E2E-тесты в браузере (Playwright). Первый раз: `test:e2e:install`   |
+| `storybook`               | Каталог UI-компонентов на :6006                                     |
+| `generate-api`            | Сгенерировать клиент API из Swagger бэкенда (Orval)                 |
+
+Перед PR: `pnpm --filter web verify && pnpm --filter web build`.
+
+## Переменные окружения
+
+Next читает `.env*` **из `apps/web`**, а не из корня монорепы. Шаблон — [`.env.example`](./.env.example).
+
+| Переменная               | Зачем                                                                 | По умолчанию            |
+| ------------------------ | --------------------------------------------------------------------- | ----------------------- |
+| `NEXT_PUBLIC_API_URL`    | Адрес бэкенда. Пусто — значение по умолчанию                          | `http://localhost:3001` |
+| `NEXT_PUBLIC_SENTRY_DSN` | Куда слать ошибки (Sentry или GlitchTip). Пусто — мониторинг выключен | пусто                   |
+
+`NEXT_PUBLIC_*` попадают в браузер и подставляются **при сборке**: секреты сюда класть нельзя.
+
+## Документация
+
+Читать по порядку, если вы новичок в проекте:
+
+1. [Архитектура и структура папок](./docs/architecture.md) — FSD, слои, куда класть код, как связаны части приложения.
+2. [Стек: какая библиотека для чего](./docs/stack.md) — каждая зависимость: зачем она нам, где лежит, когда использовать.
+3. [Состояние и данные](./docs/state-and-data.md) — где хранить данные: TanStack Query, Zustand, URL, формы, WebSocket.
+4. [Тестирование](./docs/testing.md) — Vitest, RTL, MSW, Playwright, Storybook: что и чем тестировать.
+5. [Инструменты качества и CI](./docs/tooling.md) — линтеры, форматирование, git-хуки, CI, Sentry, Orval.
+6. [Процесс работы](./docs/workflow.md) — trunk-based, ветки, коммиты, PR и ревью.
+7. [Авторизация](./docs/auth.md) — вход через Google/GitHub и контракт с бэкендом.
+8. [ИИ-агенты](./docs/ai-agents.md) — как Claude, Codex, Gemini, Cursor и Copilot работают по одним правилам.
+
+Правила для ИИ-агентов и дизайн-система (shadcn ↔ Figma) — в [AGENTS.md](./AGENTS.md).
