@@ -27,7 +27,7 @@ describe("Tabs", () => {
     );
   });
 
-  it("в вертикальном режиме переключается стрелкой вниз", async () => {
+  it("in vertical mode, switch with the down arrow", async () => {
     render(<VerticalTabs />);
 
     await userEvent.click(screen.getByRole("tab", { name: "Чаты" }));
