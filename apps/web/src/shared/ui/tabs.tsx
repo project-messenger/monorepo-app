@@ -12,6 +12,8 @@ function Tabs({
   return (
     <TabsPrimitive.Root
       data-slot="tabs"
+      // Исправление обёртки shadcn: без этого Base UI не знает об orientation
+      // и управляет вертикальными вкладками стрелками влево/вправо.
       orientation={orientation}
       data-orientation={orientation}
       className={cn(

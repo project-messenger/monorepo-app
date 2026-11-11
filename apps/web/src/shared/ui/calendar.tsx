@@ -203,6 +203,8 @@ function CalendarDayButton({
 
   return (
     <Button
+      // Исправление обёртки shadcn: без ref эффект выше не может перевести
+      // фокус на день при навигации стрелками.
       ref={ref}
       variant="ghost"
       size="icon"
