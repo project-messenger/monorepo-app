@@ -49,10 +49,10 @@ jobs:
           pnpm --filter web generate-api || true
 
           # Проверяем, не изменились ли сгенерированные файлы Orval
-          if [ -n "$(git status --porcelain apps/web/src/generated)" ]; then
+          if [ -n "$(git status --porcelain apps/web/src/shared/api/generated)" ]; then
             echo "❌ ERROR: Generated Orval API client is out of sync with backend Swagger schema!"
             echo "Please run 'pnpm --filter web generate-api' locally and commit updated files."
-            git status --porcelain apps/web/src/generated
+            git status --porcelain apps/web/src/shared/api/generated
             exit 1
           else
             echo "✅ Orval API client is in sync with backend schema!"

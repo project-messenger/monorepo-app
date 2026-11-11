@@ -1,0 +1,7 @@
+.next/
+out/
+build/
+coverage/
+storybook-static/
+src/shared/api/generated/
+next-env.d.ts

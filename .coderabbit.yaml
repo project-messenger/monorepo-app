@@ -1,0 +1,56 @@
+# Настройки ИИ-ревью CodeRabbit для всего монорепо.
+# Справочник ключей: https://docs.coderabbit.ai/reference/configuration
+#
+# Правила кода здесь не дублируем: CodeRabbit сам читает AGENTS.md (и CLAUDE.md,
+# .cursorrules и т.п.). Вложенный файл действует на свою папку:
+# apps/web/AGENTS.md — на apps/web/**. Правила для бэкенда кладите в apps/api/AGENTS.md.
+#
+# Конфиг берётся из ветки PR: изменения этого файла видны сразу в том же PR.
+
+language: ru-RU
+
+tone_instructions: >-
+  Пиши кратко и по делу. В начале замечания помечай важность: баг, безопасность,
+  производительность, стиль. В команде есть junior-разработчики: объясняй, почему это важно.
+
+reviews:
+  # chill — меньше придирок к стилю; assertive — больше замечаний.
+  profile: chill
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: true
+
+  auto_review:
+    enabled: true
+    # Черновики (draft PR) не ревьюим — CodeRabbit подключится, когда PR отметят готовым.
+    drafts: false
+
+  # По умолчанию CodeRabbit уже пропускает node_modules, .next, dist, pnpm-lock.yaml,
+  # **/generated/** (клиент Orval) и т.п. Здесь — только то, чего нет в его списке.
+  path_filters:
+    - "!**/*.tsbuildinfo"
+
+  # Что проверять в ревью сверх правил из AGENTS.md.
+  path_instructions:
+    - path: "apps/web/**"
+      instructions: |
+        Фронтенд: Next.js 16 (App Router, Cache Components), React 19, Zod 4, TanStack Query v5, MSW 3.
+        Не предлагай API старых версий (Zod 3, MSW 2, forwardRef и т.п.).
+        Особое внимание:
+        - FSD: слой импортирует только из слоёв ниже, снаружи слайса — только через его index.ts.
+        - Дизайн-система: только семантические Tailwind-классы из токенов, без произвольных цветов.
+        - Новая логика покрыта тестом рядом с кодом (*.test.ts(x)).
+        - Новые зависимости в package.json — спроси в PR, зачем они нужны.
+        - Безопасность: токены и секреты не попадают в клиентский код, NEXT_PUBLIC_* без секретов,
+          redirect-параметры проверяются (open redirect).
+        Блоки <!-- BEGIN:nextjs-… --> в apps/web/AGENTS.md генерирует next dev — не предлагай их менять.
+    - path: "packages/shared/**"
+      instructions: |
+        Общий контракт фронтенда и бэкенда (Zod-схемы, события сокетов).
+        Изменение схемы ломает обе стороны: проверь, что в PR обновлены apps/web и apps/api,
+        и укажи, если изменение несовместимо назад.
+
+chat:
+  # Отвечать на ответы в комментариях без упоминания бота.
+  auto_reply: true
