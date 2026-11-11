@@ -39,6 +39,8 @@ export function safeReturnTo(value: string | null | undefined): string {
     return DEFAULT_RETURN_TO;
   }
   if (url.origin !== PARSE_BASE) return DEFAULT_RETURN_TO;
+  // Нормализация может сама собрать "//": "/.//evil.com" → "//evil.com".
+  if (url.pathname.startsWith("//")) return DEFAULT_RETURN_TO;
 
   return url.pathname + url.search + url.hash;
 }
@@ -61,5 +63,9 @@ export const OAUTH_ERRORS: Record<string, string> = {
 
 export function oauthErrorMessage(code: string | null): string | null {
   if (!code) return null;
-  return OAUTH_ERRORS[code] ?? OAUTH_ERRORS.oauth_failed;
+  // Только собственные ключи: иначе ?error=__proto__ вернёт Object.prototype,
+  // и React упадёт, пытаясь отрендерить объект.
+  return Object.hasOwn(OAUTH_ERRORS, code)
+    ? OAUTH_ERRORS[code]
+    : OAUTH_ERRORS.oauth_failed;
 }

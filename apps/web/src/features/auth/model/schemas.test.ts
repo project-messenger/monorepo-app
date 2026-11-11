@@ -74,8 +74,15 @@ describe("registerSchema", () => {
       name: "Введите имя",
       email: "Введите email",
       password: "Введите пароль",
+      confirm: "Повторите пароль",
       terms: "Нужно принять условия",
     });
+  });
+
+  it("просит повторить пароль, а не пишет, что пароли не совпадают", () => {
+    expect(
+      fieldErrors(registerSchema.safeParse({ ...valid, confirm: "" })),
+    ).toEqual({ confirm: "Повторите пароль" });
   });
 
   it("требует имя не короче 2 символов", () => {

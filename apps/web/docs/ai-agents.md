@@ -68,14 +68,14 @@ pnpm --filter web verify   # typecheck + ESLint + steiger (FSD) + Prettier + Vit
 Правила в тексте модель может неправильно понять или пропустить. Поэтому главное продублировано механизмами,
 которые срабатывают независимо от того, кто пишет код — человек или любая модель:
 
-| Механизм                             | Что ловит                                        | Где                                      |
-| ------------------------------------ | ------------------------------------------------ | ---------------------------------------- |
-| **pre-commit** (husky + lint-staged) | ESLint и Prettier по изменённым файлам           | `.husky/pre-commit`, `.lintstagedrc.mjs` |
-| **steiger** в `lint`                 | нарушения слоёв FSD и публичного API             | `steiger.config.mjs`                     |
-| **TypeScript strict**                | `any`, непроверенные `null`, неверные типы       | `tsconfig.json`                          |
-| **MSW в строгом режиме**             | тесты, которые ходят в сеть                      | `vitest.setup.ts`                        |
-| **CI**                               | всё то же самое на каждый PR + сборка + lockfile | `.github/workflows/ci.yml`               |
-| **Ruleset `main`**                   | прямые пуши, PR без approve                      | настройки GitHub                         |
+| Механизм                             | Что ловит                                                                                                         | Где                                      |
+| ------------------------------------ | ----------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
+| **pre-commit** (husky + lint-staged) | ESLint и Prettier по изменённым файлам                                                                            | `.husky/pre-commit`, `.lintstagedrc.mjs` |
+| **steiger** в `lint`                 | нарушения слоёв FSD и публичного API                                                                              | `steiger.config.mjs`                     |
+| **TypeScript strict**                | `any`, непроверенные `null`, неверные типы                                                                        | `tsconfig.json`                          |
+| **MSW в строгом режиме**             | тесты, которые ходят в сеть                                                                                       | `vitest.setup.ts`                        |
+| **CI**                               | lockfile, typecheck, lint (ESLint + steiger), сборка. Тестов и Prettier в CI пока нет — гоняйте `verify` локально | `.github/workflows/ci.yml`               |
+| **Ruleset `main`**                   | прямые пуши, PR без approve                                                                                       | настройки GitHub                         |
 
 Нашли повторяющуюся ошибку агентов — сначала подумайте, можно ли поймать её **проверкой** (правило ESLint, тест,
 настройка steiger), и только если нельзя — дописывайте правило в `AGENTS.md`.

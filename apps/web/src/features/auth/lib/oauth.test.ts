@@ -22,6 +22,8 @@ describe("safeReturnTo", () => {
     "/\t/evil.com",
     "/\n/evil.com",
     "/\r\n/evil.com",
+    "/.//evil.com",
+    "/a/..//evil.com",
     "javascript:alert(1)",
   ])("заменяет %j на главную", (value) => {
     expect(safeReturnTo(value)).toBe("/");
@@ -49,6 +51,13 @@ describe("oauthErrorMessage", () => {
   it("возвращает null без кода ошибки", () => {
     expect(oauthErrorMessage(null)).toBeNull();
   });
+
+  it.each(["__proto__", "constructor", "toString", "hasOwnProperty"])(
+    "для унаследованного ключа %s возвращает строку общей ошибки",
+    (code) => {
+      expect(oauthErrorMessage(code)).toBe(oauthErrorMessage("oauth_failed"));
+    },
+  );
 
   it("для неизвестного кода показывает общую ошибку", () => {
     expect(oauthErrorMessage("whatever")).toBe(

@@ -31,7 +31,7 @@ const registerFields = z.object({
     .min(2, { error: "Имя — минимум 2 символа" }),
   email,
   password: requiredPassword.min(8, { error: "Минимум 8 символов" }),
-  confirm: z.string(),
+  confirm: z.string().min(1, { error: "Повторите пароль" }),
   terms: z.boolean().refine(Boolean, { error: "Нужно принять условия" }),
 });
 
