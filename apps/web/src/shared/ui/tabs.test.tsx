@@ -18,7 +18,7 @@ function VerticalTabs() {
 }
 
 describe("Tabs", () => {
-  it("передаёт orientation в Base UI", () => {
+  it("passes orientation to Base UI", () => {
     render(<VerticalTabs />);
 
     expect(screen.getByRole("tablist")).toHaveAttribute(
