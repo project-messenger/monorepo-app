@@ -19,7 +19,9 @@ pnpm dev:web                                   # фронтенд на http://lo
 
 > Ставить пакеты нужно только через pnpm и только из корня:
 > `pnpm --filter web add <пакет>` (или `add -D` для dev-зависимостей).
-> `npm install` в `apps/web` сломает монорепу: появится второй `node_modules` и `package-lock.json`.
+> `npm install` в `apps/web` сломает монорепу: вместо ссылок на общее хранилище pnpm (`node_modules/.pnpm` в корне)
+> в `apps/web/node_modules` появятся реальные копии пакетов и файл `package-lock.json`.
+> Папки `node_modules` в `apps/*` и `packages/*` со ссылками на корневое хранилище — это норма, их создаёт `pnpm install`.
 
 ## Команды
 
