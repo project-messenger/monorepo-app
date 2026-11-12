@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest";
 import { PasswordInput } from "./password-input";
 
 describe("PasswordInput", () => {
-  it("показывает и скрывает пароль", async () => {
+  it("shows and hides the password", async () => {
     render(<PasswordInput aria-label="Пароль" />);
     const input = screen.getByLabelText("Пароль");
     expect(input).toHaveAttribute("type", "password");
