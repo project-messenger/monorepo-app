@@ -178,7 +178,7 @@ docs: KAN-7 add frontend startup instructions
 
 По правилам команды на каждом PR должны проходить: линтинг, проверка FSD, тесты, проверка типов TypeScript и сборка.
 
-Сейчас в CI (`.github/workflows/ci.yml`) работают typecheck, lint (ESLint + steiger), сборка и проверка актуальности клиента Orval. **Тестов и проверки Prettier в CI пока нет** — до их добавления запускайте `pnpm --filter web verify` локально (подробнее — [Инструменты качества и CI](./tooling.md#ci)).
+Сейчас в CI (`.github/workflows/ci.yml`) работают typecheck, lint (ESLint + steiger), сборка и проверка актуальности клиента Orval. **Тестов и проверки Prettier в CI пока нет** — до их добавления запускайте `pnpm --filter web verify` локально. Для изменений в `apps/api` дополнительно запускайте `pnpm --filter api test` (подробнее — [Инструменты качества и CI](./tooling.md#ci)).
 
 ## Секреты и переменные окружения
 

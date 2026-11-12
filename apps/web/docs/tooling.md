@@ -9,7 +9,7 @@ flowchart LR
     Edit["Пишете код"] --> Commit["git commit"]
     Commit --> Hook["husky → lint-staged:<br/>ESLint --fix + Prettier<br/>по изменённым файлам"]
     Hook --> Push["git push → PR"]
-    Push --> CI["GitHub Actions:<br/>install → typecheck → lint → build → Orval"]
+    Push --> CI["GitHub Actions:<br/>install → typecheck → lint → build → Orval<br/>(Orval: зелёный не гарантирует актуальность)"]
     CI --> Review["Ревью + approve"]
     Review --> Merge["Squash merge в main"]
 ```
@@ -48,7 +48,7 @@ _Prettier_, _ESLint_ и _Steiger_ (FSD).
 1. `pnpm install --frozen-lockfile` — падает, если `pnpm-lock.yaml` не соответствует `package.json`.
    Поставили пакет — закоммитьте и lockfile.
 2. `pnpm typecheck`, `pnpm lint`, `pnpm build` — по всей монорепе.
-3. Проверка, что клиент API от Orval не устарел относительно Swagger бэкенда.
+3. Проверка, что клиент API от Orval не устарел относительно Swagger бэкенда. С ограничением: генерация запускается с подавлением ошибки (`generate-api || true`), поэтому если Swagger был недоступен и файлы не изменились, шаг всё равно зелёный. Зелёный CI не гарантирует актуальность клиента — после изменения эндпоинтов перегенерируйте и закоммитьте клиент сами.
 
 Правила команды ([Процесс работы](./workflow.md#проверки-на-pr)) требуют, чтобы на каждом PR проходили линтинг, проверка FSD, тесты, проверка типов и сборка. **Тестов (`pnpm test`) и проверки Prettier в CI пока нет** — их нужно добавить. До этого запускайте `pnpm --filter web verify` локально: он включает и тесты, и Prettier.
 
