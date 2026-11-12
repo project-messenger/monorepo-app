@@ -1,1 +1,1 @@
-export { RegisterPage as default, metadata } from "@/_pages/register";
+export { RegisterPage as default, metadata } from "@/pages/register";

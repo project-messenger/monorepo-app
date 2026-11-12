@@ -48,12 +48,14 @@ function OAuthButtonList({
 }
 
 function OAuthButtonsFromUrl({ intent }: { intent: Intent }) {
+  // С включённым Pages Router-компатом (см. pages/README.md) useSearchParams
+  // типизируется как `ReadonlyURLSearchParams | null`; вне страницы это null.
   const searchParams = useSearchParams();
   return (
     <OAuthButtonList
       intent={intent}
-      returnTo={searchParams.get("returnTo")}
-      error={oauthErrorMessage(searchParams.get("error"))}
+      returnTo={searchParams?.get("returnTo")}
+      error={oauthErrorMessage(searchParams?.get("error") ?? null)}
     />
   );
 }

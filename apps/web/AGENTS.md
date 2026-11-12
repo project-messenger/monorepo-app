@@ -58,7 +58,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## Design system (shadcn → Figma)
 
-**Источник истины — код: актуальный shadcn** (пресет `base-nova`, Base UI `@base-ui/react`, Tailwind CSS v4, `class-variance-authority`, иконки `lucide-react`). Токены — CSS-переменные в `src/_app/styles/globals.css` (`:root` / `.dark`, oklch), прокинуты в Tailwind через `@theme inline`. Figma подстраивается под код, а не наоборот.
+**Источник истины — код: актуальный shadcn** (пресет `base-nova`, Base UI `@base-ui/react`, Tailwind CSS v4, `class-variance-authority`, иконки `lucide-react`). Токены — CSS-переменные в `src/app/styles/globals.css` (`:root` / `.dark`, oklch), прокинуты в Tailwind через `@theme inline`. Figma подстраивается под код, а не наоборот.
 
 Figma-файл: https://www.figma.com/design/6FEyS7TIMuiYKTY6HMIBDr (доступ через Figma MCP `plugin:design:figma`). Компоненты в нём — старый community-кит (shadcn 2023, slate, 40px кнопки): **не использовать их как эталон** стилей, пока они не пересобраны под код.
 
@@ -78,7 +78,7 @@ Figma-файл: https://www.figma.com/design/6FEyS7TIMuiYKTY6HMIBDr (досту�
 - **Брендирование — через токены**, а не правкой классов компонентов: меняй значения `--primary`, `--radius` и т.д. в обеих темах и синхронизируй переменные Figma.
 - Тёмная тема задаётся явными значениями в `.dark` (не автоинверсией). При изменении светлого токена обнови тёмный.
 - Код из Figma MCP — референс, а не готовый код: переводи на токены и существующие компоненты, абсолютное позиционирование — в flex/grid.
-- Шрифт — Inter (`--font-sans`, `src/_app/layouts/root-layout.tsx`). Иконки — `lucide-react`, по умолчанию 16px (`size-4`).
+- Шрифт — Inter (`--font-sans`, `src/app/layouts/root-layout.tsx`). Иконки — `lucide-react`, по умолчанию 16px (`size-4`).
 
 ## Документация
 
@@ -88,10 +88,10 @@ Figma-файл: https://www.figma.com/design/6FEyS7TIMuiYKTY6HMIBDr (досту�
 
 Структура — по [гайду FSD для Next.js](https://feature-sliced.design/docs/guides/tech/with-nextjs). Подробно, с примерами — `docs/architecture.md`.
 
-- `app/` (корень) — **только роутинг Next**: файлы `page.tsx` / `layout.tsx` реэкспортируют страницы и лейауты из `src` (`export { LoginPage as default, metadata } from "@/_pages/login"`). Логику и разметку сюда не пишем. `instrumentation*.ts` и `middleware.ts` по требованию Next тоже лежат в корне.
-- `src/` — слои FSD сверху вниз: `_app` → `_pages` → `widgets` → `features` → `entities` → `shared`. Слои `app` и `pages` названы `_app` и `_pages`, чтобы не конфликтовать с роутингом Next.
-  - `_app` — лейауты, глобальные стили, провайдеры.
-  - `_pages` — страницы (`landing`, `login`, `register`).
+- `app/` (корень) — **только роутинг Next**: файлы `page.tsx` / `layout.tsx` реэкспортируют страницы и лейауты из `src` (`export { LoginPage as default, metadata } from "@/pages/login"`). Логику и разметку сюда не пишем. `instrumentation*.ts` и `middleware.ts` по требованию Next тоже лежат в корне.
+- `src/` — слои FSD сверху вниз: `app` → `pages` → `widgets` → `features` → `entities` → `shared`. Слои `app` и `pages` совпадают по имени с роутингом Next, поэтому в корне `apps/web` лежит пустая `pages/` (только `README.md`): Next находит её первой и не принимает `src/pages` за Pages Router. Кода в корневую `pages/` не класть — это проверяют тест `tests/structure/root-pages.test.ts` и ESLint.
+  - `app` — лейауты, глобальные стили, провайдеры.
+  - `pages` — страницы (`landing`, `login`, `register`).
   - `widgets` — крупные самостоятельные блоки (`site-header`, `site-footer`).
   - `features` — пользовательские сценарии (`auth`, `theme-toggle`).
   - `entities` — бизнес-сущности (пользователь, канал, задача…), появятся по мере необходимости.

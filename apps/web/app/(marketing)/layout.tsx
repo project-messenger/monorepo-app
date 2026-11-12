@@ -1,1 +1,1 @@
-export { MarketingLayout as default } from "@/_app";
+export { MarketingLayout as default } from "@/app";

@@ -10,15 +10,15 @@
 
 | Слой       | Что лежит                                                                   | Пример у нас                                        |
 | ---------- | --------------------------------------------------------------------------- | --------------------------------------------------- |
-| `_app`     | Всё, что нужно приложению целиком: лейауты, глобальные стили, провайдеры    | `layouts/root-layout.tsx`, `api/query-provider.tsx` |
-| `_pages`   | Страницы: собирают виджеты и фичи в экран                                   | `landing`, `login`, `register`                      |
+| `app`      | Всё, что нужно приложению целиком: лейауты, глобальные стили, провайдеры    | `layouts/root-layout.tsx`, `api/query-provider.tsx` |
+| `pages`    | Страницы: собирают виджеты и фичи в экран                                   | `landing`, `login`, `register`                      |
 | `widgets`  | Крупные самостоятельные блоки интерфейса                                    | `site-header`, `site-footer`                        |
 | `features` | Действия пользователя, которые приносят ценность                            | `auth` (вход/регистрация), `theme-toggle`           |
 | `entities` | Бизнес-сущности: пользователь, канал, сообщение, задача                     | пока нет — появятся с первыми фичами чата           |
 | `shared`   | Переиспользуемое **без бизнес-логики**: UI-кит, утилиты, клиент API, конфиг | `ui/button.tsx`, `lib/utils.ts`, `api/`             |
 
-> `app` и `pages` в FSD у нас называются `_app` и `_pages`: папку `src/pages` Next.js принял бы за свой
-> старый роутер (Pages Router) и сборка бы упала. Так рекомендует [гайд FSD для Next.js](https://feature-sliced.design/docs/guides/tech/with-nextjs).
+> Имена `app` и `pages` совпадают с папками роутинга Next.js, поэтому в корне `apps/web` лежит пустая `pages/`
+> (см. [ниже](#почему-в-корне-есть-пустая-pages)). Так рекомендует [гайд FSD для Next.js](https://feature-sliced.design/docs/guides/tech/with-nextjs).
 
 Слой делится на **слайсы** (`features/auth`, `features/theme-toggle`), а слайс — на **сегменты** по назначению:
 
@@ -57,7 +57,7 @@
   переместить задачу, войти)?                       → features/<действие>
 Это блок, собранный из нескольких фич/сущностей
   (шапка, сайдбар каналов, лента сообщений)?        → widgets/<блок>
-Это целый экран?                                    → _pages/<страница> + роут в app/
+Это целый экран?                                    → src/pages/<страница> + роут в корневом app/
 ```
 
 Не уверены — кладите ниже (ближе к `shared`) и поднимайте, когда появится второй потребитель.
@@ -68,12 +68,13 @@ Steiger подскажет, если слайс используется тол�
 ```
 apps/web/
 ├── app/                      # ТОЛЬКО роутинг Next.js — каждый файл в одну строку
-│   ├── layout.tsx            #   export { RootLayout as default, metadata } from "@/_app"
+│   ├── layout.tsx            #   export { RootLayout as default, metadata } from "@/app"
 │   ├── (marketing)/          #   группа роутов с шапкой и подвалом сайта
 │   └── (auth)/login, register
+├── pages/                    # ПУСТАЯ (только README.md): не даёт Next принять src/pages за Pages Router
 ├── src/                      # весь код приложения, по слоям FSD
-│   ├── _app/                 # лейауты, глобальные стили, провайдеры
-│   ├── _pages/
+│   ├── app/                  # лейауты, глобальные стили, провайдеры
+│   ├── pages/
 │   ├── widgets/
 │   ├── features/
 │   └── shared/
@@ -94,16 +95,26 @@ apps/web/
 
 ```ts
 // app/(auth)/login/page.tsx
-export { LoginPage as default, metadata } from "@/_pages/login";
+export { LoginPage as default, metadata } from "@/pages/login";
 ```
 
-Так страницы живут по правилам FSD, а Next видит то, что ему нужно. Новая страница = слайс в `src/_pages`
-
-- однострочный файл в `app/`.
+Так страницы живут по правилам FSD, а Next видит то, что ему нужно. Новая страница = слайс в `src/pages` + однострочный файл в корневом `app/`.
 
 Группы в скобках — `(marketing)`, `(auth)` — не попадают в URL, они только выбирают лейаут.
 
 Алиас `@/` указывает на `src/`: `@/shared/ui/button` → `src/shared/ui/button.tsx`.
+
+### Почему в корне есть пустая `pages/`
+
+Next.js ищет роутеры так: сначала `./pages` и `./app` в корне проекта, и только если их нет — `./src/pages` и `./src/app`.
+Роутинг у нас в корневом `app/`, а `src/pages` — слой FSD. Без корневой `pages/` Next принял бы `src/pages` за Pages Router
+и упал с ошибкой «`pages` and `app` directories should be under the same folder». Пустая корневая `pages/` находится первой,
+и `src/pages` Next игнорирует.
+
+Поэтому в корневую `pages/` **нельзя класть ничего, кроме `README.md`**: любой файл станет маршрутом. Это проверяют:
+
+- тест `tests/structure/root-pages.test.ts` (в `pnpm --filter web verify`);
+- правило ESLint для `pages/**` в `eslint.config.mjs`.
 
 ## Как всё связано
 

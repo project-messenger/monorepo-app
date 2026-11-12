@@ -1,1 +1,1 @@
-export { AuthLayout as default } from "@/_app";
+export { AuthLayout as default } from "@/app";

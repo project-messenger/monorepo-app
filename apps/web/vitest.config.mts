@@ -10,7 +10,7 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     setupFiles: ["./vitest.setup.ts"],
-    include: ["src/**/*.test.{ts,tsx}"],
+    include: ["src/**/*.test.{ts,tsx}", "tests/**/*.test.ts"],
     // e2e/ — тесты Playwright, их запускает `pnpm test:e2e`.
     exclude: ["node_modules/**", ".next/**", "storybook-static/**", "e2e/**"],
   },
