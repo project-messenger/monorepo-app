@@ -9,7 +9,7 @@ flowchart LR
     Edit["Пишете код"] --> Commit["git commit"]
     Commit --> Hook["husky → lint-staged:<br/>ESLint --fix + Prettier<br/>по изменённым файлам"]
     Hook --> Push["git push → PR"]
-    Push --> CI["GitHub Actions:<br/>install → typecheck → lint → build"]
+    Push --> CI["GitHub Actions:<br/>install → typecheck → lint → build → Orval"]
     CI --> Review["Ревью + approve"]
     Review --> Merge["Squash merge в main"]
 ```
@@ -50,7 +50,9 @@ _Prettier_, _ESLint_ и _Steiger_ (FSD).
 2. `pnpm typecheck`, `pnpm lint`, `pnpm build` — по всей монорепе.
 3. Проверка, что клиент API от Orval не устарел относительно Swagger бэкенда.
 
-Тесты (`pnpm test`) в CI пока не запускаются — это нужно добавить.
+Правила команды ([Процесс работы](./workflow.md#проверки-на-pr)) требуют, чтобы на каждом PR проходили линтинг, проверка FSD, тесты, проверка типов и сборка. **Тестов (`pnpm test`) и проверки Prettier в CI пока нет** — их нужно добавить. До этого запускайте `pnpm --filter web verify` локально: он включает и тесты, и Prettier.
+
+Формат сообщений коммитов и имён веток (ключ задачи Jira, типы коммитов) тоже нигде не проверяется автоматически — он описан в [Процессе работы](./workflow.md#сообщения-коммитов).
 
 ## Orval — клиент API из Swagger
 
