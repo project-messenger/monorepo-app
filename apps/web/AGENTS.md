@@ -56,6 +56,14 @@ Run from monorepo root (folder with `pnpm-workspace.yaml`), not from `apps/web`:
 - **Don't make decisions without confirmation.** Architectural and design forks, code deletion/rollback, project structure changes, changes in external services (Figma, etc.) — propose options with recommendation and wait for answer.
 - **Don't pass off your actions as user's actions.** In code, comments, documentation, commits and reports, clearly separate what the agent did from what the user decided/did. Don't write "you did"/"per user's decision" about what the agent did or proposed.
 
+## Git
+
+Full rules (trunk-based, branches, commits, PR, review) — [`docs/workflow.md`](./docs/workflow.md). Read it before creating a branch, commit or PR (only on user request, see "Don't").
+
+- Branch from fresh `main`: `<JIRA-KEY>/<short-description>`, e.g. `KAN-7/add-message-list`.
+- Commit: `<type>: <JIRA-KEY> <imperative description>`, English, no scope in parentheses, e.g. `feat: KAN-7 add virtualized message list`. Format is not checked automatically — follow it manually.
+- Update branch with `git merge origin/main`, not rebase. PR is squash-merged, so PR title uses the same format as a commit.
+
 ## Design system (shadcn → Figma)
 
 **Source of truth — code: current shadcn** (preset `base-nova`, Base UI `@base-ui/react`, Tailwind CSS v4, `class-variance-authority`, icons `lucide-react`). Tokens — CSS variables in `src/_app/styles/globals.css` (`:root` / `.dark`, oklch), passed to Tailwind via `@theme inline`. Figma adapts to code, not vice versa.
@@ -82,7 +90,7 @@ Variables in Figma (mirror of `globals.css`):
 
 ## Documentation
 
-Before work, read [README.md](./README.md) and relevant guides from `docs/`: purpose of each library — `docs/stack.md`, where to store state — `docs/state-and-data.md`, tests — `docs/testing.md`. If your change affects what's described there (new package, new layer, new command) — update documentation in same PR.
+Before work, read [README.md](./README.md) and relevant guides from `docs/`: purpose of each library — `docs/stack.md`, where to store state — `docs/state-and-data.md`, tests — `docs/testing.md`, git and PR process — `docs/workflow.md`. If your change affects what's described there (new package, new layer, new command) — update documentation in same PR.
 
 ## Architecture: Feature-Sliced Design
 
