@@ -120,7 +120,7 @@ flowchart TB
 
     API["shared/api<br/>(fetch + Orval)"]
     BE["Бэкенд NestJS<br/>apps/api :3001"]
-    Shared["@app/shared<br/>общие zod-схемы"]
+    Shared["@app/shared<br/>события WebSocket"]
     Sentry["Sentry / GlitchTip"]
 
     UI --> Forms
@@ -150,14 +150,5 @@ flowchart TB
 
 ## Монорепа
 
-```
-monorepo-app/
-├── apps/web          # этот фронтенд
-├── apps/api          # бэкенд NestJS
-└── packages/shared   # @app/shared — zod-схемы и типы, общие для фронта и бэка
-```
-
-- **pnpm workspaces** связывают пакеты: `"@app/shared": "workspace:^"` — это ссылка на папку, а не пакет из npm.
-  Изменили `packages/shared` — фронтенд видит изменения сразу.
-- **Turborepo** запускает задачи (`dev`, `build`, `lint`, `typecheck`) во всех пакетах и кэширует результат.
-- `@app/shared` отдаёт исходники TypeScript, поэтому в `next.config.ts` он указан в `transpilePackages`.
+Фронтенд — часть монорепы вместе с бэкендом (`apps/api`) и общим пакетом `@app/shared` (`packages/shared`). Как они
+связаны, контракт с бэкендом и переменные окружения — в [архитектуре монорепы](../../../docs/architecture.md).

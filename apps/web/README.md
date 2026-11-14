@@ -62,8 +62,9 @@ Next читает `.env*` **из `apps/web`**, а не из корня моно�
 3. [Состояние и данные](./docs/state-and-data.md) — где хранить данные: TanStack Query, Zustand, URL, формы, WebSocket.
 4. [Тестирование](./docs/testing.md) — Vitest, RTL, MSW, Playwright, Storybook: что и чем тестировать.
 5. [Инструменты качества и CI](./docs/tooling.md) — линтеры, форматирование, git-хуки, CI, Sentry, Orval.
-6. [Процесс работы](./docs/workflow.md) — trunk-based, ветки, коммиты, PR и ревью.
-7. [Авторизация](./docs/auth.md) — вход через Google/GitHub и контракт с бэкендом.
-8. [ИИ-агенты](./docs/ai-agents.md) — как Claude, Codex, Gemini, Cursor и Copilot работают по одним правилам.
 
-Правила для ИИ-агентов и дизайн-система (shadcn ↔ Figma) — в [AGENTS.md](./AGENTS.md).
+Общая для всей монорепы документация — в [`docs/` в корне](../../docs/README.md): процесс работы (ветки, коммиты, PR),
+архитектура монорепы и контракт с бэкендом, ADR, настройка ИИ-агентов.
+
+Правила для ИИ-агентов: общие — в [корневом AGENTS.md](../../AGENTS.md), фронтенд и дизайн-система (shadcn ↔ Figma) — в
+[AGENTS.md](./AGENTS.md).
