@@ -17,7 +17,10 @@ build/
 !.env.example
 
 # IDE & OS files
-.vscode/
+# Общие для команды настройки VS Code коммитим, личные — нет
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
 .idea/
 .DS_Store
 *.log
