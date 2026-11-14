@@ -9,6 +9,10 @@
     "typecheck": "turbo run typecheck",
     "dev:api": "pnpm --filter api dev",
     "dev:web": "pnpm --filter web dev",
+    "verify": "pnpm --filter web verify",
+    "test:web": "pnpm --filter web test",
+    "test:web:e2e": "pnpm --filter web test:e2e",
+    "format:web": "pnpm --filter web format",
     "prepare": "husky"
   },
   "devDependencies": {

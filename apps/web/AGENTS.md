@@ -8,98 +8,106 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 <!-- END:nextjs-agent-rules -->
 
-> Это единственный источник правил для ИИ-агентов любого вендора (Claude, Codex, Gemini, Cursor, Copilot и др.).
-> Отдельных файлов под инструменты (`CLAUDE.md`, `GEMINI.md`) нет — правила пиши только здесь.
-> Как это устроено — `docs/ai-agents.md`.
+> This is the single source of rules for AI agents of any vendor (Claude, Codex, Gemini, Cursor, Copilot, etc.).
+> No separate files per tool (`CLAUDE.md`, `GEMINI.md`) — write rules only here.
+> How this works — `docs/ai-agents.md`.
 
-## Команды
+## Commands
 
-Запускай из корня монорепы (папка с `pnpm-workspace.yaml`), не из `apps/web`:
+Run from monorepo root (folder with `pnpm-workspace.yaml`), not from `apps/web`:
 
-| Задача                                                    | Команда                                         |
-| --------------------------------------------------------- | ----------------------------------------------- |
-| Проверка перед завершением задачи                         | `pnpm --filter web verify`                      |
-| Сборка (перед PR, при изменении конфигов и роутов)        | `pnpm --filter web build`                       |
-| Один тест-файл                                            | `pnpm --filter web exec vitest run <путь>`      |
-| Поставить пакет (только после подтверждения пользователя) | `pnpm --filter web add <пакет>`                 |
-| Компонент UI-кита                                         | `pnpm --filter web exec shadcn add <компонент>` |
-| Dev-сервер                                                | `pnpm dev:web` (порт 3000)                      |
+| Task                                                | Command                                         |
+| --------------------------------------------------- | ----------------------------------------------- |
+| Check before completing task                        | `pnpm --filter web verify`                      |
+| Build (before PR, when changing configs and routes) | `pnpm --filter web build`                       |
+| Single test file                                    | `pnpm --filter web exec vitest run <path>`      |
+| Install package (only after user confirmation)      | `pnpm --filter web add <package>`               |
+| UI kit component                                    | `pnpm --filter web exec shadcn add <component>` |
+| Dev server                                          | `pnpm dev:web` (port 3000)                      |
 
-`verify` = typecheck + lint (ESLint и steiger/FSD) + проверка Prettier + тесты.
+`verify` = typecheck + lint (ESLint and steiger/FSD) + Prettier check + tests.
 
-## Когда задача считается выполненной
+## When a task is considered complete
 
-1. `pnpm --filter web verify` завершился без ошибок — **приложи его итог к отчёту**. Без зелёного `verify` не говори «готово».
-2. Новая логика покрыта тестом рядом с кодом (`*.test.ts(x)`), новый компонент `shared/ui` — story (`*.stories.tsx`).
-3. Если менял то, что описано в `README.md` или `docs/`, — документация обновлена.
-4. В отчёте честно перечислено, что не проверено (например, не открывал страницу в браузере).
+1. `pnpm --filter web verify` finished without errors — **attach its output to the report**. Without green `verify`, don't say "done".
+2. New logic is covered by a test next to the code (`*.test.ts(x)`), new `shared/ui` component — story (`*.stories.tsx`).
+3. If you changed what's described in `README.md` or `docs/`, — documentation is updated.
+4. Report honestly lists what was not checked (e.g., didn't open page in browser).
 
-## Нельзя
+## Don't
 
-- Ставить пакеты через `npm`/`yarn`/`npx` или из `apps/web` — только `pnpm` из корня. Не трогать `package-lock.json` (его не должно быть).
-- Править `src/shared/api/generated/**` — это вывод Orval, перегенерируй `pnpm --filter web generate-api`.
-- Отключать проверки: `--no-verify`, `eslint-disable`, `@ts-ignore`, `any`, `.skip` в тестах — чтобы «прошло». Исправляй причину или спроси.
-- Коммитить в `main`, делать `push --force`, коммитить `.env*` и секреты. Коммит и push — только по просьбе пользователя.
-- Отправлять код, логи или данные проекта во внешние сервисы без явного разрешения пользователя.
-- Выдумывать API библиотек: Next.js 16, React 19, Zod 4, MSW 3, Tiptap 3 отличаются от старых версий — сверяйся с документацией в `node_modules/<пакет>` или типами.
+- Install packages via `npm`/`yarn`/`npx` or from `apps/web` — only `pnpm` from root. Don't touch `package-lock.json` (it shouldn't exist).
+- Edit `src/shared/api/generated/**` — this is Orval output, regenerate with `pnpm --filter web generate-api`.
+- Disable checks: `--no-verify`, `eslint-disable`, `@ts-ignore`, `any`, `.skip` in tests — just to make it "pass". Fix the cause or ask.
+- Commit to `main`, do `push --force`, commit `.env*` and secrets. Commit and push — only on user request.
+- Send code, logs or project data to external services without explicit user permission.
+- Make up library APIs: Next.js 16, React 19, Zod 4, MSW 3, Tiptap 3 differ from old versions — check docs in `node_modules/<package>` or types.
 
-## Рабочий цикл
+## Working cycle
 
-1. Прочитай задачу, `README.md` и нужный гайд из `docs/` (см. «Документация» ниже). Найди похожий код в проекте и следуй ему.
-2. Если есть развилка (архитектура, новый пакет, удаление кода) — предложи варианты с рекомендацией и дождись ответа.
-3. Делай маленькими шагами, запуская тест или `verify` после каждого.
-4. В конце — `verify`, отчёт: что сделано, итог проверки, что не проверено, какие решения нужны от пользователя.
+1. Read the task, `README.md` and relevant guide from `docs/` (see "Documentation" below). Find similar code in the project and follow it.
+2. If there's a fork (architecture, new package, code deletion) — propose options with recommendation and wait for answer.
+3. Work in small steps, running test or `verify` after each.
+4. At the end — `verify`, report: what's done, check result, what's not checked, what decisions are needed from user.
 
-## Работа ИИ-агента
+## AI agent workflow
 
-- **Не добавлять пакеты самостоятельно.** Любая новая зависимость (`npm i`, `shadcn add`, который тянет пакеты, и т.п.) — только после явного подтверждения пользователя. Сначала объясни, зачем она нужна и какие есть альтернативы без неё.
-- **Не принимать решения без подтверждения.** Архитектурные и дизайнерские развилки, удаление/откат кода, изменение структуры проекта, изменения во внешних сервисах (Figma и др.) — предложи варианты с рекомендацией и дождись ответа.
-- **Не выдавать свои действия за действия пользователя.** В коде, комментариях, документации, коммитах и отчётах явно разделяй, что сделал агент, а что решил/сделал пользователь. Не пиши «ты сделал»/«по решению пользователя» о том, что сделал или предложил агент.
+- **Don't add packages independently.** Any new dependency (`npm i`, `shadcn add` which pulls packages, etc.) — only after explicit user confirmation. First explain why it's needed and what alternatives exist without it.
+- **Don't make decisions without confirmation.** Architectural and design forks, code deletion/rollback, project structure changes, changes in external services (Figma, etc.) — propose options with recommendation and wait for answer.
+- **Don't pass off your actions as user's actions.** In code, comments, documentation, commits and reports, clearly separate what the agent did from what the user decided/did. Don't write "you did"/"per user's decision" about what the agent did or proposed.
+
+## Git
+
+Full rules (trunk-based, branches, commits, PR, review) — [`docs/workflow.md`](./docs/workflow.md). Read it before creating a branch, commit or PR (only on user request, see "Don't").
+
+- Branch from fresh `main`: `<JIRA-KEY>/<short-description>`, e.g. `KAN-7/add-message-list`.
+- Commit: `<type>: <JIRA-KEY> <imperative description>`, English, no scope in parentheses, e.g. `feat: KAN-7 add virtualized message list`. Format is not checked automatically — follow it manually.
+- Update branch with `git merge origin/main`, not rebase. PR is squash-merged, so PR title uses the same format as a commit.
 
 ## Design system (shadcn → Figma)
 
-**Источник истины — код: актуальный shadcn** (пресет `base-nova`, Base UI `@base-ui/react`, Tailwind CSS v4, `class-variance-authority`, иконки `lucide-react`). Токены — CSS-переменные в `src/_app/styles/globals.css` (`:root` / `.dark`, oklch), прокинуты в Tailwind через `@theme inline`. Figma подстраивается под код, а не наоборот.
+**Source of truth — code: current shadcn** (preset `base-nova`, Base UI `@base-ui/react`, Tailwind CSS v4, `class-variance-authority`, icons `lucide-react`). Tokens — CSS variables in `src/_app/styles/globals.css` (`:root` / `.dark`, oklch), passed to Tailwind via `@theme inline`. Figma adapts to code, not vice versa.
 
-Figma-файл: https://www.figma.com/design/6FEyS7TIMuiYKTY6HMIBDr (доступ через Figma MCP `plugin:design:figma`). Компоненты в нём — старый community-кит (shadcn 2023, slate, 40px кнопки): **не использовать их как эталон** стилей, пока они не пересобраны под код.
+Figma file: https://www.figma.com/design/6FEyS7TIMuiYKTY6HMIBDr (access via Figma MCP `plugin:design:figma`). Components in it — old community kit (shadcn 2023, slate, 40px buttons): **don't use them as reference** for styles until they're rebuilt to match code.
 
-Переменные в Figma (зеркало `globals.css`):
+Variables in Figma (mirror of `globals.css`):
 
-- `Primitives` — палитра Tailwind v4 (`neutral/900`, `red/600`, …), скрыта из пикеров.
-- `Theme` — семантические токены с теми же именами, что CSS-переменные (`primary`, `muted-foreground`, …), code syntax `var(--…)`. Только режим **Light** (Free-план Figma = 1 режим). Тёмное значение каждого токена записано в его описании (`dark: neutral/950`) — источник для будущего режима Dark.
-- `Radius` (`radius/sm…4xl` от `--radius`), `Spacing` (`spacing/N` = `calc(var(--spacing) * N)`).
+- `Primitives` — Tailwind v4 palette (`neutral/900`, `red/600`, …), hidden from pickers.
+- `Theme` — semantic tokens with same names as CSS variables (`primary`, `muted-foreground`, …), code syntax `var(--…)`. Only **Light** mode (Figma Free plan = 1 mode). Dark value of each token is in its description (`dark: neutral/950`) — source for future Dark mode.
+- `Radius` (`radius/sm…4xl` from `--radius`), `Spacing` (`spacing/N` = `calc(var(--spacing) * N)`).
 
-### Правила
+### Rules
 
-- **Только токены.** Используй семантические классы (`bg-primary`, `text-muted-foreground`, `border-border`, `rounded-lg` и т.п.). Никаких произвольных hex/rgb/oklch в классах (`bg-[#0f172a]`) и в `style`. Нужен новый цвет — добавь токен в `:root` **и** `.dark` и в `@theme inline`, затем такую же переменную в Figma (`Theme`, с `dark:` в описании).
-- **Варианты — через `cva`.** Визуальные варианты и размеры описываются в `cva` (`variant`, `size`, …); названия совпадают со свойствами компонента в Figma. Не плоди условные `className` в JSX.
-- **Не править примитивы Base UI.** Не трогай `@base-ui/react` и логику/доступность (фокус, ARIA, клавиатура) в `src/shared/ui/*` — меняем только стили и варианты.
-  **Исключение — баг обёртки shadcn**, из-за которого до примитива не доходит его собственное поведение (потерян проп, не подключён `ref`). Такой баг чиним минимальной правкой: с тестом рядом (`*.test.tsx`), комментарием `// Исправление обёртки shadcn: …` над строкой (чтобы его не затёр `shadcn add --overwrite`) и пометкой в описании PR. Новое поведение поверх примитива не добавляем.
-- **Новые компоненты — через `shadcn add`.** Сначала `pnpm --filter web exec shadcn add <component>` (на вопрос о перезаписи существующих файлов — «нет»), затем, при необходимости, стилизация по Figma (`get_design_context` / `get_variable_defs`). Не пиши компоненты `src/shared/ui` с нуля.
-- **Брендирование — через токены**, а не правкой классов компонентов: меняй значения `--primary`, `--radius` и т.д. в обеих темах и синхронизируй переменные Figma.
-- Тёмная тема задаётся явными значениями в `.dark` (не автоинверсией). При изменении светлого токена обнови тёмный.
-- Код из Figma MCP — референс, а не готовый код: переводи на токены и существующие компоненты, абсолютное позиционирование — в flex/grid.
-- Шрифт — Inter (`--font-sans`, `src/_app/layouts/root-layout.tsx`). Иконки — `lucide-react`, по умолчанию 16px (`size-4`).
+- **Tokens only.** Use semantic classes (`bg-primary`, `text-muted-foreground`, `border-border`, `rounded-lg`, etc.). No arbitrary hex/rgb/oklch in classes (`bg-[#0f172a]`) and in `style`. Need new color — add token in `:root` **and** `.dark` and in `@theme inline`, then same variable in Figma (`Theme`, with `dark:` in description).
+- **Variants — via `cva`.** Visual variants and sizes are described in `cva` (`variant`, `size`, …); names match component properties in Figma. Don't multiply conditional `className` in JSX.
+- **Don't edit Base UI primitives.** Don't touch `@base-ui/react` and logic/accessibility (focus, ARIA, keyboard) in `src/shared/ui/*` — only change styles and variants.
+  **Exception — shadcn wrapper bug**, where primitive's own behavior doesn't reach it (lost prop, `ref` not connected). Fix such bug minimally: with test next to it (`*.test.tsx`), comment `// Исправление обёртки shadcn: …` (keep this exact Russian marker, it is searched for in code and docs) above the line (so it won't be erased by `shadcn add --overwrite`) and note in PR description. Don't add new behavior on top of primitive.
+- **New components — via `shadcn add`.** First `pnpm --filter web exec shadcn add <component>` (when asked about overwriting existing files — "no"), then, if needed, styling per Figma (`get_design_context` / `get_variable_defs`). Don't write `src/shared/ui` components from scratch.
+- **Branding — via tokens**, not by editing component classes: change values of `--primary`, `--radius`, etc. in both themes and sync Figma variables.
+- Dark theme is set by explicit values in `.dark` (not auto-inversion). When changing light token, update dark one.
+- Code from Figma MCP — reference, not ready code: translate to tokens and existing components, absolute positioning — to flex/grid.
+- Font — Inter (`--font-sans`, `src/_app/layouts/root-layout.tsx`). Icons — `lucide-react`, default 16px (`size-4`).
 
-## Документация
+## Documentation
 
-Перед работой прочитай [README.md](./README.md) и нужные гайды из `docs/`: назначение каждой библиотеки — `docs/stack.md`, где хранить состояние — `docs/state-and-data.md`, тесты — `docs/testing.md`. Если твоё изменение меняет описанное там (новый пакет, новый слой, новая команда) — обнови документацию в том же PR.
+Before work, read [README.md](./README.md) and relevant guides from `docs/`: purpose of each library — `docs/stack.md`, where to store state — `docs/state-and-data.md`, tests — `docs/testing.md`, git and PR process — `docs/workflow.md`. If your change affects what's described there (new package, new layer, new command) — update documentation in same PR.
 
-## Архитектура: Feature-Sliced Design
+## Architecture: Feature-Sliced Design
 
-Структура — по [гайду FSD для Next.js](https://feature-sliced.design/docs/guides/tech/with-nextjs). Подробно, с примерами — `docs/architecture.md`.
+Structure — per [FSD guide for Next.js](https://feature-sliced.design/docs/guides/tech/with-nextjs). Detailed with examples — `docs/architecture.md`.
 
-- `app/` (корень) — **только роутинг Next**: файлы `page.tsx` / `layout.tsx` реэкспортируют страницы и лейауты из `src` (`export { LoginPage as default, metadata } from "@/_pages/login"`). Логику и разметку сюда не пишем. `instrumentation*.ts` и `middleware.ts` по требованию Next тоже лежат в корне.
-- `src/` — слои FSD сверху вниз: `_app` → `_pages` → `widgets` → `features` → `entities` → `shared`. Слои `app` и `pages` названы `_app` и `_pages`, чтобы не конфликтовать с роутингом Next.
-  - `_app` — лейауты, глобальные стили, провайдеры.
-  - `_pages` — страницы (`landing`, `login`, `register`).
-  - `widgets` — крупные самостоятельные блоки (`site-header`, `site-footer`).
-  - `features` — пользовательские сценарии (`auth`, `theme-toggle`).
-  - `entities` — бизнес-сущности (пользователь, канал, задача…), появятся по мере необходимости.
-  - `shared` — без бизнес-логики: `ui` (shadcn), `lib`, `api` (код от Orval — в `shared/api/generated`, руками не править).
-- Слой импортирует **только из слоёв ниже**. Слайсы одного слоя друг друга не импортируют. Это проверяет [steiger](https://github.com/feature-sliced/steiger) в `pnpm lint` (конфиг `steiger.config.mjs`).
-- Снаружи слайс импортируется **только через публичный API** — `index.ts` слайса (`@/features/auth`, не `@/features/auth/ui/login-form`). Внутри слайса — относительные импорты. В `shared` слайсов нет, импорт по сегментам: `@/shared/ui/button`.
-- Модули только для сервера (`server-only`, доступ к данным) экспортируются из отдельного `index.server.ts`, чтобы не попасть в клиентский бандл.
-- Сегменты внутри слайса: `ui`, `model` (состояние, схемы, валидация), `api`, `lib`, `config`.
+- `app/` (root) — **Next routing only**: files `page.tsx` / `layout.tsx` re-export pages and layouts from `src` (`export { LoginPage as default, metadata } from "@/_pages/login"`). Don't write logic and markup here. `instrumentation*.ts` and `middleware.ts` by Next's requirement also live in root.
+- `src/` — FSD layers top to bottom: `_app` → `_pages` → `widgets` → `features` → `entities` → `shared`. Layers `app` and `pages` are named `_app` and `_pages` to avoid conflict with Next routing.
+  - `_app` — layouts, global styles, providers.
+  - `_pages` — pages (`landing`, `login`, `register`).
+  - `widgets` — large self-contained blocks (`site-header`, `site-footer`).
+  - `features` — user scenarios (`auth`, `theme-toggle`).
+  - `entities` — business entities (user, channel, task…), will appear as needed.
+  - `shared` — no business logic: `ui` (shadcn), `lib`, `api` (code from Orval — in `shared/api/generated`, don't edit manually).
+- Layer imports **only from layers below**. Slices of same layer don't import each other. This is checked by [steiger](https://github.com/feature-sliced/steiger) in `pnpm lint` (config `steiger.config.mjs`).
+- Outside, slice is imported **only via public API** — slice's `index.ts` (`@/features/auth`, not `@/features/auth/ui/login-form`). Inside slice — relative imports. In `shared` there are no slices, import by segments: `@/shared/ui/button`.
+- Server-only modules (`server-only`, data access) are exported from separate `index.server.ts`, to avoid client bundle.
+- Segments inside slice: `ui`, `model` (state, schemas, validation), `api`, `lib`, `config`.
 
 <!-- BEGIN:nextjs-agent-feedback -->
 
