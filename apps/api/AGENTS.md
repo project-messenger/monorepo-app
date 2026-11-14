@@ -45,8 +45,9 @@ In addition to the root criteria:
 - **One domain — one Nest module** in `src/<domain>/` (module, controller, service, their specs next to them). Keep
   controllers thin: HTTP in the controller, logic in the service.
 - **Validation** works with Zod (Standard Schema) without classes: `StandardSchemaValidationPipe` with
-  `@Body({ schema })` or `@Param('id', { schema })` (https://docs.nestjs.com/application/validation.md). Schemas
-  shared with the frontend live in `@app/shared` — don't duplicate them here.
+  `@Body({ schema })` or `@Param('id', { schema })` (https://docs.nestjs.com/application/validation.md). HTTP
+  request/response schemas (DTOs) live here, in `apps/api`: the frontend gets them via OpenAPI + Orval, so never move
+  them to `@app/shared`. Only WebSocket event payload schemas live in `@app/shared` — import them, don't duplicate.
 - Formatting — Prettier with single quotes (`.prettierrc`), lint — oxlint (`.oxlintrc.json`).
 
 ## NestJS
