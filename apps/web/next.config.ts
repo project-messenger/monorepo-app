@@ -3,9 +3,6 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   // Workspace-пакет отдаёт исходники на TypeScript — Next должен их транспилировать.
   transpilePackages: ["@app/shared"],
-  experimental: {
-    agentFeedback: true,
-  },
   cacheComponents: true,
   partialPrefetching: true,
   turbopack: {
