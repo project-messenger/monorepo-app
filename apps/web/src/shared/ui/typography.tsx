@@ -43,10 +43,13 @@ const defaultVariantByTag: Record<TypographyTag, TypographyVariant> = {
   label: "label-field",
 };
 
-type TypographyProps = React.HTMLAttributes<HTMLElement> &
-  VariantProps<typeof typographyVariants> & {
-    as?: TypographyTag;
-  };
+type TypographyProps = VariantProps<typeof typographyVariants> &
+  (
+    | ({ as: "label" } & React.LabelHTMLAttributes<HTMLLabelElement>)
+    | ({
+        as?: Exclude<TypographyTag, "label">;
+      } & React.HTMLAttributes<HTMLElement>)
+  );
 
 function Typography({
   as: Tag = "p",
@@ -54,8 +57,10 @@ function Typography({
   className,
   ...props
 }: TypographyProps) {
+  const Element = Tag as React.ElementType;
+
   return (
-    <Tag
+    <Element
       data-slot="typography"
       className={cn(
         typographyVariants({ variant: variant ?? defaultVariantByTag[Tag] }),

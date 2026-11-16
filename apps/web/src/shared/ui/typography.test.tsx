@@ -56,6 +56,19 @@ describe("Typography", () => {
     expect(element).toHaveClass("text-muted-foreground");
   });
 
+  it("у label принимает htmlFor и связывает подпись с полем", () => {
+    render(
+      <>
+        <Typography as="label" htmlFor="email">
+          Email
+        </Typography>
+        <input id="email" />
+      </>,
+    );
+
+    expect(screen.getByLabelText("Email")).toBe(screen.getByRole("textbox"));
+  });
+
   it("передаёт остальные HTML-атрибуты в тег", () => {
     render(
       <Typography as="span" id="hint" title="Подсказка">
