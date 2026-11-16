@@ -57,6 +57,53 @@
   которого до Base UI не доходит проп или `ref`: чиним минимально, с тестом и комментарием
   `// Исправление обёртки shadcn: …` (пример — `orientation` в `shared/ui/tabs.tsx`). Подробно — в AGENTS.md.
 
+### Типографика: роль макета → класс Tailwind
+
+Источник — дизайн-система Figma ([ADR-0006](../../../docs/adr/0006-figma-uikit-source-of-truth.md)). Роли заданы в `globals.css` как `--text-*` и используются как обычные утилиты (`text-body`, `text-heading-panel`). Размер, высота строки и вес берутся из одной роли, отдельно `font-medium` и `leading-*` писать не нужно. Произвольные размеры (`text-[13px]`) не используем.
+
+Для текста с тегом используйте компонент `Typography` (`src/shared/ui/typography.tsx`): проп `as` задаёт тег, роль по умолчанию берётся из тега, проп `variant` её переопределяет ([ADR-0008](../../../docs/adr/0008-typography-component.md)).
+
+| Класс                        | Размер | Вес | Где применять                                 |
+| ---------------------------- | ------ | --- | --------------------------------------------- |
+| `text-display-hero`          | 64 px  | 600 | Заголовок лендинга                            |
+| `text-display-auth`          | 48 px  | 600 | Крупный заголовок страниц входа               |
+| `text-heading-auth`          | 36 px  | 600 | Заголовок формы входа и регистрации           |
+| `text-heading-page`          | 28 px  | 600 | Заголовок страницы                            |
+| `text-heading-section`       | 24 px  | 600 | Заголовок раздела                             |
+| `text-heading-panel`         | 20 px  | 600 | Заголовок панели, `Dialog`, `Sheet`           |
+| `text-heading-subsection`    | 17 px  | 600 | Заголовок подраздела, `CardTitle`             |
+| `text-body`                  | 14 px  | 400 | Основной текст, пункты списков                |
+| `text-body-small`            | 13 px  | 400 | Вспомогательный текст, ошибки, описания полей |
+| `text-label-button`          | 15 px  | 600 | Подпись кнопки, заголовок `TaskCard`          |
+| `text-label-field`           | 13 px  | 500 | Подпись поля формы, триггер вкладки           |
+| `text-label-sidebar-section` | 10 px  | 600 | Заголовок секции сайдбара                     |
+| `text-caption`               | 12 px  | 400 | Мелкие подсказки, шорткаты, `Badge`           |
+| `text-caption-small`         | 11 px  | 400 | Метаданные `TaskCard`                         |
+| `text-caption-task-id`       | 11 px  | 500 | Идентификатор задачи (`KAN-17`)               |
+| `text-brand-app`             | 29 px  | 700 | Логотип в приложении                          |
+| `text-brand-auth`            | 34 px  | 700 | Логотип на страницах входа                    |
+
+Отдельной роли для 10 px заметки в `TaskCard` в макете нет, поэтому там задано произвольное значение (единственное исключение).
+
+### Токены: назначение
+
+Все цвета — CSS-переменные в `:root` и `.dark` файла `src/_app/styles/globals.css`, в Tailwind они подключены через `@theme inline` (`bg-surface`, `text-warning-heading`). Hex-цвета в компонентах не пишем.
+
+| Группа                          | Токены                                                                                                                                                                                                      | Назначение                                                             |
+| ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| Базовые shadcn                  | `background`, `foreground`, `card`, `popover`, `primary`, `secondary`, `muted`, `accent`, `destructive`, `border`, `input`, `ring` (+ `*-foreground`)                                                       | Основная палитра, на ней стоят компоненты shadcn                       |
+| Дополнительные границы и ошибки | `border-subtle`, `destructive-background`                                                                                                                                                                   | Тонкие разделители, фон ошибки в `Alert`                               |
+| Поверхности                     | `surface`, `surface-foreground`, `surface-context`, `surface-trust`, `surface-info`, `surface-pinned`, `surface-attachment`, `surface-linked`, `surface-pull-request`, `surface-report`, `surface-schedule` | Фоны блоков и карточек по смыслу (`MetricCard`, вложения, PR, отчёты)  |
+| Инверсные                       | `inverse-surface`, `inverse-foreground`, `inverse-muted-foreground`                                                                                                                                         | Тёмные блоки на светлой теме                                           |
+| Поля ввода                      | `input-background`, `input-search`, `input-placeholder`, `input-project-placeholder`, `input-auth-border`, `input-editor-border`, `input-assistant-border`                                                  | Фоны, плейсхолдеры и границы `Input`, `Search`, редактора и ассистента |
+| Статусы сообщений               | `success-background`, `warning-foreground`, `warning-background`, `warning-heading`, `warning-body`, `warning-action-background`, `info-foreground`, `info-background`                                      | Варианты `Alert`, приоритет `TaskCard`                                 |
+| Статусы задач                   | `status-todo`, `status-in-progress`, `status-review`, `status-review-foreground`, `status-done`                                                                                                             | `Badge` и `StatusSelect`                                               |
+| Канбан и уведомления            | `kanban`, `notification-unread`                                                                                                                                                                             | Фон колонок доски, метка непрочитанного                                |
+| Сайдбар                         | `sidebar`, `sidebar-foreground`, `sidebar-muted-foreground`, `sidebar-item-foreground`, `sidebar-switcher`, `sidebar-primary`, `sidebar-accent`, `sidebar-border`, `sidebar-ring`                           | `NavigationItem`, `WorkspaceSwitcher`                                  |
+| Графики                         | `chart-1` … `chart-5`                                                                                                                                                                                       | Диаграммы                                                              |
+
+Радиусы: `rounded-sm` 6 px, `rounded-md` 7 px, `rounded-lg` 8 px, `rounded-metric` 9 px, `rounded-xl` 10 px, `rounded-2xl` 12 px, `rounded-3xl` 14 px, `rounded-4xl` 24 px.
+
 ---
 
 ## 3. Данные и состояние

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Check } from "lucide-react";
-import { cn } from "cn";
+import { cn } from "@/shared/lib/utils";
 
 import { Badge } from "@/shared/ui/badge";
 import { Button } from "@/shared/ui/button";

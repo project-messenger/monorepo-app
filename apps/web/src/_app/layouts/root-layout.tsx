@@ -10,7 +10,7 @@ import { QueryProvider } from "../api/query-provider";
 
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
-  variable: "--font-sans",
+  variable: "--font-inter",
 });
 
 const geistMono = Geist_Mono({
