@@ -17,6 +17,7 @@ ADR (Architecture Decision Record) — короткая запись одног�
 | [0003](./0003-trunk-based-development.md)       | Trunk-based development и squash merge           | весь проект | принято |
 | [0004](./0004-feature-sliced-design.md)         | Feature-Sliced Design на фронтенде               | web         | принято |
 | [0005](./0005-agents-md-single-source.md)       | `AGENTS.md` — единый источник правил для агентов | весь проект | принято |
+| [0006](./0006-figma-uikit-source-of-truth.md)   | Источник правды для UI-кита — макет Figma        | web         | принято |
 
 ## Когда писать ADR
 

@@ -45,25 +45,24 @@ In addition to the root criteria:
 
 ## Design system (shadcn → Figma)
 
-**Source of truth — code: current shadcn** (preset `base-nova`, Base UI `@base-ui/react`, Tailwind CSS v4, `class-variance-authority`, icons `lucide-react`). Tokens — CSS variables in `src/_app/styles/globals.css` (`:root` / `.dark`, oklch), passed to Tailwind via `@theme inline`. Figma adapts to code, not vice versa.
+**Source of truth — the Figma design system** ([ADR-0006](../../docs/adr/0006-figma-uikit-source-of-truth.md)): code adapts to the mockup, not vice versa. Stack: shadcn preset `base-nova`, Base UI `@base-ui/react`, Tailwind CSS v4, `class-variance-authority`, icons `lucide-react`. Tokens — CSS variables in `src/_app/styles/globals.css` (`:root` / `.dark`), passed to Tailwind via `@theme inline`.
 
-Figma file: https://www.figma.com/design/6FEyS7TIMuiYKTY6HMIBDr (access via Figma MCP `plugin:design:figma`). Components in it — old community kit (shadcn 2023, slate, 40px buttons): **don't use them as reference** for styles until they're rebuilt to match code.
+Figma file: https://www.figma.com/design/9bp5uwYGyaGIRCt1ycuqz3 (page `2004:2`, Light only; access via Figma MCP `https://mcp.figma.com/mcp`). Sections: `2004:233` colors, `2004:234` typography, `2004:235` sizes, `2004:236` components. The Starter plan limits MCP calls, so values already read are stored in [`docs/backlog/ui-kit-figma/figma-data.md`](../../docs/backlog/ui-kit-figma/figma-data.md) — check it before calling MCP.
 
-Variables in Figma (mirror of `globals.css`):
+Never build whole pages or widgets from the mockup: only tokens and base components in `shared/ui`. The logo (`shared/ui/logo.tsx`) is not part of the design-system alignment.
 
-- `Primitives` — Tailwind v4 palette (`neutral/900`, `red/600`, …), hidden from pickers.
-- `Theme` — semantic tokens with same names as CSS variables (`primary`, `muted-foreground`, …), code syntax `var(--…)`. Only **Light** mode (Figma Free plan = 1 mode). Dark value of each token is in its description (`dark: neutral/950`) — source for future Dark mode.
-- `Radius` (`radius/sm…4xl` from `--radius`), `Spacing` (`spacing/N` = `calc(var(--spacing) * N)`).
+Typography: roles of the mockup are tokens `--text-<role>` in `@theme inline` and give short utilities (`text-heading-page`, `text-body`, `text-caption`). Don't create a `Typography` React component.
 
 ### Rules
 
-- **Tokens only.** Use semantic classes (`bg-primary`, `text-muted-foreground`, `border-border`, `rounded-lg`, etc.). No arbitrary hex/rgb/oklch in classes (`bg-[#0f172a]`) and in `style`. Need new color — add token in `:root` **and** `.dark` and in `@theme inline`, then same variable in Figma (`Theme`, with `dark:` in description).
+- **Tokens only.** Use semantic classes (`bg-primary`, `text-muted-foreground`, `border-border`, `rounded-lg`, etc.). No arbitrary hex/rgb/oklch in classes (`bg-[#0f172a]`) and in `style`. Need new color — add token in `:root` **and** `.dark` and in `@theme inline`.
 - **Variants — via `cva`.** Visual variants and sizes are described in `cva` (`variant`, `size`, …); names match component properties in Figma. Don't multiply conditional `className` in JSX.
 - **Don't edit Base UI primitives.** Don't touch `@base-ui/react` and logic/accessibility (focus, ARIA, keyboard) in `src/shared/ui/*` — only change styles and variants.
   **Exception — shadcn wrapper bug**, where primitive's own behavior doesn't reach it (lost prop, `ref` not connected). Fix such bug minimally: with test next to it (`*.test.tsx`), comment `// Исправление обёртки shadcn: …` (keep this exact Russian marker, it is searched for in code and docs) above the line (so it won't be erased by `shadcn add --overwrite`) and note in PR description. Don't add new behavior on top of primitive.
 - **New components — via `shadcn add`.** First `pnpm --filter web exec shadcn add <component>` (when asked about overwriting existing files — "no"), then, if needed, styling per Figma (`get_design_context` / `get_variable_defs`). Don't write `src/shared/ui` components from scratch.
-- **Branding — via tokens**, not by editing component classes: change values of `--primary`, `--radius`, etc. in both themes and sync Figma variables.
-- Dark theme is set by explicit values in `.dark` (not auto-inversion). When changing light token, update dark one.
+  **Exception — components that exist in the mockup but not in shadcn** (`search`, `task-card`, `metric-card`, `navigation-item`, `workspace-switcher`, `status-select`): build them by hand following existing ones (`cva`, `cn`, tokens, `data-slot`, no business logic, no new packages), with a story and a test.
+- **Branding — via tokens**, not by editing component classes: change values of `--primary`, `--radius`, etc. in both themes.
+- Dark theme is set by explicit values in `.dark` (not auto-inversion). The mockup has no dark theme: values are derived from the light palette. When changing light token, update dark one.
 - Code from Figma MCP — reference, not ready code: translate to tokens and existing components, absolute positioning — to flex/grid.
 - Font — Inter (`--font-sans`, `src/_app/layouts/root-layout.tsx`). Icons — `lucide-react`, default 16px (`size-4`).
 

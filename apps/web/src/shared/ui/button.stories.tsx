@@ -15,12 +15,24 @@ const meta = {
         "secondary",
         "ghost",
         "destructive",
+        "surface",
+        "soft",
+        "accent",
         "link",
       ],
     },
     size: {
       control: "select",
-      options: ["default", "xs", "sm", "lg"],
+      options: [
+        "default",
+        "xs",
+        "sm",
+        "lg",
+        "app",
+        "app-lg",
+        "landing",
+        "auth",
+      ],
     },
   },
 } satisfies Meta<typeof Button>;
@@ -31,4 +43,11 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
 export const Outline: Story = { args: { variant: "outline" } };
 export const Destructive: Story = { args: { variant: "destructive" } };
+export const Surface: Story = { args: { variant: "surface" } };
+export const Soft: Story = { args: { variant: "soft" } };
+export const Accent: Story = { args: { variant: "accent" } };
+export const App: Story = { args: { size: "app" } };
+export const AppLarge: Story = { args: { size: "app-lg" } };
+export const Landing: Story = { args: { size: "landing" } };
+export const Auth: Story = { args: { size: "auth" } };
 export const Disabled: Story = { args: { disabled: true } };
