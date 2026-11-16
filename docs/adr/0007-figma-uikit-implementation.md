@@ -27,7 +27,9 @@
 - **Компоненты.** Переведены на токены и роли: Button, Input, Textarea, Checkbox, Label, Field, InputGroup,
   PasswordInput, Card, Badge, Dialog, Sheet, Tabs, Accordion, Command, Calendar, Sonner. Добавлены через `shadcn add`:
   Select, Alert. Собраны вручную по образцу существующих: Search, TaskCard (+ `TaskCardMenuButton`), MetricCard,
-  NavigationItem, WorkspaceSwitcher, StatusSelect. Новых npm-пакетов нет.
+  NavigationItem, WorkspaceSwitcher, StatusSelect. Новых npm-пакетов нет. У `Sonner` включён `richColors`:
+  success/error/warning/info берут фоны и текст из токенов (`--success-bg`, `--error-bg`, `--warning-bg`,
+  `--info-bg`), обычный тост остаётся нейтральным (`popover`). В макете тостов нет — соответствие по смыслу токенов.
 - **Состояния.** Hover, focus и pressed в макете не показаны — собраны из существующих токенов, без новых цветов.
   Иконки остаются `lucide-react`: в макете это текстовые глифы, векторных SVG нет.
 - **`cn`.** В `apps/web/src/shared/lib/utils.ts` — свой `cn` на `createCn` из `cn/config`: 17 ролей типографики

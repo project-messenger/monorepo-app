@@ -16,6 +16,9 @@ const Toaster = ({ ...props }: ToasterProps) => {
   return (
     <Sonner
       theme={theme as ToasterProps["theme"]}
+      // richColors включает селекторы sonner для --success-bg/--error-bg и т.д.
+      // Без него переменные ниже не применяются и все тосты выглядят одинаково.
+      richColors
       className="toaster group"
       icons={{
         success: <CircleCheckIcon className="size-4" />,

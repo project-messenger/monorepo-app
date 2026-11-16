@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { toast } from "sonner";
 
@@ -23,3 +24,24 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 export const TopCenter: Story = { args: { position: "top-center" } };
+
+// Показывает все четыре типа сразу — для сверки цветов success/error/warning/info.
+function ToastsOnMount() {
+  useEffect(() => {
+    toast.success("Задача создана");
+    toast.error("Не удалось сохранить");
+    toast.warning("Дедлайн близко");
+    toast.info("Обновление доступно");
+  }, []);
+
+  return null;
+}
+
+export const AllTypes: Story = {
+  render: (args) => (
+    <>
+      <Toaster {...args} />
+      <ToastsOnMount />
+    </>
+  ),
+};
