@@ -14,7 +14,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
 export const Disabled: Story = {
   render: () => (
-    <div data-disabled="true">
+    <div className="group" data-disabled="true">
       <Label>Недоступное поле</Label>
     </div>
   ),

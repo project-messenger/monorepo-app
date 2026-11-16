@@ -47,14 +47,16 @@ export const Default: Story = {};
 export const InDialog: Story = {
   render: () => (
     <CommandDialog defaultOpen>
-      <CommandInput placeholder="Поиск команды..." />
-      <CommandList>
-        <CommandEmpty>Ничего не найдено</CommandEmpty>
-        <CommandGroup heading="Действия">
-          <CommandItem>Создать задачу</CommandItem>
-          <CommandItem>Открыть чат</CommandItem>
-        </CommandGroup>
-      </CommandList>
+      <Command>
+        <CommandInput placeholder="Поиск команды..." />
+        <CommandList>
+          <CommandEmpty>Ничего не найдено</CommandEmpty>
+          <CommandGroup heading="Действия">
+            <CommandItem>Создать задачу</CommandItem>
+            <CommandItem>Открыть чат</CommandItem>
+          </CommandGroup>
+        </CommandList>
+      </Command>
     </CommandDialog>
   ),
 };

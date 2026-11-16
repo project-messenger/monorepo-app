@@ -40,7 +40,7 @@ function ToastsOnMount() {
 export const AllTypes: Story = {
   render: (args) => (
     <>
-      <Toaster {...args} />
+      <Toaster {...args} visibleToasts={4} expand />
       <ToastsOnMount />
     </>
   ),

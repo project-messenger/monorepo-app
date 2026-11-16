@@ -9,7 +9,7 @@ const workspaceSwitcherVariants = cva(
     variants: {
       variant: {
         workspace:
-          "h-[50px] rounded-lg bg-sidebar-switcher px-3.5 text-white hover:bg-sidebar-accent active:bg-sidebar-accent/80",
+          "h-[50px] rounded-lg bg-sidebar-switcher px-3.5 hover:bg-sidebar-accent active:bg-sidebar-accent/80",
       },
     },
     defaultVariants: {
