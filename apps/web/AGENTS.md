@@ -51,7 +51,7 @@ Figma file: https://www.figma.com/design/9bp5uwYGyaGIRCt1ycuqz3 (page `2004:2`, 
 
 Never build whole pages or widgets from the mockup: only tokens and base components in `shared/ui`. The logo (`shared/ui/logo.tsx`) is not part of the design-system alignment.
 
-Typography: roles of the mockup are tokens `--text-<role>` in `@theme inline` and give short utilities (`text-heading-page`, `text-body`, `text-caption`). Don't create a `Typography` React component.
+Typography: roles of the mockup are tokens `--text-<role>` in `@theme inline` and give short utilities (`text-heading-page`, `text-body`, `text-caption`). For text with a tag use `Typography` (`shared/ui/typography.tsx`, prop `as`, [ADR-0008](../../docs/adr/0008-typography-component.md)); don't create other typography components.
 
 ### Rules
 

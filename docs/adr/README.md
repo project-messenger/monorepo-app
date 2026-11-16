@@ -19,6 +19,7 @@ ADR (Architecture Decision Record) — короткая запись одног�
 | [0005](./0005-agents-md-single-source.md)       | `AGENTS.md` — единый источник правил для агентов | весь проект | принято |
 | [0006](./0006-figma-uikit-source-of-truth.md)   | Источник правды для UI-кита — макет Figma        | web         | принято |
 | [0007](./0007-figma-uikit-implementation.md)    | UI-кит реализован по макету Figma                | web         | принято |
+| [0008](./0008-typography-component.md)          | Компонент `Typography` с пропом `as`             | web         | принято |
 
 ## Когда писать ADR
 
