@@ -47,7 +47,7 @@ In addition to the root criteria:
 
 **Source of truth — the Figma design system** ([ADR-0006](../../docs/adr/0006-figma-uikit-source-of-truth.md)): code adapts to the mockup, not vice versa. Stack: shadcn preset `base-nova`, Base UI `@base-ui/react`, Tailwind CSS v4, `class-variance-authority`, icons `lucide-react`. Tokens — CSS variables in `src/_app/styles/globals.css` (`:root` / `.dark`), passed to Tailwind via `@theme inline`.
 
-Figma file: https://www.figma.com/design/9bp5uwYGyaGIRCt1ycuqz3 (page `2004:2`, Light only; access via Figma MCP `https://mcp.figma.com/mcp`). Sections: `2004:233` colors, `2004:234` typography, `2004:235` sizes, `2004:236` components. The Starter plan limits MCP calls, so values already read are stored in [`docs/backlog/ui-kit-figma/figma-data.md`](../../docs/backlog/ui-kit-figma/figma-data.md) — check it before calling MCP.
+Figma file: https://www.figma.com/design/9bp5uwYGyaGIRCt1ycuqz3 (page `2004:2`, Light only; access via Figma MCP `https://mcp.figma.com/mcp`). Sections: `2004:233` colors, `2004:234` typography, `2004:235` sizes, `2004:236` components. The Starter plan limits MCP calls, so the implemented values and decisions are recorded in [ADR-0007](../../docs/adr/0007-figma-uikit-implementation.md) — check it before calling MCP.
 
 Never build whole pages or widgets from the mockup: only tokens and base components in `shared/ui`. The logo (`shared/ui/logo.tsx`) is not part of the design-system alignment.
 

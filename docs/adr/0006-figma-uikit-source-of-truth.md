@@ -41,8 +41,8 @@
 ## Последствия
 
 - Раздел Design system в `apps/web/AGENTS.md` переписан: старый файл Figma удалён из правил, источник правды — новый макет.
-- Значения из Figma снимаются через MCP; из-за лимита Starter-плана данные фиксируются в
-  `docs/backlog/ui-kit-figma/figma-data.md`, чтобы не тратить вызовы повторно.
+- Значения из Figma снимаются через MCP; из-за лимита Starter-плана данные фиксировались в
+  `docs/backlog/ui-kit-figma/figma-data.md` (итог перенесён в [ADR-0007](./0007-figma-uikit-implementation.md)).
 - Нет данных макета по hover, focus, pressed, disabled: эти состояния сохраняются из shadcn и перекрашиваются токенами.
 - Внешний вид существующих страниц (`landing`, `login`, `register`) изменится вместе с токенами; в PR нужны скриншоты.
-- Работа разбита на подзадачи в `docs/backlog/ui-kit-figma/`.
+- Работа разбита на подзадачи в `docs/backlog/ui-kit-figma/` (каталог удалён после закрытия, итог — [ADR-0007](./0007-figma-uikit-implementation.md)).
