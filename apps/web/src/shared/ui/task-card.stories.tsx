@@ -5,6 +5,7 @@ import {
   TaskCardDetails,
   TaskCardHeader,
   TaskCardId,
+  TaskCardMenuButton,
   TaskCardMeta,
   TaskCardNote,
   TaskCardPriority,
@@ -35,6 +36,7 @@ export const Standard: Story = {
       <>
         <TaskCardHeader>
           <TaskCardId>KAN-17</TaskCardId>
+          <TaskCardMenuButton />
         </TaskCardHeader>
         <TaskCardTitle>Подготовить чеклист релиза</TaskCardTitle>
         <TaskCardMeta>

@@ -46,7 +46,8 @@
   `text-[0.8rem]` у `Button` `sm`. Старые варианты `xs`/`sm` и `default` у Input, Textarea, Select нужны страницам
   до их миграции на варианты макета.
 - Мелочи: радиус Checkbox 4 px (точного значения в макете нет); иконка `more-horizontal` в макете против
-  `more-vertical` в коде; иконки `Alert` подключает потребитель; нет stories у Input, Textarea, Checkbox.
+  `more-vertical` в коде; иконки `Alert` подключает потребитель.
+- Stories есть у всех 27 компонентов `shared/ui`.
 - Тесты не писались по просьбе пользователя: Badge, Card, Dialog, Sheet, Command, Accordion, `TaskCardMenuButton`,
   цвета `Sonner`, состояния `SelectItem`, контролируемый `StatusSelect`, `NavigationItem` с `Link`.
 - PR не открыт — только по просьбе пользователя.
