@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
-import { cn } from "cn";
+import { cn } from "@/shared/lib/utils";
 
 const searchVariants = cva(
   "flex w-full items-center gap-2 border border-transparent transition-colors outline-none focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50 hover:border-ring/60 has-disabled:cursor-not-allowed has-disabled:opacity-50",

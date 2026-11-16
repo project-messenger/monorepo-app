@@ -1,4 +1,4 @@
-import { cn } from "cn";
+import { cn } from "@/shared/lib/utils";
 
 function Section({ className, ...props }: React.ComponentProps<"section">) {
   return (

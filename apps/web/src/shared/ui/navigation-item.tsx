@@ -1,7 +1,7 @@
 import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
 import { cva, type VariantProps } from "class-variance-authority";
-import { cn } from "cn";
+import { cn } from "@/shared/lib/utils";
 
 const navigationItemVariants = cva(
   "flex h-[34px] w-full items-center gap-2 rounded-lg px-2 py-1.5 pl-7 text-left text-body transition-colors outline-none focus-visible:ring-3 focus-visible:ring-sidebar-ring/50 disabled:pointer-events-none disabled:opacity-50 [&>svg]:size-4 [&>svg]:shrink-0",

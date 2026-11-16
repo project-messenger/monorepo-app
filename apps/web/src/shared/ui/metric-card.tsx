@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
-import { cn } from "cn";
+import { cn } from "@/shared/lib/utils";
 
 const metricCardVariants = cva(
   "flex w-full items-start gap-3 rounded-metric px-5 py-4 text-foreground",

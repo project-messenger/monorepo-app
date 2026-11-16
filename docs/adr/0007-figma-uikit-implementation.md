@@ -30,6 +30,10 @@
   NavigationItem, WorkspaceSwitcher, StatusSelect. Новых npm-пакетов нет.
 - **Состояния.** Hover, focus и pressed в макете не показаны — собраны из существующих токенов, без новых цветов.
   Иконки остаются `lucide-react`: в макете это текстовые глифы, векторных SVG нет.
+- **`cn`.** В `apps/web/src/shared/lib/utils.ts` — свой `cn` на `createCn` из `cn/config`: 17 ролей типографики
+  зарегистрированы как `font-size`. Без этого `tailwind-merge` считал `text-body`, `text-label-button` и т.п.
+  цветом текста и выкидывал `text-primary-foreground` — у больших кнопок в тёмной теме текст становился
+  нечитаемым. Все компоненты импортируют `cn` из `@/shared/lib/utils`, а не из пакета `cn`.
 - **Правила.** `apps/web/AGENTS.md` (раздел Design system) синхронизирован с ADR-0006: источник правды — макет,
   токены вместо hex, варианты через `cva`, `shadcn add` или ручное исключение для компонентов вне shadcn.
 
