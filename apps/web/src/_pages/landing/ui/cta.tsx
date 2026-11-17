@@ -2,29 +2,48 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 import { Button } from "@/shared/ui/button";
-import { Section } from "./section";
+import { Typography } from "@/shared/ui/typography";
+import { ROUTES } from "@/shared/config";
 
 function Cta() {
   return (
-    <Section className="pt-0">
-      <div className="flex flex-col items-center gap-6 rounded-2xl bg-primary px-6 py-16 text-center text-primary-foreground">
-        <h2 className="max-w-xl text-3xl font-semibold tracking-tight text-balance md:text-4xl">
-          Готовы ускорить работу команды?
-        </h2>
-        <p className="max-w-md text-balance text-primary-foreground/70">
-          Зарегистрируйтесь за минуту. Карта не нужна.
-        </p>
+    <section
+      aria-labelledby="cta-heading"
+      className="bg-sidebar text-primary-foreground dark:text-sidebar-foreground"
+    >
+      <div className="mx-auto grid w-full max-w-[1440px] gap-8 px-4 py-10 sm:px-6 lg:min-h-[280px] lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-16 lg:py-[42px] lg:pr-[100px] lg:pl-16">
+        <div>
+          <Typography
+            as="h2"
+            id="cta-heading"
+            className="text-[32px] leading-[1.4] font-semibold lg:text-[46px]"
+          >
+            Пусть разговоры
+            <br /> становятся результатом.
+          </Typography>
+          <Typography className="mt-6 text-[17px] leading-[1.4] text-inverse-muted-foreground dark:text-sidebar-muted-foreground">
+            Ваша команда. Ваш ритм.
+          </Typography>
+        </div>
         <Button
-          size="lg"
-          variant="secondary"
+          size="landing"
+          variant="accent"
+          className="w-full justify-start bg-sidebar-primary px-[18px] text-sidebar-primary-foreground hover:bg-sidebar-primary/80 focus-visible:border-sidebar-ring focus-visible:ring-sidebar-ring/50 lg:mt-[54px] lg:self-start"
           nativeButton={false}
-          render={<Link href="/register" />}
+          render={
+            <Link
+              href={ROUTES.REGISTER}
+              target="_blank"
+              rel="noopener noreferrer"
+              role="link"
+            />
+          }
         >
-          Создать аккаунт
+          Создать пространство
           <ArrowRight data-icon="inline-end" />
         </Button>
       </div>
-    </Section>
+    </section>
   );
 }
 
