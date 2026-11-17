@@ -22,6 +22,8 @@ const buttonVariants = cva(
         soft: "bg-muted text-foreground hover:bg-secondary active:bg-accent aria-expanded:bg-secondary",
         accent:
           "bg-accent text-accent-foreground hover:bg-accent/80 active:bg-accent/70 aria-expanded:bg-accent",
+        "sidebar-accent":
+          "bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary/80 focus-visible:border-sidebar-ring focus-visible:ring-sidebar-ring/50 active:bg-accent/70 aria-expanded:bg-accent",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
@@ -33,6 +35,8 @@ const buttonVariants = cva(
         app: "h-10 gap-2 rounded-md px-4 text-label-button",
         "app-lg": "h-11 gap-2 rounded-md px-4 text-label-button",
         landing: "h-12 gap-2 rounded-lg px-5 text-label-button",
+        "landing-cta":
+          "h-12 justify-start gap-2 rounded-lg px-4.5 text-label-button",
         auth: "h-[50px] gap-2 rounded-lg px-5 text-label-button",
         icon: "size-8",
         "icon-xs":

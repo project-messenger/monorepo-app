@@ -9,6 +9,12 @@ import { createCn } from "cn/config";
 const typographyRoles = [
   "display-hero",
   "display-auth",
+  "display-cta",
+  "display-cta-mobile",
+  "heading-landing",
+  "heading-landing-mobile",
+  "subtitle-landing",
+  "body-landing",
   "heading-auth",
   "heading-page",
   "heading-section",

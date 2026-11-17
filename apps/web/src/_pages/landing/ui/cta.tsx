@@ -13,22 +13,21 @@ function Cta() {
     >
       <div className="mx-auto grid w-full max-w-[1440px] gap-8 px-4 py-10 sm:px-6 lg:min-h-[280px] lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-16 lg:py-[42px] lg:pr-[100px] lg:pl-16">
         <div>
-          <Typography
-            as="h2"
-            id="cta-heading"
-            className="text-[32px] leading-[1.4] font-semibold lg:text-[46px]"
-          >
+          <Typography as="h2" id="cta-heading" variant="display-cta">
             Пусть разговоры
             <br /> становятся результатом.
           </Typography>
-          <Typography className="mt-6 text-[17px] leading-[1.4] text-inverse-muted-foreground dark:text-sidebar-muted-foreground">
+          <Typography
+            variant="subtitle-landing"
+            className="mt-6 text-inverse-muted-foreground dark:text-sidebar-muted-foreground"
+          >
             Ваша команда. Ваш ритм.
           </Typography>
         </div>
         <Button
-          size="landing"
-          variant="accent"
-          className="w-full justify-start bg-sidebar-primary px-[18px] text-sidebar-primary-foreground hover:bg-sidebar-primary/80 focus-visible:border-sidebar-ring focus-visible:ring-sidebar-ring/50 lg:mt-[54px] lg:self-start"
+          size="landing-cta"
+          variant="sidebar-accent"
+          className="w-full lg:mt-[54px] lg:self-start"
           nativeButton={false}
           render={
             <Link
