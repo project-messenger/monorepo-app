@@ -5,6 +5,37 @@ import { describe, expect, it, vi } from "vitest";
 import { Button, buttonVariants } from "./button";
 
 describe("Button", () => {
+  it("keeps the sidebar CTA palette and alignment when rendered as a link", () => {
+    render(
+      <Button
+        variant="sidebar-accent"
+        size="landing-cta"
+        nativeButton={false}
+        render={
+          <a
+            href="/register"
+            target="_blank"
+            rel="noopener noreferrer"
+            role="link"
+          />
+        }
+      >
+        Register
+      </Button>,
+    );
+    const link = screen.getByRole("link");
+    expect(link).toHaveClass(
+      "bg-sidebar-primary",
+      "text-sidebar-primary-foreground",
+      "hover:bg-sidebar-primary/80",
+      "focus-visible:border-sidebar-ring",
+      "focus-visible:ring-sidebar-ring/50",
+      "justify-start",
+      "px-4.5",
+      "h-12",
+    );
+    expect(link).not.toHaveClass("bg-accent", "justify-center", "px-5");
+  });
   it("calls onClick by click", async () => {
     const onClick = vi.fn();
     render(<Button onClick={onClick}>Отправить</Button>);

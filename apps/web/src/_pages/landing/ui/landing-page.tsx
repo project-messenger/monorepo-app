@@ -4,6 +4,7 @@ import { Features } from "./features";
 import { Hero } from "./hero";
 import { Logos } from "./logos";
 import { Pricing } from "./pricing";
+import { Security } from "./security";
 
 export function LandingPage() {
   return (
@@ -13,6 +14,7 @@ export function LandingPage() {
       <Features />
       <Pricing />
       <Faq />
+      <Security />
       <Cta />
     </>
   );

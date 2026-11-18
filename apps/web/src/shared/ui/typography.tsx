@@ -7,6 +7,10 @@ const typographyVariants = cva("", {
     variant: {
       "display-hero": "text-display-hero",
       "display-auth": "text-display-auth",
+      "display-cta": "text-display-cta-mobile lg:text-display-cta",
+      "heading-landing": "text-heading-landing-mobile lg:text-heading-landing",
+      "subtitle-landing": "text-subtitle-landing",
+      "body-landing": "text-body-landing",
       "heading-auth": "text-heading-auth",
       "heading-page": "text-heading-page",
       "heading-section": "text-heading-section",

@@ -4,6 +4,29 @@ import { describe, expect, it } from "vitest";
 import { Typography } from "./typography";
 
 describe("Typography", () => {
+  it.each([
+    ["display-cta", "text-display-cta-mobile", "lg:text-display-cta"],
+    [
+      "heading-landing",
+      "text-heading-landing-mobile",
+      "lg:text-heading-landing",
+    ],
+    ["subtitle-landing", "text-subtitle-landing", null],
+    ["body-landing", "text-body-landing", null],
+  ] as const)(
+    "keeps %s typography alongside a text color",
+    (variant, mobile, desktop) => {
+      render(
+        <Typography as="h2" variant={variant} className="text-muted-foreground">
+          Landing
+        </Typography>,
+      );
+      const element = screen.getByRole("heading", { level: 2 });
+      expect(element).toHaveClass(mobile, "text-muted-foreground");
+      if (desktop) expect(element).toHaveClass(desktop);
+      expect(element).not.toHaveClass("text-heading-section");
+    },
+  );
   it("по умолчанию рисует p с ролью body", () => {
     render(<Typography>Текст</Typography>);
 
