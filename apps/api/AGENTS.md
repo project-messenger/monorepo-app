@@ -15,7 +15,7 @@ same document to the committed `apps/api/openapi.json` without starting the serv
 up yet (planned): PostgreSQL + Prisma, Redis, WebSockets. **Don't add any of them as a side effect of another task** —
 each one is a separate task and, where it is a fork, an ADR (`docs/adr/`). HTTP contract: DTOs are Zod schemas in
 `apps/api`, never Prisma models; `@nestjs/swagger` builds the OpenAPI document from them for the Orval client — see
-[`docs/architecture.md`](../../docs/architecture.md#контракт-фронтенд--бэкенд). Authentication is not decided yet, see
+[ADR-0009](../../docs/adr/0009-api-contract-openapi-orval.md). Authentication is not decided yet, see
 [`docs/architecture.md`](../../docs/architecture.md#авторизация).
 
 ## Commands

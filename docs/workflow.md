@@ -196,7 +196,7 @@ docs: KAN-7 add frontend startup instructions
 
 По ТЗ и правилам команды на каждом PR должны проходить: линтинг, проверка FSD, тесты, проверка типов TypeScript и сборка.
 
-Сейчас в CI (`.github/workflows/ci.yml`) работают typecheck, lint (web — ESLint + steiger, api — oxlint), сборка и шаг проверки клиента Orval. Шаг Orval пока ничего не проверяет: Swagger на бэкенде не подключён, а ошибка генерации подавлена `|| true`. **Тестов и проверки Prettier в CI пока нет** — до их добавления запускайте `pnpm --filter web verify` локально, а для изменений в `apps/api` — `pnpm --filter api test` (подробнее — [Инструменты качества и CI](../apps/web/docs/tooling.md#ci)). Что нужно доделать — [бэклог: проверки в CI](./backlog/ci-checks.md) и [контракт API](./backlog/api-contract.md).
+Сейчас в CI (`.github/workflows/ci.yml`) работают typecheck, lint (web — ESLint + steiger, api — oxlint), сборка и проверка контракта API: CI пересоздаёт `apps/api/openapi.json` и клиент Orval и падает, если они отличаются от закоммиченных. **Тестов и проверки Prettier в CI пока нет** — до их добавления запускайте `pnpm --filter web verify` локально, а для изменений в `apps/api` — `pnpm --filter api test` (подробнее — [Инструменты качества и CI](../apps/web/docs/tooling.md#ci)). Что нужно доделать — [бэклог: проверки в CI](./backlog/ci-checks.md).
 
 ## Секреты и переменные окружения
 

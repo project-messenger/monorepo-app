@@ -39,8 +39,7 @@ PostgreSQL, Redis и WebSocket на бэкенде ещё не подключе�
 
 ## Контракт фронтенд ↔ бэкенд
 
-Направление выбрано (предложил ИИ-агент, согласовал foxprogs), но ещё не реализовано. ADR будет записан в PR, который
-его реализует, — что для этого сделать, см. [docs/backlog/api-contract.md](./backlog/api-contract.md).
+Решение и его причины — [ADR-0009](./adr/0009-api-contract-openapi-orval.md).
 
 - **HTTP — OpenAPI от бэкенда + Orval.** DTO (описание запросов и ответов) — Zod-схемы в `apps/api`, не модели
   Prisma. Из них `@nestjs/swagger` строит схему, она лежит файлом `apps/api/openapi.json` в репозитории, а фронтенд

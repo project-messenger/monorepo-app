@@ -11,9 +11,7 @@
 
 - [ ] `docker-compose.yml` в корне: PostgreSQL и Redis для разработки (приложения пока можно запускать через
       `pnpm dev`).
-- [ ] Переменные подключения в `.env.example` (без настоящих секретов).
-- [ ] Загрузка `.env` в `apps/api`: сейчас бэкенд его не читает. Варианты — `ConfigModule` из `@nestjs/config`
-      (новый пакет, после согласия команды) или флаг `--env-file` у Node без новых пакетов. Обновить таблицу переменных
-      в [`docs/architecture.md`](../architecture.md#переменные-окружения).
+- [ ] Переменные подключения — в схему `apps/api/src/config/env.schema.ts` и в `apps/api/.env.example` (без
+      настоящих секретов). Бэкенд уже читает `apps/api/.env` через `ConfigModule`.
 - [ ] Раздел «Запуск» в `README.md`: `docker compose up -d`, затем `pnpm dev`.
 - [ ] Позже: Dockerfile для `web` и `api` — вместе с задачей [Процесс релиза](./release.md).

@@ -11,9 +11,10 @@ API командного мессенджера на **NestJS 12** (ESM, Vitest)
 [`src/health/`](./src/health/) — образец для новых: модуль, контроллер, сервис, тесты. Подключены конфигурация (см.
 ниже), префикс `/api` у всех путей, CORS для адреса фронтенда и корректная остановка — общие настройки лежат в
 [`src/app.setup.ts`](./src/app.setup.ts), их вызывают и `main.ts`, и e2e-тесты. Описание API — Swagger UI на
-[`localhost:3001/api/docs`](http://localhost:3001/api/docs). Ещё не подключены PostgreSQL + Prisma, Redis и WebSocket —
-каждое из этого отдельная задача. Открытые решения, которые касаются бэкенда, — в
-[`docs/adr/`](../../docs/adr/README.md).
+[`localhost:3001/api/docs`](http://localhost:3001/api/docs) и файл [`openapi.json`](./openapi.json), из которого
+фронтенд генерирует клиент ([ADR-0009](../../docs/adr/0009-api-contract-openapi-orval.md)). Ещё не подключены
+PostgreSQL + Prisma, Redis и WebSocket — каждое из этого отдельная задача. Открытые решения, которые касаются бэкенда, —
+в [`docs/adr/`](../../docs/adr/README.md).
 
 ## Переменные окружения
 
