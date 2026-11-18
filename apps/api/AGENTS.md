@@ -5,8 +5,11 @@
 
 ## Current state
 
-The app is a NestJS 12 skeleton: only `GET /` exists. Not set up yet (planned): `@nestjs/swagger` (OpenAPI for the
-Orval client on the frontend), `@nestjs/config`, PostgreSQL + Prisma, Redis, CORS, WebSockets. **Don't add any of
+The app is a NestJS 12 skeleton: only `GET /` exists. Configuration is set up: `@nestjs/config` reads
+`apps/api/.env` and validates it with the Zod schema in `src/config/env.schema.ts` — read values via
+`ConfigService<Env, true>`, never `process.env`; a new variable goes into the schema and `.env.example`. Not set up yet
+(planned): `@nestjs/swagger` (OpenAPI for the Orval client on the frontend), PostgreSQL + Prisma, Redis, CORS,
+WebSockets. **Don't add any of
 them as a side effect of another task** — each one is a separate task and, where it is a fork, an ADR
 (`docs/adr/`). Agreed direction for the HTTP contract (not implemented yet): DTOs are Zod schemas in `apps/api`, never Prisma
 models; `@nestjs/swagger` builds `openapi.json` from them for the Orval client — see
