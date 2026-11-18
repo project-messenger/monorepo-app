@@ -8,6 +8,14 @@ import { z } from 'zod';
 export const envSchema = z.object({
   // Values in the environment are strings, so numbers are coerced.
   PORT: z.coerce.number().int().min(1).max(65535).default(3001),
+  // The frontend address allowed by CORS. The browser sends it in the `Origin`
+  // header without a path or trailing slash, so anything else would never match.
+  CORS_ORIGIN: z
+    .url()
+    .refine((value) => new URL(value).origin === value, {
+      message: 'must be an origin without a path, e.g. http://localhost:3000',
+    })
+    .default('http://localhost:3000'),
 });
 
 export type Env = z.infer<typeof envSchema>;
