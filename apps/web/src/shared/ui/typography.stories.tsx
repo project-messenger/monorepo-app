@@ -26,6 +26,10 @@ const meta = {
       options: [
         "display-hero",
         "display-auth",
+        "display-cta",
+        "heading-landing",
+        "subtitle-landing",
+        "body-landing",
         "heading-auth",
         "heading-page",
         "heading-section",
@@ -50,6 +54,20 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Paragraph: Story = {};
+export const LandingRoles: Story = {
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <Typography as="h2" variant="display-cta">
+        Landing call to action
+      </Typography>
+      <Typography as="h2" variant="heading-landing">
+        Landing section
+      </Typography>
+      <Typography variant="subtitle-landing">Supporting subtitle</Typography>
+      <Typography variant="body-landing">Section description</Typography>
+    </div>
+  ),
+};
 
 export const Heading: Story = {
   args: { as: "h1", children: "Заголовок страницы" },

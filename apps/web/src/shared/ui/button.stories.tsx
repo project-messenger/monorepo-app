@@ -18,6 +18,7 @@ const meta = {
         "surface",
         "soft",
         "accent",
+        "sidebar-accent",
         "link",
       ],
     },
@@ -31,6 +32,7 @@ const meta = {
         "app",
         "app-lg",
         "landing",
+        "landing-cta",
         "auth",
       ],
     },
@@ -46,6 +48,9 @@ export const Destructive: Story = { args: { variant: "destructive" } };
 export const Surface: Story = { args: { variant: "surface" } };
 export const Soft: Story = { args: { variant: "soft" } };
 export const Accent: Story = { args: { variant: "accent" } };
+export const LandingCta: Story = {
+  args: { variant: "sidebar-accent", size: "landing-cta" },
+};
 export const App: Story = { args: { size: "app" } };
 export const AppLarge: Story = { args: { size: "app-lg" } };
 export const Landing: Story = { args: { size: "landing" } };
