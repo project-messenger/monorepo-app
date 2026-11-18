@@ -10,8 +10,9 @@ export const envSchema = z.object({
   PORT: z.coerce.number().int().min(1).max(65535).default(3001),
   // The frontend address allowed by CORS. The browser sends it in the `Origin`
   // header without a path or trailing slash, so anything else would never match.
+  // `abort: true` stops here on an invalid URL, so `new URL()` below never throws.
   CORS_ORIGIN: z
-    .url()
+    .url({ protocol: /^https?$/, abort: true })
     .refine((value) => new URL(value).origin === value, {
       message: 'must be an origin without a path, e.g. http://localhost:3000',
     })

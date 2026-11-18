@@ -44,8 +44,9 @@ cp apps/api/.env.example apps/api/.env
 
 Перед PR: `pnpm --filter api lint && pnpm --filter api test && pnpm --filter api build`.
 
-Изменили эндпоинт или его схему — запустите `pnpm --filter api openapi` и закоммитьте [`openapi.json`](./openapi.json):
-по нему фронтенд генерирует клиент API, а ревьюер видит изменение контракта в diff.
+Изменили эндпоинт или его схему — запустите `pnpm --filter api openapi && pnpm --filter web generate-api` и
+закоммитьте [`openapi.json`](./openapi.json) вместе с клиентом Orval (`apps/web/src/shared/api/generated/`): ревьюер
+видит изменение контракта в diff, а CI падает, если файлы не пересозданы.
 
 ## Если вы впервые с NestJS
 

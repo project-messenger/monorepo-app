@@ -40,8 +40,9 @@ In addition to the root criteria:
 1. `pnpm --filter api lint && pnpm --filter api test && pnpm --filter api build` are green — attach the output.
    Changed HTTP behaviour — `pnpm --filter api test:e2e` too.
 2. New service logic — unit test next to it (`*.spec.ts`); new endpoint — e2e test in `test/`.
-3. Endpoint or its schema added or changed — run `pnpm --filter api openapi` and commit `openapi.json`; the PR says what
-   the frontend has to update (see `docs/architecture.md`).
+3. Endpoint or its schema added or changed — run `pnpm --filter api openapi && pnpm --filter web generate-api` and
+   commit `openapi.json` and the Orval client (`apps/web/src/shared/api/generated/`), otherwise CI fails; the PR says
+   what the frontend has to update (see `docs/architecture.md`).
 
 ## Code conventions
 

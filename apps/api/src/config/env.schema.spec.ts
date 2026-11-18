@@ -25,13 +25,16 @@ describe('envSchema', () => {
     ).toBe('https://app.example.com');
   });
 
-  it.each(['localhost:3000', 'http://localhost:3000/', 'http://a.com/app'])(
-    'rejects CORS_ORIGIN=%s',
-    (origin) => {
-      const result = envSchema.safeParse({ CORS_ORIGIN: origin });
+  it.each([
+    'not-a-url',
+    'localhost:3000',
+    'ftp://app.example.com',
+    'http://localhost:3000/',
+    'http://a.com/app',
+  ])('rejects CORS_ORIGIN=%s', (origin) => {
+    const result = envSchema.safeParse({ CORS_ORIGIN: origin });
 
-      expect(result.success).toBe(false);
-      expect(result.error?.issues[0]?.path).toEqual(['CORS_ORIGIN']);
-    },
-  );
+    expect(result.success).toBe(false);
+    expect(result.error?.issues[0]?.path).toEqual(['CORS_ORIGIN']);
+  });
 });
