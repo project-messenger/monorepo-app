@@ -27,6 +27,30 @@ describe('App (e2e)', () => {
     await request(app.getHttpServer()).get('/health').expect(404);
   });
 
+  describe('Swagger', () => {
+    it('serves the UI under the /api prefix', async () => {
+      await request(app.getHttpServer()).get('/api/docs').expect(200);
+    });
+
+    it('describes endpoints with schemas built from Zod', async () => {
+      const response = await request(app.getHttpServer())
+        .get('/api/docs-json')
+        .expect(200);
+
+      expect(
+        response.body.paths['/api/health'].get.responses['200'].content[
+          'application/json'
+        ].schema,
+      ).toEqual({ $ref: '#/components/schemas/HealthStatus' });
+      expect(response.body.components.schemas.HealthStatus).toEqual({
+        type: 'object',
+        properties: { status: { type: 'string', enum: ['ok'] } },
+        required: ['status'],
+        additionalProperties: false,
+      });
+    });
+  });
+
   describe('CORS', () => {
     it('allows the frontend origin', async () => {
       const response = await request(app.getHttpServer())

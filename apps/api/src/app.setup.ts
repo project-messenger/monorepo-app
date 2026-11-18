@@ -1,5 +1,10 @@
 import type { INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import {
+  DocumentBuilder,
+  SwaggerModule,
+  type OpenAPIObject,
+} from '@nestjs/swagger';
 import type { Env } from './config/env.schema.js';
 
 /**
@@ -16,7 +21,22 @@ export function setupApp(app: INestApplication): void {
   // other origins get no Access-Control-Allow-Origin header.
   app.enableCors({ origin: [config.get('CORS_ORIGIN', { infer: true })] });
 
+  // Swagger UI at /api/docs, the OpenAPI JSON at /api/docs-json. Must run after
+  // setGlobalPrefix: the document reads the prefix into its paths.
+  SwaggerModule.setup('docs', app, () => createOpenApiDocument(app), {
+    useGlobalPrefix: true,
+  });
+
   // Runs onModuleDestroy/onApplicationShutdown on SIGTERM, e.g. when Docker stops
   // the container, so connections can close cleanly.
   app.enableShutdownHooks();
+}
+
+/** The OpenAPI document of the API: every controller with its Zod schemas. */
+export function createOpenApiDocument(app: INestApplication): OpenAPIObject {
+  const config = new DocumentBuilder()
+    .setTitle('Messenger API')
+    .setVersion('1.0')
+    .build();
+  return SwaggerModule.createDocument(app, config);
 }

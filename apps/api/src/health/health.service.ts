@@ -1,8 +1,5 @@
 import { Injectable } from '@nestjs/common';
-
-export interface HealthStatus {
-  status: 'ok';
-}
+import type { HealthStatus } from './health.schema.js';
 
 @Injectable()
 export class HealthService {

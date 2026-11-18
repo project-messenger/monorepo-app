@@ -8,12 +8,12 @@
 The app is a NestJS 12 skeleton: only `GET /api/health` exists (`src/health/` — follow it as the reference for new
 modules). Configuration is set up: `@nestjs/config` reads `apps/api/.env` and validates it with the Zod schema in
 `src/config/env.schema.ts` — read values via `ConfigService<Env, true>`, never `process.env`; a new variable goes into
-the schema and `.env.example`. App-wide settings (global prefix `/api`, CORS from `CORS_ORIGIN`, shutdown hooks) live in
-`src/app.setup.ts`, which both `main.ts` and e2e tests call — put new global settings there, not in `main.ts`. Not set
-up yet (planned): `@nestjs/swagger` (OpenAPI for the Orval client on the frontend), PostgreSQL + Prisma, Redis,
-WebSockets. **Don't add any of them as a side effect of another task** — each one is a separate task and, where it is a
-fork, an ADR (`docs/adr/`). Agreed direction for the HTTP contract (not implemented yet): DTOs are Zod schemas in
-`apps/api`, never Prisma models; `@nestjs/swagger` builds `openapi.json` from them for the Orval client — see
+the schema and `.env.example`. App-wide settings (global prefix `/api`, CORS from `CORS_ORIGIN`, Swagger, shutdown
+hooks) live in `src/app.setup.ts`, which both `main.ts` and e2e tests call — put new global settings there, not in
+`main.ts`. Swagger UI is at `/api/docs`, the OpenAPI JSON at `/api/docs-json`; there is no `openapi.json` file yet. Not
+set up yet (planned): PostgreSQL + Prisma, Redis, WebSockets. **Don't add any of them as a side effect of another task**
+— each one is a separate task and, where it is a fork, an ADR (`docs/adr/`). HTTP contract: DTOs are Zod schemas in
+`apps/api`, never Prisma models; `@nestjs/swagger` builds the OpenAPI document from them for the Orval client — see
 [`docs/architecture.md`](../../docs/architecture.md#контракт-фронтенд--бэкенд). Authentication is not decided yet, see
 [`docs/architecture.md`](../../docs/architecture.md#авторизация).
 
@@ -49,9 +49,14 @@ In addition to the root criteria:
 - **One domain — one Nest module** in `src/<domain>/` (module, controller, service, their specs next to them). Keep
   controllers thin: HTTP in the controller, logic in the service.
 - **Validation** works with Zod (Standard Schema) without classes: `StandardSchemaValidationPipe` with
-  `@Body({ schema })` or `@Param('id', { schema })` (https://docs.nestjs.com/application/validation.md). HTTP
-  request/response schemas (DTOs) live here, in `apps/api`: the frontend gets them via OpenAPI + Orval, so never move
-  them to `@app/shared`. Only WebSocket event payload schemas live in `@app/shared` — import them, don't duplicate.
+  `@Body({ schema })` or `@Param('id', { schema })` (https://docs.nestjs.com/application/validation.md). The pipe is
+  not bound yet — bind it when the first endpoint with a body or params appears. HTTP request/response schemas (DTOs)
+  live here, in `apps/api`: the frontend gets them via OpenAPI + Orval, so never move them to `@app/shared`. Only
+  WebSocket event payload schemas live in `@app/shared` — import them, don't duplicate.
+- **Responses** are described for Swagger with the same Zod schemas: `@ApiOkResponse({ standardSchema: XSchema })`, the
+  return type is `z.infer<typeof XSchema>` (see `src/health/`). Give every DTO schema `.meta({ id: 'X' })`: without an
+  id the schema is inlined into the endpoint and has no name in `components.schemas`, so the frontend gets no named type
+  for it.
 - Formatting — Prettier with single quotes (`.prettierrc`), lint — oxlint (`.oxlintrc.json`).
 
 ## NestJS

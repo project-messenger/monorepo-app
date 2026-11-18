@@ -10,9 +10,10 @@ API командного мессенджера на **NestJS 12** (ESM, Vitest)
 Пока это заготовка: есть только `GET /api/health` — проверка, что бэкенд запущен. Его модуль
 [`src/health/`](./src/health/) — образец для новых: модуль, контроллер, сервис, тесты. Подключены конфигурация (см.
 ниже), префикс `/api` у всех путей, CORS для адреса фронтенда и корректная остановка — общие настройки лежат в
-[`src/app.setup.ts`](./src/app.setup.ts), их вызывают и `main.ts`, и e2e-тесты. Ещё не подключены Swagger (OpenAPI для
-фронтенда), PostgreSQL + Prisma, Redis и WebSocket — каждое из этого отдельная задача. Открытые решения, которые
-касаются бэкенда, — в [`docs/adr/`](../../docs/adr/README.md).
+[`src/app.setup.ts`](./src/app.setup.ts), их вызывают и `main.ts`, и e2e-тесты. Описание API — Swagger UI на
+[`localhost:3001/api/docs`](http://localhost:3001/api/docs). Ещё не подключены PostgreSQL + Prisma, Redis и WebSocket —
+каждое из этого отдельная задача. Открытые решения, которые касаются бэкенда, — в
+[`docs/adr/`](../../docs/adr/README.md).
 
 ## Переменные окружения
 
