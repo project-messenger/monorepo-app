@@ -10,9 +10,10 @@ modules). Configuration is set up: `@nestjs/config` reads `apps/api/.env` and va
 `src/config/env.schema.ts` — read values via `ConfigService<Env, true>`, never `process.env`; a new variable goes into
 the schema and `.env.example`. App-wide settings (global prefix `/api`, CORS from `CORS_ORIGIN`, Swagger, shutdown
 hooks) live in `src/app.setup.ts`, which both `main.ts` and e2e tests call — put new global settings there, not in
-`main.ts`. Swagger UI is at `/api/docs`, the OpenAPI JSON at `/api/docs-json`; there is no `openapi.json` file yet. Not
-set up yet (planned): PostgreSQL + Prisma, Redis, WebSockets. **Don't add any of them as a side effect of another task**
-— each one is a separate task and, where it is a fork, an ADR (`docs/adr/`). HTTP contract: DTOs are Zod schemas in
+`main.ts`. Swagger UI is at `/api/docs`, the OpenAPI JSON at `/api/docs-json`; `pnpm --filter api openapi` writes the
+same document to the committed `apps/api/openapi.json` without starting the server (`src/generate-openapi.ts`). Not set
+up yet (planned): PostgreSQL + Prisma, Redis, WebSockets. **Don't add any of them as a side effect of another task** —
+each one is a separate task and, where it is a fork, an ADR (`docs/adr/`). HTTP contract: DTOs are Zod schemas in
 `apps/api`, never Prisma models; `@nestjs/swagger` builds the OpenAPI document from them for the Orval client — see
 [`docs/architecture.md`](../../docs/architecture.md#контракт-фронтенд--бэкенд). Authentication is not decided yet, see
 [`docs/architecture.md`](../../docs/architecture.md#авторизация).
@@ -30,6 +31,7 @@ Run from monorepo root, not from `apps/api`:
 | e2e tests                | `pnpm --filter api test:e2e`               |
 | Build (also type-checks) | `pnpm --filter api build`                  |
 | Format                   | `pnpm --filter api format`                 |
+| Write `openapi.json`     | `pnpm --filter api openapi`                |
 
 ## Done (backend)
 
@@ -38,8 +40,8 @@ In addition to the root criteria:
 1. `pnpm --filter api lint && pnpm --filter api test && pnpm --filter api build` are green — attach the output.
    Changed HTTP behaviour — `pnpm --filter api test:e2e` too.
 2. New service logic — unit test next to it (`*.spec.ts`); new endpoint — e2e test in `test/`.
-3. Endpoint added or changed — the frontend contract is described for consumers (see `docs/architecture.md`) and the PR says what
-   the frontend has to update.
+3. Endpoint or its schema added or changed — run `pnpm --filter api openapi` and commit `openapi.json`; the PR says what
+   the frontend has to update (see `docs/architecture.md`).
 
 ## Code conventions
 

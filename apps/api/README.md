@@ -30,17 +30,21 @@ cp apps/api/.env.example apps/api/.env
 
 Все команды — **из корня репозитория**:
 
-| Команда                      | Что делает                               |
-| ---------------------------- | ---------------------------------------- |
-| `pnpm dev:api`               | Dev-сервер с перезапуском на :3001       |
-| `pnpm --filter api lint`     | oxlint                                   |
-| `pnpm --filter api test`     | Unit-тесты (Vitest, `src/**/*.spec.ts`)  |
-| `pnpm --filter api test:e2e` | e2e-тесты (`test/`)                      |
-| `pnpm --filter api test:cov` | Покрытие тестами                         |
-| `pnpm --filter api build`    | Сборка в `dist/` (заодно проверка типов) |
-| `pnpm --filter api format`   | Prettier                                 |
+| Команда                      | Что делает                                              |
+| ---------------------------- | ------------------------------------------------------- |
+| `pnpm dev:api`               | Dev-сервер с перезапуском на :3001                      |
+| `pnpm --filter api lint`     | oxlint                                                  |
+| `pnpm --filter api test`     | Unit-тесты (Vitest, `src/**/*.spec.ts`)                 |
+| `pnpm --filter api test:e2e` | e2e-тесты (`test/`)                                     |
+| `pnpm --filter api test:cov` | Покрытие тестами                                        |
+| `pnpm --filter api build`    | Сборка в `dist/` (заодно проверка типов)                |
+| `pnpm --filter api format`   | Prettier                                                |
+| `pnpm --filter api openapi`  | Записать схему API в `openapi.json` без запуска сервера |
 
 Перед PR: `pnpm --filter api lint && pnpm --filter api test && pnpm --filter api build`.
+
+Изменили эндпоинт или его схему — запустите `pnpm --filter api openapi` и закоммитьте [`openapi.json`](./openapi.json):
+по нему фронтенд генерирует клиент API, а ревьюер видит изменение контракта в diff.
 
 ## Если вы впервые с NestJS
 
