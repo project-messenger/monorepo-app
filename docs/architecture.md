@@ -51,10 +51,10 @@ PostgreSQL, Redis и WebSocket на бэкенде ещё не подключе�
 - **Все HTTP-пути бэкенда начинаются с `/api`**, версии в пути нет. Бэкенд разрешает CORS только для адреса из
   `CORS_ORIGIN`.
 
-Сейчас `@nestjs/swagger` подключён: Swagger UI — `/api/docs` на запущенном бэкенде, а файл `apps/api/openapi.json` пишет
-команда `pnpm --filter api openapi` без запуска сервера. Orval пока ещё берёт схему у запущенного бэкенда, а его
-проверка в CI ничего не гарантирует. Пока так, эндпоинты, которые нужны фронтенду, описываем в задаче Jira (метод, путь,
-запрос, ответ, ошибки) **до** начала работы, а фронтенд работает на моках MSW (`apps/web/src/shared/api/mocks/`).
+Swagger UI — `/api/docs` на запущенном бэкенде, а файл `apps/api/openapi.json` пишет команда `pnpm --filter api openapi`
+без запуска сервера; Orval генерирует клиент из этого файла. CI пересоздаёт файл и клиент и падает, если они отличаются
+от закоммиченных. Эндпоинты, которые нужны фронтенду, описываем в задаче Jira (метод, путь, запрос, ответ, ошибки)
+**до** начала работы, а пока эндпоинта нет — фронтенд работает на моках MSW (`apps/web/src/shared/api/mocks/`).
 
 Изменение контракта — всегда изменение для обеих сторон: в одном PR обновляются `apps/api`, `apps/web` и (для
 событий WebSocket) `packages/shared`, в описании PR указано, совместимо ли оно назад. Код такого PR ревьюит второй
@@ -91,5 +91,5 @@ Zod-схемой [`apps/api/src/config/env.schema.ts`](../apps/api/src/config/en
 | Фронтенд              | `pnpm --filter web verify`                         |
 | Бэкенд                | `pnpm --filter api lint && pnpm --filter api test` |
 
-CI (`.github/workflows/ci.yml`) пока запускает только typecheck, lint, build и проверку Orval — тестов и Prettier в
-нём нет. Подробнее — [`apps/web/docs/tooling.md`](../apps/web/docs/tooling.md#ci).
+CI (`.github/workflows/ci.yml`) пока запускает только typecheck, lint, build и проверку контракта API — тестов и
+Prettier в нём нет. Подробнее — [`apps/web/docs/tooling.md`](../apps/web/docs/tooling.md#ci).

@@ -1,11 +1,11 @@
 import { defineConfig } from "orval";
 
-// Схему отдаёт запущенный бэкенд (apps/api, @nestjs/swagger).
+// Схема — файл apps/api/openapi.json (пишет `pnpm --filter api openapi`), бэкенд запускать не нужно.
 // Путь вывода совпадает с проверкой в .github/workflows/ci.yml.
 export default defineConfig({
   api: {
     input: {
-      target: process.env.API_SCHEMA_URL ?? "http://localhost:3001/api-json",
+      target: "../api/openapi.json",
     },
     output: {
       mode: "tags-split",

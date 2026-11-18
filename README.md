@@ -98,17 +98,17 @@ pnpm dev
 
 ## Как использовать Zod и Orval (Фронтенд + Бэкенд контракт)
 
-HTTP-контракт описывает бэкенд (Zod-схемы DTO → OpenAPI), фронтенд генерирует из него клиент через Orval. Swagger на
-бэкенде пока не подключён — направление и план в [docs/architecture.md](./docs/architecture.md#контракт-фронтенд--бэкенд).
+HTTP-контракт описывает бэкенд (Zod-схемы DTO → OpenAPI), фронтенд генерирует из него клиент через Orval. Подробно —
+[docs/architecture.md](./docs/architecture.md#контракт-фронтенд--бэкенд).
 
 1. **На бэкенде (`apps/api`):**
 
 - Вы описываете эндпоинты в NestJS с помощью `@nestjs/swagger`.
-- При запущенном бэкенде схема доступна по адресу `http://localhost:3001/api-json`.
+- `pnpm --filter api openapi` записывает схему в `apps/api/openapi.json` (без запуска сервера) — файл коммитится вместе с изменением эндпоинтов.
 
 2. **На фронтенде (`apps/web`):**
 
-- Когда бэкендеры добавляют новые эндпоинты, фронтендер может автоматически сгенерировать готовые React Query хуки и типы одной командой (бэкенд должен быть запущен, подробнее — [`apps/web/docs/tooling.md`](apps/web/docs/tooling.md#orval--клиент-api-из-swagger)):
+- Когда бэкендеры добавляют новые эндпоинты, фронтендер может автоматически сгенерировать готовые React Query хуки и типы одной командой из `apps/api/openapi.json` (подробнее — [`apps/web/docs/tooling.md`](apps/web/docs/tooling.md#orval--клиент-api-из-swagger)):
 
 ```bash
 pnpm --filter web generate-api
