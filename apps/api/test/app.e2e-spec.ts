@@ -23,17 +23,14 @@ describe('App (e2e)', () => {
   });
 
   it('serves routes under the /api prefix', async () => {
-    await request(app.getHttpServer())
-      .get('/api')
-      .expect(200)
-      .expect('Hello World!');
-    await request(app.getHttpServer()).get('/').expect(404);
+    await request(app.getHttpServer()).get('/api/health').expect(200);
+    await request(app.getHttpServer()).get('/health').expect(404);
   });
 
   describe('CORS', () => {
     it('allows the frontend origin', async () => {
       const response = await request(app.getHttpServer())
-        .get('/api')
+        .get('/api/health')
         .set('Origin', 'http://localhost:3000');
 
       expect(response.headers['access-control-allow-origin']).toBe(
@@ -43,7 +40,7 @@ describe('App (e2e)', () => {
 
     it('does not allow other origins', async () => {
       const response = await request(app.getHttpServer())
-        .get('/api')
+        .get('/api/health')
         .set('Origin', 'https://evil.example');
 
       expect(response.headers['access-control-allow-origin']).toBeUndefined();
@@ -51,7 +48,7 @@ describe('App (e2e)', () => {
 
     it('answers the preflight request', async () => {
       const response = await request(app.getHttpServer())
-        .options('/api')
+        .options('/api/health')
         .set('Origin', 'http://localhost:3000')
         .set('Access-Control-Request-Method', 'POST')
         .expect(204);
