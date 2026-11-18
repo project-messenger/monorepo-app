@@ -69,6 +69,8 @@
 | `text-display-auth`                                       | 48 px      | 600 | Крупный заголовок страниц входа                    |
 | `text-display-cta-mobile` / `lg:text-display-cta`         | 32 / 46 px | 600 | Заголовок финального CTA лендинга, line-height 1.4 |
 | `text-heading-landing-mobile` / `lg:text-heading-landing` | 26 / 30 px | 600 | Заголовок секции лендинга, line-height 1.4         |
+| `text-heading-steps-mobile` / `lg:text-heading-steps`     | 30 / 34 px | 600 | Заголовок секции «Три шага», line-height 1.4       |
+| `text-steps-number`                                       | 42 px      | 600 | Номер шага в секции «Три шага», line-height 1.4    |
 | `text-subtitle-landing`                                   | 17 px      | 400 | Подзаголовок лендинга, line-height 1.4             |
 | `text-body-landing`                                       | 16 px      | 400 | Текст секции лендинга, line-height 1.4             |
 | `text-heading-auth`                                       | 36 px      | 600 | Заголовок формы входа и регистрации                |
