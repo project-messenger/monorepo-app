@@ -38,7 +38,7 @@ pnpm dev:web                                   # фронтенд на http://lo
 | `test` / `test:watch`     | Unit- и компонентные тесты (Vitest + RTL)                           |
 | `test:e2e`                | E2E-тесты в браузере (Playwright). Первый раз: `test:e2e:install`   |
 | `storybook`               | Каталог UI-компонентов на :6006                                     |
-| `generate-api`            | Сгенерировать клиент API из Swagger бэкенда (Orval)                 |
+| `generate-api`            | Сгенерировать клиент API из `apps/api/openapi.json` (Orval)         |
 
 Перед PR: `pnpm --filter web verify && pnpm --filter web build`.
 

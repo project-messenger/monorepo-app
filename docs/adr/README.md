@@ -10,16 +10,17 @@ ADR (Architecture Decision Record) — короткая запись одног�
 
 ## Список
 
-| №                                               | Решение                                          | Область     | Статус  |
-| ----------------------------------------------- | ------------------------------------------------ | ----------- | ------- |
-| [0001](./0001-record-architecture-decisions.md) | Записываем архитектурные решения в ADR           | весь проект | принято |
-| [0002](./0002-monorepo-turborepo-pnpm.md)       | Монорепа на Turborepo + pnpm workspaces          | весь проект | принято |
-| [0003](./0003-trunk-based-development.md)       | Trunk-based development и squash merge           | весь проект | принято |
-| [0004](./0004-feature-sliced-design.md)         | Feature-Sliced Design на фронтенде               | web         | принято |
-| [0005](./0005-agents-md-single-source.md)       | `AGENTS.md` — единый источник правил для агентов | весь проект | принято |
-| [0006](./0006-figma-uikit-source-of-truth.md)   | Источник правды для UI-кита — макет Figma        | web         | принято |
-| [0007](./0007-figma-uikit-implementation.md)    | UI-кит реализован по макету Figma                | web         | принято |
-| [0008](./0008-typography-component.md)          | Компонент `Typography` с пропом `as`             | web         | принято |
+| №                                               | Решение                                           | Область     | Статус  |
+| ----------------------------------------------- | ------------------------------------------------- | ----------- | ------- |
+| [0001](./0001-record-architecture-decisions.md) | Записываем архитектурные решения в ADR            | весь проект | принято |
+| [0002](./0002-monorepo-turborepo-pnpm.md)       | Монорепа на Turborepo + pnpm workspaces           | весь проект | принято |
+| [0003](./0003-trunk-based-development.md)       | Trunk-based development и squash merge            | весь проект | принято |
+| [0004](./0004-feature-sliced-design.md)         | Feature-Sliced Design на фронтенде                | web         | принято |
+| [0005](./0005-agents-md-single-source.md)       | `AGENTS.md` — единый источник правил для агентов  | весь проект | принято |
+| [0006](./0006-figma-uikit-source-of-truth.md)   | Источник правды для UI-кита — макет Figma         | web         | принято |
+| [0007](./0007-figma-uikit-implementation.md)    | UI-кит реализован по макету Figma                 | web         | принято |
+| [0008](./0008-typography-component.md)          | Компонент `Typography` с пропом `as`              | web         | принято |
+| [0009](./0009-api-contract-openapi-orval.md)    | HTTP-контракт: Zod-схемы → `openapi.json` → Orval | api, web    | принято |
 
 ## Когда писать ADR
 

@@ -7,25 +7,46 @@ API командного мессенджера на **NestJS 12** (ESM, Vitest)
 
 ## Состояние
 
-Пока это заготовка: есть только `GET /`. Ещё не подключены Swagger (OpenAPI для фронтенда), конфигурация,
-PostgreSQL + Prisma, Redis, CORS и WebSocket — каждое из этого отдельная задача. Открытые решения, которые
-касаются бэкенда, — в [`docs/adr/`](../../docs/adr/README.md).
+Пока это заготовка: есть только `GET /api/health` — проверка, что бэкенд запущен. Его модуль
+[`src/health/`](./src/health/) — образец для новых: модуль, контроллер, сервис, тесты. Подключены конфигурация (см.
+ниже), префикс `/api` у всех путей, CORS для адреса фронтенда и корректная остановка — общие настройки лежат в
+[`src/app.setup.ts`](./src/app.setup.ts), их вызывают и `main.ts`, и e2e-тесты. Описание API — Swagger UI на
+[`localhost:3001/api/docs`](http://localhost:3001/api/docs) и файл [`openapi.json`](./openapi.json), из которого
+фронтенд генерирует клиент ([ADR-0009](../../docs/adr/0009-api-contract-openapi-orval.md)). Ещё не подключены
+PostgreSQL + Prisma, Redis и WebSocket — каждое из этого отдельная задача. Открытые решения, которые касаются бэкенда, —
+в [`docs/adr/`](../../docs/adr/README.md).
+
+## Переменные окружения
+
+```bash
+cp apps/api/.env.example apps/api/.env
+```
+
+Без `.env` бэкенд тоже запустится — со значениями по умолчанию. Список переменных и проверка — в
+[`src/config/env.schema.ts`](./src/config/env.schema.ts): при неверном значении бэкенд не стартует и пишет, какая
+переменная не так. В коде значения берите через `ConfigService`, а не из `process.env`. Подробнее —
+[`docs/architecture.md`](../../docs/architecture.md#переменные-окружения).
 
 ## Команды
 
 Все команды — **из корня репозитория**:
 
-| Команда                      | Что делает                               |
-| ---------------------------- | ---------------------------------------- |
-| `pnpm dev:api`               | Dev-сервер с перезапуском на :3001       |
-| `pnpm --filter api lint`     | oxlint                                   |
-| `pnpm --filter api test`     | Unit-тесты (Vitest, `src/**/*.spec.ts`)  |
-| `pnpm --filter api test:e2e` | e2e-тесты (`test/`)                      |
-| `pnpm --filter api test:cov` | Покрытие тестами                         |
-| `pnpm --filter api build`    | Сборка в `dist/` (заодно проверка типов) |
-| `pnpm --filter api format`   | Prettier                                 |
+| Команда                      | Что делает                                              |
+| ---------------------------- | ------------------------------------------------------- |
+| `pnpm dev:api`               | Dev-сервер с перезапуском на :3001                      |
+| `pnpm --filter api lint`     | oxlint                                                  |
+| `pnpm --filter api test`     | Unit-тесты (Vitest, `src/**/*.spec.ts`)                 |
+| `pnpm --filter api test:e2e` | e2e-тесты (`test/`)                                     |
+| `pnpm --filter api test:cov` | Покрытие тестами                                        |
+| `pnpm --filter api build`    | Сборка в `dist/` (заодно проверка типов)                |
+| `pnpm --filter api format`   | Prettier                                                |
+| `pnpm --filter api openapi`  | Записать схему API в `openapi.json` без запуска сервера |
 
 Перед PR: `pnpm --filter api lint && pnpm --filter api test && pnpm --filter api build`.
+
+Изменили эндпоинт или его схему — запустите `pnpm --filter api openapi && pnpm --filter web generate-api` и
+закоммитьте [`openapi.json`](./openapi.json) вместе с клиентом Orval (`apps/web/src/shared/api/generated/`): ревьюер
+видит изменение контракта в diff, а CI падает, если файлы не пересозданы.
 
 ## Если вы впервые с NestJS
 

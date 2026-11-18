@@ -22,7 +22,7 @@ Run from monorepo root, not from `apps/web`:
 | Build (before PR, when changing configs and routes) | `pnpm --filter web build`                       |
 | Single test file                                    | `pnpm --filter web exec vitest run <path>`      |
 | e2e (Playwright)                                    | `pnpm --filter web test:e2e`                    |
-| Regenerate API client (backend must be running)     | `pnpm --filter web generate-api`                |
+| Regenerate API client from `apps/api/openapi.json`  | `pnpm --filter web generate-api`                |
 | UI kit component                                    | `pnpm --filter web exec shadcn add <component>` |
 | Dev server                                          | `pnpm dev:web` (port 3000)                      |
 

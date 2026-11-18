@@ -36,24 +36,18 @@ jobs:
       - name: 7. Build all projects
         run: pnpm build
 
-      - name: 8. Verify Orval API Schema Freshness
-        # Запускаем NestJS бэкенд в фоне, ждем отдачи Swagger OpenAPI схемы и проверяем git diff
+      - name: 8. Verify API contract is up to date
+        # openapi.json и клиент Orval пересоздаются без запуска сервера.
+        # Если файлы в git отличаются от свежих — их забыли пересоздать и закоммитить.
         run: |
-          # Запуск бэкенда в фоновом режиме
-          pnpm --filter api start &
+          pnpm --filter api openapi
+          pnpm --filter web generate-api
 
-          # Даем бэкенду время подняться
-          sleep 5
-
-          # Запуск Orval генерации на фронтенде
-          pnpm --filter web generate-api || true
-
-          # Проверяем, не изменились ли сгенерированные файлы Orval
-          if [ -n "$(git status --porcelain apps/web/src/shared/api/generated)" ]; then
-            echo "❌ ERROR: Generated Orval API client is out of sync with backend Swagger schema!"
-            echo "Please run 'pnpm --filter web generate-api' locally and commit updated files."
-            git status --porcelain apps/web/src/shared/api/generated
+          if [ -n "$(git status --porcelain apps/api/openapi.json apps/web/src/shared/api/generated)" ]; then
+            echo "❌ ERROR: openapi.json or the Orval client is out of date."
+            echo "Run 'pnpm --filter api openapi && pnpm --filter web generate-api' and commit the changes."
+            git status --porcelain apps/api/openapi.json apps/web/src/shared/api/generated
             exit 1
           else
-            echo "✅ Orval API client is in sync with backend schema!"
+            echo "✅ openapi.json and the Orval client are up to date."
           fi
