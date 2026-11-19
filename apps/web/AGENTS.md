@@ -22,7 +22,7 @@ Run from monorepo root, not from `apps/web`:
 | Build (before PR, when changing configs and routes) | `pnpm --filter web build`                       |
 | Single test file                                    | `pnpm --filter web exec vitest run <path>`      |
 | e2e (Playwright)                                    | `pnpm --filter web test:e2e`                    |
-| Regenerate API client (backend must be running)     | `pnpm --filter web generate-api`                |
+| Regenerate API client from `apps/api/openapi.json`  | `pnpm --filter web generate-api`                |
 | UI kit component                                    | `pnpm --filter web exec shadcn add <component>` |
 | Dev server                                          | `pnpm dev:web` (port 3000)                      |
 
@@ -81,7 +81,7 @@ Structure — per [FSD guide for Next.js](https://feature-sliced.design/docs/gui
 - `src/` — FSD layers top to bottom: `_app` → `_pages` → `widgets` → `features` → `entities` → `shared`. Layers `app` and `pages` are named `_app` and `_pages` to avoid conflict with Next routing.
   - `_app` — layouts, global styles, providers.
   - `_pages` — pages (`landing`, `login`, `register`).
-  - `widgets` — large self-contained blocks (`site-header`, `site-footer`).
+  - `widgets` — large self-contained blocks (`site-header`, `footer`).
   - `features` — user scenarios (`auth`, `theme-toggle`).
   - `entities` — business entities (user, channel, task…), will appear as needed.
   - `shared` — no business logic: `ui` (shadcn), `lib`, `api` (code from Orval — in `shared/api/generated`, don't edit manually).

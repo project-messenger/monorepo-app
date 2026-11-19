@@ -1,4 +1,4 @@
-import { SiteFooter } from "@/widgets/site-footer";
+import { SiteFooter } from "@/widgets/footer";
 import { SiteHeader } from "@/widgets/site-header";
 
 export function MarketingLayout({ children }: LayoutProps<"/">) {

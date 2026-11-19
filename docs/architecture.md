@@ -39,8 +39,7 @@ PostgreSQL, Redis и WebSocket на бэкенде ещё не подключе�
 
 ## Контракт фронтенд ↔ бэкенд
 
-Направление выбрано (предложил ИИ-агент, согласовал foxprogs), но ещё не реализовано. ADR будет записан в PR, который
-его реализует, — что для этого сделать, см. [docs/backlog/api-contract.md](./backlog/api-contract.md).
+Решение и его причины — [ADR-0009](./adr/0009-api-contract-openapi-orval.md).
 
 - **HTTP — OpenAPI от бэкенда + Orval.** DTO (описание запросов и ответов) — Zod-схемы в `apps/api`, не модели
   Prisma. Из них `@nestjs/swagger` строит схему, она лежит файлом `apps/api/openapi.json` в репозитории, а фронтенд
@@ -48,10 +47,13 @@ PostgreSQL, Redis и WebSocket на бэкенде ещё не подключе�
   `apps/web/src/shared/api/generated/`. HTTP-схем руками на фронтенде и в `@app/shared` не пишем.
 - **WebSocket — `@app/shared`.** Swagger не описывает события socket.io, поэтому их названия и Zod-схемы данных
   лежат в общем пакете и импортируются обеими сторонами.
+- **Все HTTP-пути бэкенда начинаются с `/api`**, версии в пути нет. Бэкенд разрешает CORS только для адреса из
+  `CORS_ORIGIN`.
 
-Сейчас `@nestjs/swagger` не подключён: генерация не работает, а проверка Orval в CI ничего не гарантирует. Пока так,
-эндпоинты, которые нужны фронтенду, описываем в задаче Jira (метод, путь, запрос, ответ, ошибки) **до** начала работы,
-а фронтенд работает на моках MSW (`apps/web/src/shared/api/mocks/`).
+Swagger UI — `/api/docs` на запущенном бэкенде, а файл `apps/api/openapi.json` пишет команда `pnpm --filter api openapi`
+без запуска сервера; Orval генерирует клиент из этого файла. CI пересоздаёт файл и клиент и падает, если они отличаются
+от закоммиченных. Эндпоинты, которые нужны фронтенду, описываем в задаче Jira (метод, путь, запрос, ответ, ошибки)
+**до** начала работы, а пока эндпоинта нет — фронтенд работает на моках MSW (`apps/web/src/shared/api/mocks/`).
 
 Изменение контракта — всегда изменение для обеих сторон: в одном PR обновляются `apps/api`, `apps/web` и (для
 событий WebSocket) `packages/shared`, в описании PR указано, совместимо ли оно назад. Код такого PR ревьюит второй
@@ -69,10 +71,14 @@ PostgreSQL, Redis и WebSocket на бэкенде ещё не подключе�
 | --------------------- | -------------------------------------- | --------------------------------------------------- |
 | `.env` в корне        | пока никто автоматически (см. ниже)    | [`.env.example`](../.env.example)                   |
 | `apps/web/.env.local` | Next.js (читает только из своей папки) | [`apps/web/.env.example`](../apps/web/.env.example) |
+| `apps/api/.env`       | `ConfigModule` из `@nestjs/config`     | [`apps/api/.env.example`](../apps/api/.env.example) |
 
-Бэкенд загрузку `.env` ещё не подключил: `apps/api` читает только `process.env` (сейчас — `PORT`, по умолчанию 3001),
-а Turborepo `.env` в окружение задач не передаёт. Пока переменные для бэкенда задаются в окружении терминала.
-Подключить загрузку — в задаче [Docker для локальной разработки](./backlog/docker.md).
+Бэкенд читает `apps/api/.env` и переменные окружения терминала (они важнее файла) и при старте проверяет их
+Zod-схемой [`apps/api/src/config/env.schema.ts`](../apps/api/src/config/env.schema.ts): неверное значение — бэкенд
+не запускается и называет переменную. В коде значения берутся через `ConfigService`, а не из `process.env`. Новая
+переменная бэкенда — добавить её в схему и в `apps/api/.env.example`.
+
+`.env` в корне пока никто из приложений не читает, а Turborepo не передаёт его в окружение задач.
 
 `.env*` в git не коммитим, шаблоны `.env.example` — коммитим. Подробно — [Процесс работы](./workflow.md#секреты-и-переменные-окружения).
 
@@ -84,5 +90,5 @@ PostgreSQL, Redis и WebSocket на бэкенде ещё не подключе�
 | Фронтенд              | `pnpm --filter web verify`                         |
 | Бэкенд                | `pnpm --filter api lint && pnpm --filter api test` |
 
-CI (`.github/workflows/ci.yml`) пока запускает только typecheck, lint, build и проверку Orval — тестов и Prettier в
-нём нет. Подробнее — [`apps/web/docs/tooling.md`](../apps/web/docs/tooling.md#ci).
+CI (`.github/workflows/ci.yml`) пока запускает только typecheck, lint, build и проверку контракта API — тестов и
+Prettier в нём нет. Подробнее — [`apps/web/docs/tooling.md`](../apps/web/docs/tooling.md#ci).
