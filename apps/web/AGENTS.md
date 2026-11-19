@@ -81,7 +81,7 @@ Structure — per [FSD guide for Next.js](https://feature-sliced.design/docs/gui
 - `src/` — FSD layers top to bottom: `_app` → `_pages` → `widgets` → `features` → `entities` → `shared`. Layers `app` and `pages` are named `_app` and `_pages` to avoid conflict with Next routing.
   - `_app` — layouts, global styles, providers.
   - `_pages` — pages (`landing`, `login`, `register`).
-  - `widgets` — large self-contained blocks (`site-header`, `site-footer`).
+  - `widgets` — large self-contained blocks (`site-header`, `footer`).
   - `features` — user scenarios (`auth`, `theme-toggle`).
   - `entities` — business entities (user, channel, task…), will appear as needed.
   - `shared` — no business logic: `ui` (shadcn), `lib`, `api` (code from Orval — in `shared/api/generated`, don't edit manually).
