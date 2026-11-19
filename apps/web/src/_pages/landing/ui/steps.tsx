@@ -1,21 +1,7 @@
 import { Typography } from "@/shared/ui/typography";
 
+import { steps } from "../config/steps";
 import { Section } from "./section";
-
-const steps = [
-  {
-    title: "Соберите команду",
-    description: "Создайте пространство и пригласите коллег.",
-  },
-  {
-    title: "Запустите проект",
-    description: "Добавьте каналы, участников и репозитории.",
-  },
-  {
-    title: "Работайте без потерь",
-    description: "Обсуждайте, фиксируйте решения, выпускайте.",
-  },
-];
 
 function Steps() {
   return (
