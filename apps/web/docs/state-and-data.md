@@ -43,8 +43,8 @@ export function useSession() {
   из других мест (`queryClient.setQueryData(sessionQueryKey, null)` при выходе — см. `features/auth/model/use-logout.ts`).
 - Изменения на сервере — через `useMutation`. Для чата и доски используйте **оптимистичные обновления**:
   сразу показываем результат, при ошибке откатываем и показываем тост с «Повторить» (требование ТЗ).
-- Когда на бэкенде появится Swagger, запросы и хуки будут **генерироваться Orval** в `src/shared/api/generated`
-  (`pnpm --filter web generate-api`). Ручные функции, как `fetchSession`, — пока генерации нет.
+- Запросы и хуки к бэкенду **генерирует Orval** в `src/shared/api/generated` (`pnpm --filter web generate-api`).
+  Ручные функции, как `fetchSession`, — пока нужного эндпоинта нет в API.
 
 ## WebSocket (socket.io) — realtime
 
