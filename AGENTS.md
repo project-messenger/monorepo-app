@@ -33,6 +33,8 @@ Run everything from the monorepo root (the folder with `pnpm-workspace.yaml`):
 | --------------------------------------- | ------------------------------------------------------------ |
 | Install dependencies                    | `pnpm install`                                               |
 | Dev: everything / frontend / backend    | `pnpm dev` / `pnpm dev:web` / `pnpm dev:api`                 |
+| Local PostgreSQL + Redis               | `pnpm infra:up` / `pnpm infra:down`                          |
+| Infrastructure status / logs           | `pnpm infra:status` / `pnpm infra:logs`                      |
 | Whole repo, same as CI                  | `pnpm typecheck && pnpm lint && pnpm build`                  |
 | Frontend checks                         | `pnpm --filter web verify`                                   |
 | Backend tests                           | `pnpm --filter api test` (e2e: `pnpm --filter api test:e2e`) |

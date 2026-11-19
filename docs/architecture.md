@@ -36,6 +36,10 @@ flowchart LR
 ```
 
 PostgreSQL, Redis и WebSocket на бэкенде ещё не подключены — это план, а не текущее состояние.
+Для локальной инфраструктуры используется корневой `docker-compose.yml`: PostgreSQL 18.7 и Redis 8.10.3,
+порты только на `127.0.0.1`, отдельные именованные volumes, healthcheck и `pnpm infra:up` с ожиданием готовности.
+Redis использует AOF с синхронизацией раз в секунду. Решение — [ADR-0010](./adr/0010-local-infrastructure.md).
+Команды и хранение данных — в [корневом README](../README.md#локальные-postgresql-и-redis).
 
 ## Контракт фронтенд ↔ бэкенд
 
@@ -69,7 +73,7 @@ Swagger UI — `/api/docs` на запущенном бэкенде, а файл
 
 | Где                   | Кто читает                             | Шаблон                                              |
 | --------------------- | -------------------------------------- | --------------------------------------------------- |
-| `.env` в корне        | пока никто автоматически (см. ниже)    | [`.env.example`](../.env.example)                   |
+| `.env` в корне        | Docker Compose (приложения пока не читают) | [`.env.example`](../.env.example)                |
 | `apps/web/.env.local` | Next.js (читает только из своей папки) | [`apps/web/.env.example`](../apps/web/.env.example) |
 | `apps/api/.env`       | `ConfigModule` из `@nestjs/config`     | [`apps/api/.env.example`](../apps/api/.env.example) |
 
