@@ -29,6 +29,15 @@
   --text-heading-landing-mobile: 1.625rem;
   --text-heading-landing-mobile--line-height: 1.4;
   --text-heading-landing-mobile--font-weight: 600;
+  --text-heading-steps: 2.125rem;
+  --text-heading-steps--line-height: 1.4;
+  --text-heading-steps--font-weight: 600;
+  --text-heading-steps-mobile: 1.875rem;
+  --text-heading-steps-mobile--line-height: 1.4;
+  --text-heading-steps-mobile--font-weight: 600;
+  --text-steps-number: 2.625rem;
+  --text-steps-number--line-height: 1.4;
+  --text-steps-number--font-weight: 600;
   --text-subtitle-landing: 1.0625rem;
   --text-subtitle-landing--line-height: 1.4;
   --text-subtitle-landing--font-weight: 400;

@@ -9,6 +9,8 @@ const typographyVariants = cva("", {
       "display-auth": "text-display-auth",
       "display-cta": "text-display-cta-mobile lg:text-display-cta",
       "heading-landing": "text-heading-landing-mobile lg:text-heading-landing",
+      "heading-steps": "text-heading-steps-mobile lg:text-heading-steps",
+      "steps-number": "text-steps-number",
       "subtitle-landing": "text-subtitle-landing",
       "body-landing": "text-body-landing",
       "heading-auth": "text-heading-auth",
