@@ -16,6 +16,7 @@ import {
 } from "@/shared/ui/field";
 import { Input } from "@/shared/ui/input";
 import { PasswordInput } from "@/shared/ui/password-input";
+import { StyledLink } from "@/shared/ui/styled-link";
 import {
   type LoginData,
   type LoginFormValues,
@@ -70,12 +71,9 @@ function LoginForm() {
           <Field data-invalid={!!errors.password || undefined}>
             <div className="flex items-center justify-between">
               <FieldLabel htmlFor="password">Пароль</FieldLabel>
-              <Link
-                href="#"
-                className="text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
-              >
+              <StyledLink href="#" variant="inline">
                 Забыли пароль?
-              </Link>
+              </StyledLink>
             </div>
             <PasswordInput
               id="password"

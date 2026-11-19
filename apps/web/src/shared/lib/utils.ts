@@ -15,6 +15,7 @@ const typographyRoles = [
   "heading-landing-mobile",
   "subtitle-landing",
   "body-landing",
+  "body-footer",
   "heading-auth",
   "heading-page",
   "heading-section",

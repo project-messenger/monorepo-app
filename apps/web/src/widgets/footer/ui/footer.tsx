@@ -1,44 +1,31 @@
-import Link from "next/link";
-
+import { Container } from "@/shared/ui/container";
 import { Logo } from "@/shared/ui/logo";
+import { StyledLink } from "@/shared/ui/styled-link";
 import { Typography } from "@/shared/ui/typography";
+import { legalLinks } from "../config/legal-links";
 
 function SiteFooter() {
   return (
     <footer>
-      <div className="mx-auto grid w-full max-w-[1440px] gap-6 px-4 py-8 sm:px-6 lg:min-h-[140px] lg:grid-cols-[200px_minmax(0,1fr)_336px] lg:items-center lg:gap-9 lg:px-16 lg:pt-[42px] lg:pb-14">
+      <Container className="grid gap-6 py-8 lg:min-h-[8.75rem] lg:grid-cols-[12.5rem_minmax(0,1fr)_21rem] lg:items-center lg:gap-9 lg:pt-[2.625rem] lg:pb-14">
         <Logo className="w-fit text-brand-app" />
-        <Typography
-          variant="label-button"
-          className="font-normal text-muted-foreground"
-        >
+        <Typography variant="body-footer" className="text-muted-foreground">
           Общение и работа в одном контексте
         </Typography>
         <nav aria-label="Юридическая информация">
           <ul className="flex flex-wrap gap-x-6 gap-y-3 text-muted-foreground">
-            <li>
-              <Link
-                href="#"
-                className="rounded-sm transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
-              >
-                <Typography as="span" variant="body-small">
-                  Конфиденциальность
-                </Typography>
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="#"
-                className="rounded-sm transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
-              >
-                <Typography as="span" variant="body-small">
-                  Условия
-                </Typography>
-              </Link>
-            </li>
+            {legalLinks.map(({ label, href }) => (
+              <li key={label}>
+                <StyledLink href={href}>
+                  <Typography as="span" variant="body-small">
+                    {label}
+                  </Typography>
+                </StyledLink>
+              </li>
+            ))}
           </ul>
         </nav>
-      </div>
+      </Container>
     </footer>
   );
 }

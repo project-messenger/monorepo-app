@@ -11,6 +11,7 @@ const typographyVariants = cva("", {
       "heading-landing": "text-heading-landing-mobile lg:text-heading-landing",
       "subtitle-landing": "text-subtitle-landing",
       "body-landing": "text-body-landing",
+      "body-footer": "text-body-footer",
       "heading-auth": "text-heading-auth",
       "heading-page": "text-heading-page",
       "heading-section": "text-heading-section",

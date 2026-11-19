@@ -13,6 +13,7 @@ describe("Typography", () => {
     ],
     ["subtitle-landing", "text-subtitle-landing", null],
     ["body-landing", "text-body-landing", null],
+    ["body-footer", "text-body-footer", null],
   ] as const)(
     "keeps %s typography alongside a text color",
     (variant, mobile, desktop) => {

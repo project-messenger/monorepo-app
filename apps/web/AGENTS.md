@@ -33,7 +33,7 @@ Run from monorepo root, not from `apps/web`:
 In addition to the root criteria:
 
 1. `pnpm --filter web verify` is green — attach its output.
-2. New logic — test next to the code (`*.test.ts(x)`); new `shared/ui` component — story (`*.stories.tsx`).
+2. New logic — test next to the code (`*.test.ts(x)`); every new `shared/ui` component — story (`*.stories.tsx`) and meaningful tests of its rendered semantics and supported behavior. The story requirement applies to UI components, not utilities, types or other non-UI files in `shared`.
 3. Changed routes or configs — `pnpm --filter web build` is green too.
 4. UI changed — say whether you opened the page in a browser; the PR needs a screenshot.
 
@@ -56,6 +56,10 @@ Typography: roles of the mockup are tokens `--text-<role>` in `@theme inline` an
 ### Rules
 
 - **Tokens only.** Use semantic classes (`bg-primary`, `text-muted-foreground`, `border-border`, `rounded-lg`, etc.). No arbitrary hex/rgb/oklch in classes (`bg-[#0f172a]`) and in `style`. Need new color — add token in `:root` **and** `.dark` and in `@theme inline`.
+- **Dimensions — in `rem`.** Use `rem` for authored widths, heights, spacing and typography. Prefer existing semantic tokens and standard Tailwind utilities that resolve to the required `rem` value; use an exact arbitrary `rem` value when the scale does not fit. Preserve the agreed geometry: `42px` at the default root size is `2.625rem`, not `40px` or `44px`. Rounding requires separate design agreement. This rule does not require changing Figma reference measurements or browser viewport sizes in documentation. Do not mechanically convert unrelated existing code.
+- **Shared page layout.** Put a repeated page width into a semantic theme token (`1440px` → `90rem`) instead of repeating `max-w-[1440px]`. When implementing reusable page layout, use a shared `Container` responsible only for width, centering and horizontal padding. Keep section grids, backgrounds and vertical spacing at their call sites; do not turn `Container` into a universal layout engine. This is guidance for future implementation, not a requirement to create the component in every task.
+- **Repeated navigation.** Store repeated link data in a navigation array and render it with `map`, following `widgets/site-header/config/nav-links.ts`. When styled links are actually reused, share their presentation in `shared/ui`, with the variants and interaction states needed by existing consumers (including keyboard focus). Preserve link semantics and routing; do not invent hypothetical variants. Extracting a shared link is a separate implementation task when needed.
+- **Typography roles are complete.** A role defines font size, line height and weight together. Select a matching `Typography` variant; if the design needs a missing role, add it to the theme and component. Do not override a role's size, line height or weight in a section with `text-*`, `leading-*` or `font-*`. Layout and semantic color classes remain appropriate at the call site. See the [typography guide](./docs/stack.md#типографика-роль-макета--класс-tailwind).
 - **Variants — via `cva`.** Visual variants and sizes are described in `cva` (`variant`, `size`, …); names match component properties in Figma. Don't multiply conditional `className` in JSX.
 - **Don't edit Base UI primitives.** Don't touch `@base-ui/react` and logic/accessibility (focus, ARIA, keyboard) in `src/shared/ui/*` — only change styles and variants.
   **Exception — shadcn wrapper bug**, where primitive's own behavior doesn't reach it (lost prop, `ref` not connected). Fix such bug minimally: with test next to it (`*.test.tsx`), comment `// Исправление обёртки shadcn: …` (keep this exact Russian marker, it is searched for in code and docs) above the line (so it won't be erased by `shadcn add --overwrite`) and note in PR description. Don't add new behavior on top of primitive.

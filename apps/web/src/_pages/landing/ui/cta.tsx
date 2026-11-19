@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 import { Button } from "@/shared/ui/button";
+import { Container } from "@/shared/ui/container";
 import { Typography } from "@/shared/ui/typography";
 import { ROUTES } from "@/shared/config";
 
@@ -11,7 +12,7 @@ function Cta() {
       aria-labelledby="cta-heading"
       className="bg-sidebar text-primary-foreground dark:text-sidebar-foreground"
     >
-      <div className="mx-auto grid w-full max-w-[1440px] gap-8 px-4 py-10 sm:px-6 lg:min-h-[280px] lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-16 lg:py-[42px] lg:pr-[100px] lg:pl-16">
+      <Container className="grid gap-8 py-10 lg:min-h-[17.5rem] lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-16 lg:py-[2.625rem] lg:pr-[6.25rem]">
         <div>
           <Typography as="h2" id="cta-heading" variant="display-cta">
             Пусть разговоры
@@ -27,7 +28,7 @@ function Cta() {
         <Button
           size="landing-cta"
           variant="sidebar-accent"
-          className="w-full lg:mt-[54px] lg:self-start"
+          className="w-full lg:mt-[3.375rem] lg:self-start"
           nativeButton={false}
           render={
             <Link
@@ -41,7 +42,7 @@ function Cta() {
           Создать пространство
           <ArrowRight data-icon="inline-end" />
         </Button>
-      </div>
+      </Container>
     </section>
   );
 }
