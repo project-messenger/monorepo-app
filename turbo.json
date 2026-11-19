@@ -10,6 +10,11 @@
     "dev": {
       "cache": false,
       "persistent": true
+    },
+    "api#dev": {
+      "cache": false,
+      "persistent": true,
+      "passThroughEnv": ["PORT", "CORS_ORIGIN", "POSTGRES_*", "REDIS_*"]
     }
   }
 }
