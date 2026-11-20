@@ -104,8 +104,10 @@
 - **Имена таблиц, колонок и ограничений пишем явно** в snake_case: `uuid('user_id')`, `pgTable('messages', …)`,
   `unique('messages_user_client_unique')`. Опцию `casing` не используем. Имя ограничения нужно, чтобы по нему понять,
   какая уникальность нарушена.
-- **Миграции — `drizzle-kit generate`**, SQL-файлы коммитим, применяем `drizzle-kit migrate`. `drizzle-kit push` —
-  только для одноразовых экспериментов.
+- **Миграции создаём `drizzle-kit generate`, применяем `drizzle-kit migrate`.** Папку каждой миграции коммитим
+  целиком: `migration.sql` и `snapshot.json`. По снимкам `drizzle-kit` считает следующую миграцию и проверяет
+  конфликты (`check`); без них `generate` построит неверный дифф. `drizzle-kit push` — только для одноразовых
+  экспериментов.
 - **Запросы — построитель SQL** (`select`/`insert`/`update`/`delete`, `db.transaction`). Relational queries
   (`db.query.*`) — только для чтения со связями.
 - **Ошибка уникальности** разбирается одной функцией-помощником (например, `isUniqueViolation(err, constraintName)`),
