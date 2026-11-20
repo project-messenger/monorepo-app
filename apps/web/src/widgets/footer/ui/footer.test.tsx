@@ -8,7 +8,7 @@ describe("SiteFooter", () => {
     render(<SiteFooter />);
 
     const footer = within(screen.getByRole("contentinfo"));
-    expect(footer.getByRole("link", { name: "Acme" })).toHaveAttribute(
+    expect(footer.getByRole("link", { name: "синк /" })).toHaveAttribute(
       "href",
       "/",
     );

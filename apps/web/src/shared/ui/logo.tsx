@@ -1,20 +1,18 @@
 import Link from "next/link";
-import { Layers } from "lucide-react";
 import { cn } from "@/shared/lib/utils";
 
 function Logo({ className }: { className?: string }) {
   return (
     <Link
       href="/"
+      aria-label="синк /"
       className={cn(
-        "flex items-center gap-2 font-semibold tracking-tight",
+        "flex items-center gap-2 text-brand-app font-bold tracking-tight",
         className,
       )}
     >
-      <span className="flex size-7 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-        <Layers className="size-4" />
-      </span>
-      Acme
+      <span>синк</span>
+      <span>/</span>
     </Link>
   );
 }
