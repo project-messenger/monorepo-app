@@ -11,6 +11,8 @@ describe("Typography", () => {
       "text-heading-landing-mobile",
       "lg:text-heading-landing",
     ],
+    ["heading-steps", "text-heading-steps-mobile", "lg:text-heading-steps"],
+    ["steps-number", "text-steps-number", null],
     ["subtitle-landing", "text-subtitle-landing", null],
     ["body-landing", "text-body-landing", null],
     ["body-footer", "text-body-footer", null],
