@@ -2,7 +2,7 @@
 
 Современный корпоративный мессенджер с поддержкой Kanban-задач, интеграцией с GitHub и AI-ассистентом.
 
-Стек: **Turborepo + pnpm**, **Next.js**, **NestJS**, **PostgreSQL + Redis**, **Prisma**, **Zod** и **Orval**.
+Стек: **Turborepo + pnpm**, **Next.js**, **NestJS**, **PostgreSQL + Redis**, **Drizzle**, **Zod** и **Orval**.
 
 ---
 
