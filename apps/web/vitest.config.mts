@@ -9,6 +9,8 @@ export default defineConfig({
   },
   test: {
     environment: "jsdom",
+    // Ограничиваем конкуренцию тяжёлых jsdom-окружений, не меняя таймауты тестов.
+    maxWorkers: 2,
     setupFiles: ["./vitest.setup.ts"],
     include: ["src/**/*.test.{ts,tsx}"],
     // e2e/ — тесты Playwright, их запускает `pnpm test:e2e`.

@@ -40,5 +40,9 @@ it("preserves external target, rel and Next URL objects for the inline variant",
   expect(link).toHaveAttribute("href", "/register?from=landing");
   expect(link).toHaveAttribute("target", "_blank");
   expect(link).toHaveAttribute("rel", "noopener noreferrer");
-  expect(link).toHaveClass("hover:underline");
+  expect(link).toHaveClass(
+    "text-body",
+    "text-muted-foreground",
+    "hover:underline",
+  );
 });

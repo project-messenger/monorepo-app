@@ -10,7 +10,7 @@ const styledLinkVariants = cva(
     variants: {
       variant: {
         muted: "",
-        inline: "text-sm underline-offset-4 hover:underline",
+        inline: "text-body underline-offset-4 hover:underline",
       },
     },
     defaultVariants: { variant: "muted" },
