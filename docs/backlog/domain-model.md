@@ -37,7 +37,8 @@
   - «задача и решение — только из канала»: составной FK. У переписок `UNIQUE (id, kind)`, у задачи —
     `conversation_kind text NOT NULL DEFAULT 'channel' CHECK (conversation_kind = 'channel')` и
     `FOREIGN KEY (conversation_id, conversation_kind)`. `NOT NULL` обязателен: если хоть одно поле составного FK
-    равно `NULL`, Postgres связь не проверяет (MATCH SIMPLE по умолчанию).
+    равно `NULL`, Postgres связь не проверяет (MATCH SIMPLE по умолчанию). `conversation_id` остаётся nullable:
+    задачу можно создать и не из сообщения ([product.md](../product.md#задачи-и-канбан)).
 - [ ] **RLS** (Row Level Security в Postgres). Предложение: не сейчас. Бэкенд ходит в БД одним пользователем через
       пул соединений. Для RLS пришлось бы в каждой транзакции передавать id пользователя (`SET LOCAL`), а ORM ещё не
       выбрана. Права проверяются в одном месте на бэкенде (см. «Что сделать»). Вернуться, если понадобится вторая
