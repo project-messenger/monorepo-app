@@ -7,7 +7,10 @@ import { Section } from "./section";
 
 function Hero() {
   return (
-    <Section className="flex flex-col items-center gap-8 pt-24 text-center md:pt-32">
+    <Section
+      id="product"
+      className="flex scroll-mt-20 flex-col items-center gap-8 pt-24 text-center md:pt-32"
+    >
       <Badge variant="outline" className="gap-1.5">
         <Sparkles />
         Новое: автоматизации на ИИ

@@ -1,10 +1,10 @@
 import { SiteFooter } from "@/widgets/footer";
-import { SiteHeader } from "@/widgets/site-header";
+import { LandingHeader } from "@/widgets/landing-header";
 
 export function MarketingLayout({ children }: LayoutProps<"/">) {
   return (
     <>
-      <SiteHeader />
+      <LandingHeader />
       <main className="flex-1">{children}</main>
       <SiteFooter />
     </>
