@@ -42,15 +42,19 @@ type Message = {
   createdAt: string // ISO
   editedAt: string | null
   deletedAt: string | null // удаление мягкое: строка остаётся, чтобы догрузка могла сообщить об удалении
+  reactions: { emoji: string; userIds: string[] }[] // текущее состояние; форма — в задаче реакций
 }
 
 type Ack<T> = (response: ({ ok: true } & T) | { ok: false; error: string }) => void
 
 interface ClientToServerEvents {
-  'message:send': (payload: { channelId: string; clientId: string; text: string }, ack: Ack<{ message: Message }>) => void
+  'message:send': (
+    payload: { channelId: string; clientId: string; parentId: string | null; text: string },
+    ack: Ack<{ message: Message }>,
+  ) => void
   'message:sync': (
     payload: { channelId: string; afterChangeSeq: string | null },
-    ack: Ack<{ messages: Message[]; hasMore: boolean }>,
+    ack: Ack<{ messages: Message[]; hasMore: boolean; lastChangeSeq: string }>,
   ) => void
 }
 
@@ -61,10 +65,13 @@ interface ServerToClientEvents {
 }
 ```
 
-- `message:send` на повтор с тем же `clientId` отвечает `ok: true` с уже сохранённым сообщением и не рассылает его.
+- `message:send` на повтор с тем же `clientId` отвечает `ok: true` с уже сохранённым сообщением и рассылает его
+  ещё раз: вдруг сервер упал до рассылки. Клиенты заменяют сообщение по `id`.
 - `message:new` получают все в комнате канала, кроме отправляющего сокета: отправитель узнаёт результат из ack.
 - `message:sync` клиент вызывает на каждом `connect`, пока `hasMore`. Ответ — текущее состояние сообщений, изменённых
-  после `afterChangeSeq`. Клиент заменяет сообщение по `id` и запоминает наибольший `changeSeq`.
+  после `afterChangeSeq`. Клиент заменяет сообщение по `id`, если `changeSeq` новее. Свой номер клиент двигает только
+  без дыр, а после последней порции ставит `lastChangeSeq`. Дыра в номерах живых событий — тоже повод для догрузки
+  (подробно — в ADR-0010, «Номер клиента»).
 - Ответы в треде — те же `message:new` / `message:updated` с `parentId`. В ленте канала клиент их не показывает, а
   под исходным сообщением обновляет счётчик ответов.
 - `ai:stream` — куски ответа ИИ во время генерации. Готовый ответ приходит обычным `message:new`.
