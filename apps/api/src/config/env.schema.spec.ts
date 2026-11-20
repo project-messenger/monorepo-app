@@ -5,6 +5,14 @@ describe('envSchema', () => {
     expect(envSchema.parse({})).toEqual({
       PORT: 3001,
       CORS_ORIGIN: 'http://localhost:3000',
+      POSTGRES_HOST: '127.0.0.1',
+      POSTGRES_PORT: 5432,
+      POSTGRES_DB: 'messenger',
+      POSTGRES_USER: 'messenger',
+      POSTGRES_PASSWORD: 'messenger_local',
+      REDIS_HOST: '127.0.0.1',
+      REDIS_PORT: 6379,
+      REDIS_DB: 0,
     });
   });
 
@@ -23,6 +31,59 @@ describe('envSchema', () => {
     expect(
       envSchema.parse({ CORS_ORIGIN: 'https://app.example.com' }).CORS_ORIGIN,
     ).toBe('https://app.example.com');
+  });
+
+  it('accepts custom service addresses and converts ports and Redis database', () => {
+    expect(
+      envSchema.parse({
+        POSTGRES_HOST: 'db.example.com',
+        POSTGRES_PORT: '55432',
+        POSTGRES_DB: 'custom_db',
+        POSTGRES_USER: 'custom_user',
+        POSTGRES_PASSWORD: 'local_test_password',
+        REDIS_HOST: 'redis.example.com',
+        REDIS_PORT: '56379',
+        REDIS_DB: '2',
+      }),
+    ).toMatchObject({
+      POSTGRES_HOST: 'db.example.com',
+      POSTGRES_PORT: 55432,
+      POSTGRES_DB: 'custom_db',
+      POSTGRES_USER: 'custom_user',
+      POSTGRES_PASSWORD: 'local_test_password',
+      REDIS_HOST: 'redis.example.com',
+      REDIS_PORT: 56379,
+      REDIS_DB: 2,
+    });
+  });
+
+  it.each(['POSTGRES_PORT', 'REDIS_PORT'])(
+    'rejects invalid %s values',
+    (key) => {
+      for (const value of ['abc', '', '0', '65536', '30.5']) {
+        const result = envSchema.safeParse({ [key]: value });
+
+        expect(result.success).toBe(false);
+        expect(result.error?.issues[0]?.path).toEqual([key]);
+      }
+    },
+  );
+
+  it.each(['abc', '-1', '1.5'])('rejects REDIS_DB=%s', (value) => {
+    expect(envSchema.safeParse({ REDIS_DB: value }).success).toBe(false);
+  });
+
+  it.each([
+    'POSTGRES_HOST',
+    'POSTGRES_DB',
+    'POSTGRES_USER',
+    'POSTGRES_PASSWORD',
+    'REDIS_HOST',
+  ])('rejects an empty %s', (key) => {
+    const result = envSchema.safeParse({ [key]: '' });
+
+    expect(result.success).toBe(false);
+    expect(result.error?.issues[0]?.path).toEqual([key]);
   });
 
   it.each([

@@ -21,6 +21,7 @@ ADR (Architecture Decision Record) — короткая запись одног�
 | [0007](./0007-figma-uikit-implementation.md)    | UI-кит реализован по макету Figma                   | web              | принято |
 | [0008](./0008-typography-component.md)          | Компонент `Typography` с пропом `as`                | web              | принято |
 | [0009](./0009-api-contract-openapi-orval.md)    | HTTP-контракт: Zod-схемы → `openapi.json` → Orval   | api, web         | принято |
+| [0010](./0010-local-infrastructure.md)          | Локальные PostgreSQL и Redis через Docker Compose   | весь проект      | принято |
 | [0011](./0011-realtime-messaging.md)            | Realtime: id от клиента, права в БД, счётчик канала | api, web, shared | принято |
 
 ## Когда писать ADR
