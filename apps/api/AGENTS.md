@@ -6,9 +6,11 @@
 ## Current state
 
 The app is a NestJS 12 skeleton: only `GET /api/health` exists (`src/health/` — follow it as the reference for new
-modules). Configuration is set up: `@nestjs/config` reads `apps/api/.env` and validates it with the Zod schema in
+modules). Configuration is set up: `@nestjs/config` reads only the root `.env` and validates it with the Zod schema in
 `src/config/env.schema.ts` — read values via `ConfigService<Env, true>`, never `process.env`; a new variable goes into
-the schema and `.env.example`. App-wide settings (global prefix `/api`, CORS from `CORS_ORIGIN`, Swagger, shutdown
+the schema and root `.env.example`. Loading, precedence and dev startup details are documented in
+[README.md](./README.md#переменные-окружения).
+App-wide settings (global prefix `/api`, CORS from `CORS_ORIGIN`, Swagger, shutdown
 hooks) live in `src/app.setup.ts`, which both `main.ts` and e2e tests call — put new global settings there, not in
 `main.ts`. Swagger UI is at `/api/docs`, the OpenAPI JSON at `/api/docs-json`; `pnpm --filter api openapi` writes the
 same document to the committed `apps/api/openapi.json` without starting the server (`src/generate-openapi.ts`). Not set
