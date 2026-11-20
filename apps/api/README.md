@@ -13,8 +13,8 @@ API командного мессенджера на **NestJS 12** (ESM, Vitest)
 [`src/app.setup.ts`](./src/app.setup.ts), их вызывают и `main.ts`, и e2e-тесты. Описание API — Swagger UI на
 [`localhost:3001/api/docs`](http://localhost:3001/api/docs) и файл [`openapi.json`](./openapi.json), из которого
 фронтенд генерирует клиент ([ADR-0009](../../docs/adr/0009-api-contract-openapi-orval.md)). Ещё не подключены
-PostgreSQL + Prisma, Redis и WebSocket — каждое из этого отдельная задача. Открытые решения, которые касаются бэкенда, —
-в [`docs/adr/`](../../docs/adr/README.md).
+PostgreSQL (ORM — Drizzle, [ADR-0012](../../docs/adr/0012-orm-drizzle.md)), Redis и WebSocket — каждое из этого
+отдельная задача. Открытые решения, которые касаются бэкенда, — в [`docs/adr/`](../../docs/adr/README.md).
 
 ## Переменные окружения
 
