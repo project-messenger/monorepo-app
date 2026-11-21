@@ -1,13 +1,13 @@
 import Link from "next/link";
 
-import { Logo } from "@/shared/ui/logo";
+import { LogoLink } from "@/shared/ui/logo-link";
 import { Typography } from "@/shared/ui/typography";
 
 function SiteFooter() {
   return (
     <footer>
       <div className="mx-auto grid w-full max-w-[1440px] gap-6 px-4 py-8 sm:px-6 lg:min-h-[140px] lg:grid-cols-[200px_minmax(0,1fr)_336px] lg:items-center lg:gap-9 lg:px-16 lg:pt-[42px] lg:pb-14">
-        <Logo className="w-fit" />
+        <LogoLink className="w-fit" />
         <Typography
           variant="label-button"
           className="font-normal text-muted-foreground"
