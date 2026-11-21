@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
 
-import { StyledLink } from "./styled-link";
+import { Link } from "./link";
 
 it("keeps an anchor keyboard accessible and forwards click and ref", async () => {
   const user = userEvent.setup();
@@ -12,9 +12,9 @@ it("keeps an anchor keyboard accessible and forwards click and ref", async () =>
     event.preventDefault(),
   );
   render(
-    <StyledLink href="/register" ref={ref} onClick={onClick}>
+    <Link href="/register" ref={ref} onClick={onClick}>
       Register
-    </StyledLink>,
+    </Link>,
   );
   const link = screen.getByRole("link", { name: "Register" });
   expect(link).toHaveAttribute("href", "/register");
@@ -27,14 +27,14 @@ it("keeps an anchor keyboard accessible and forwards click and ref", async () =>
 
 it("preserves external target, rel and Next URL objects for the inline variant", () => {
   render(
-    <StyledLink
+    <Link
       variant="inline"
       href={{ pathname: "/register", query: { from: "landing" } }}
       target="_blank"
       rel="noopener noreferrer"
     >
       Register
-    </StyledLink>,
+    </Link>,
   );
   const link = screen.getByRole("link", { name: "Register" });
   expect(link).toHaveAttribute("href", "/register?from=landing");

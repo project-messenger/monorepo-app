@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
-import { StyledLink } from "./styled-link";
+import { Link } from "./link";
 
 const meta = {
-  title: "UI/StyledLink",
-  component: StyledLink,
+  title: "UI/Link",
+  component: Link,
   args: { href: "#", children: "Link" },
   argTypes: { variant: { control: "select", options: ["muted", "inline"] } },
-} satisfies Meta<typeof StyledLink>;
+} satisfies Meta<typeof Link>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

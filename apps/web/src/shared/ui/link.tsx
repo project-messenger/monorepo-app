@@ -4,7 +4,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/shared/lib/utils";
 
-const styledLinkVariants = cva(
+const linkVariants = cva(
   "rounded-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring",
   {
     variants: {
@@ -17,18 +17,18 @@ const styledLinkVariants = cva(
   },
 );
 
-function StyledLink({
+function Link({
   className,
   variant,
   ...props
-}: ComponentProps<typeof NextLink> & VariantProps<typeof styledLinkVariants>) {
+}: ComponentProps<typeof NextLink> & VariantProps<typeof linkVariants>) {
   return (
     <NextLink
-      data-slot="styled-link"
-      className={cn(styledLinkVariants({ variant }), className)}
+      data-slot="link"
+      className={cn(linkVariants({ variant }), className)}
       {...props}
     />
   );
 }
 
-export { StyledLink };
+export { Link };

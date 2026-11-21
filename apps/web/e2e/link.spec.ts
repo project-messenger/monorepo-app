@@ -10,7 +10,7 @@ for (const [name, width] of Object.entries(LANDING_VIEWPORT_WIDTHS)) {
     await page.goto("/login");
     await page.evaluate(() => document.fonts.ready);
 
-    const link = page.locator('a[data-slot="styled-link"]');
+    const link = page.locator('a[data-slot="link"]');
     await expect(link).toHaveAttribute("href", "#");
 
     for (const theme of ["light", "dark"]) {
