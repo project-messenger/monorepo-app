@@ -1,5 +1,6 @@
 import { Typography } from "@/shared/ui/typography";
 import { Container } from "@/shared/ui/container";
+import { securityStatements } from "../config/security";
 
 function Security() {
   return (
@@ -11,15 +12,11 @@ function Security() {
             <br /> Доступ — под контролем.
           </Typography>
           <div className="space-y-2 text-muted-foreground lg:space-y-0 lg:pt-[0.4375rem]">
-            <Typography variant="body-landing">
-              Закрытые каналы и репозитории остаются закрытыми.
-            </Typography>
-            <Typography variant="body-landing">
-              ИИ видит только то, что доступно вам.
-            </Typography>
-            <Typography variant="body-landing">
-              Никаких действий от вашего имени без подтверждения.
-            </Typography>
+            {securityStatements.map((statement) => (
+              <Typography key={statement} variant="body-landing">
+                {statement}
+              </Typography>
+            ))}
           </div>
         </div>
       </Container>
