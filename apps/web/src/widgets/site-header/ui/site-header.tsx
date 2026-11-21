@@ -68,7 +68,7 @@ function SiteHeader() {
             <SheetContent side="right">
               <SheetHeader>
                 <SheetTitle>
-                  <SheetClose nativeButton={false} render={<Logo />} />
+                  <Logo />
                 </SheetTitle>
               </SheetHeader>
               <nav className="flex flex-col gap-1 px-4">
