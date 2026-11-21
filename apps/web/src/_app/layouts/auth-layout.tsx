@@ -28,10 +28,10 @@ export function AuthLayout({ children }: LayoutProps<"/">) {
 
       {/* Декоративная панель — только на широких экранах */}
       <aside className="relative hidden flex-col justify-between bg-primary p-10 text-primary-foreground lg:flex">
-        <Logo className="[&>span]:bg-primary-foreground [&>span]:text-primary" />
+        <Logo />
         <blockquote className="flex max-w-md flex-col gap-3">
           <p className="text-xl font-medium text-balance">
-            «С Acme мы сократили время на рутину вдвое и наконец видим всю
+            «синк помог нам сократить время на рутину вдвое и наконец увидеть
             картину по проектам».
           </p>
           <footer className="text-sm text-primary-foreground/70">

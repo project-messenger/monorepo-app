@@ -1,6 +1,6 @@
 # Docker для локальной разработки
 
-[← к бэклогу](./README.md) · Jira: —
+[← к бэклогу](./README.md) · Jira: [KAN-34](https://project-group-11.atlassian.net/browse/KAN-34)
 
 ## Зачем
 
@@ -9,9 +9,5 @@
 
 ## Что сделать
 
-- [ ] `docker-compose.yml` в корне: PostgreSQL и Redis для разработки (приложения пока можно запускать через
-      `pnpm dev`).
-- [ ] Переменные подключения — в схему `apps/api/src/config/env.schema.ts` и в `apps/api/.env.example` (без
-      настоящих секретов). Бэкенд уже читает `apps/api/.env` через `ConfigModule`.
-- [ ] Раздел «Запуск» в `README.md`: `docker compose up -d`, затем `pnpm dev`.
+- [ ] KAN-37: проверить и дополнить инструкцию первого запуска вместе с другим участником команды.
 - [ ] Позже: Dockerfile для `web` и `api` — вместе с задачей [Процесс релиза](./release.md).

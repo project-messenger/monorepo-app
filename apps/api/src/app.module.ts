@@ -1,13 +1,19 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { resolve } from 'node:path';
 import { envSchema } from './config/env.schema.js';
 import { HealthModule } from './health/health.module.js';
 
 @Module({
   imports: [
-    // Reads apps/api/.env (values from the shell environment win) and
+    // Reads the root .env (values from the shell environment win) and
     // validates everything against envSchema before the app starts.
-    ConfigModule.forRoot({ isGlobal: true, validationSchema: envSchema }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      // src/ and dist/ have the same depth, so this path works in both.
+      envFilePath: resolve(import.meta.dirname, '../../../.env'),
+      validationSchema: envSchema,
+    }),
     HealthModule,
   ],
 })

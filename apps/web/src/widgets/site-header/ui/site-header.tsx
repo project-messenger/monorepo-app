@@ -11,14 +11,14 @@ import {
   SheetTrigger,
 } from "@/shared/ui/sheet";
 import { ThemeToggle } from "@/features/theme-toggle";
-import { Logo } from "@/shared/ui/logo";
+import { LogoLink } from "@/shared/ui/logo-link";
 import { navLinks } from "../config/nav-links";
 
 function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur supports-backdrop-filter:bg-background/60">
       <div className="mx-auto flex h-14 max-w-6xl items-center gap-6 px-4 sm:px-6">
-        <Logo />
+        <LogoLink />
 
         <nav className="hidden items-center gap-1 md:flex">
           {navLinks.map((link) => (
@@ -68,7 +68,7 @@ function SiteHeader() {
             <SheetContent side="right">
               <SheetHeader>
                 <SheetTitle>
-                  <Logo />
+                  <SheetClose nativeButton={false} render={<LogoLink />} />
                 </SheetTitle>
               </SheetHeader>
               <nav className="flex flex-col gap-1 px-4">
