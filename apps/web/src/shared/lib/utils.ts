@@ -18,6 +18,7 @@ const typographyRoles = [
   "steps-number",
   "subtitle-landing",
   "body-landing",
+  "body-footer",
   "heading-auth",
   "heading-page",
   "heading-section",

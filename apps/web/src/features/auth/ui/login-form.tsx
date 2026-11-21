@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
+import NextLink from "next/link";
 import { Controller, useForm } from "react-hook-form";
 
 import { Button } from "@/shared/ui/button";
@@ -16,6 +16,7 @@ import {
 } from "@/shared/ui/field";
 import { Input } from "@/shared/ui/input";
 import { PasswordInput } from "@/shared/ui/password-input";
+import { Link } from "@/shared/ui/link";
 import {
   type LoginData,
   type LoginFormValues,
@@ -70,10 +71,7 @@ function LoginForm() {
           <Field data-invalid={!!errors.password || undefined}>
             <div className="flex items-center justify-between">
               <FieldLabel htmlFor="password">Пароль</FieldLabel>
-              <Link
-                href="#"
-                className="text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
-              >
+              <Link href="#" variant="inline">
                 Забыли пароль?
               </Link>
             </div>
@@ -117,7 +115,8 @@ function LoginForm() {
 
           <OAuthButtons intent="login" />
           <FieldDescription className="text-center">
-            Нет аккаунта? <Link href="/register">Зарегистрироваться</Link>
+            Нет аккаунта?{" "}
+            <NextLink href="/register">Зарегистрироваться</NextLink>
           </FieldDescription>
         </FieldGroup>
       </form>
