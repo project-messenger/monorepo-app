@@ -26,6 +26,19 @@ describe("LandingPage: security and registration CTA", () => {
     expect(
       within(security).getByText("ИИ видит только то, что доступно вам."),
     ).toBeVisible();
+    const statements = [
+      "Закрытые каналы и репозитории остаются закрытыми.",
+      "ИИ видит только то, что доступно вам.",
+      "Никаких действий от вашего имени без подтверждения.",
+    ];
+    const securityText = security.textContent ?? "";
+    const statementPositions = statements.map((statement) =>
+      securityText.indexOf(statement),
+    );
+    expect(statementPositions.every((position) => position !== -1)).toBe(true);
+    expect(statementPositions).toEqual(
+      [...statementPositions].sort((first, second) => first - second),
+    );
     expect(
       within(security).getByText(
         "Никаких действий от вашего имени без подтверждения.",

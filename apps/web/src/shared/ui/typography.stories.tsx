@@ -30,6 +30,7 @@ const meta = {
         "heading-landing",
         "subtitle-landing",
         "body-landing",
+        "body-footer",
         "heading-auth",
         "heading-page",
         "heading-section",
@@ -65,6 +66,7 @@ export const LandingRoles: Story = {
       </Typography>
       <Typography variant="subtitle-landing">Supporting subtitle</Typography>
       <Typography variant="body-landing">Section description</Typography>
+      <Typography variant="body-footer">Footer description</Typography>
     </div>
   ),
 };
