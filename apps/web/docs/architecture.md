@@ -82,6 +82,8 @@ apps/web/
 │       ├── config/           # переменные окружения
 │       └── api/              # клиент бэкенда; generated/ — от Orval, руками не править
 │           └── mocks/        # MSW-обработчики для тестов
+├── public/
+│   └── images/               # статические изображения — правила ниже
 ├── e2e/                      # тесты Playwright
 ├── .storybook/               # конфиг Storybook
 ├── instrumentation*.ts       # Sentry (Next требует эти файлы в корне)
@@ -104,6 +106,37 @@ export { LoginPage as default, metadata } from "@/_pages/login";
 Группы в скобках — `(marketing)`, `(auth)` — не попадают в URL, они только выбирают лейаут.
 
 Алиас `@/` указывает на `src/`: `@/shared/ui/button` → `src/shared/ui/button.tsx`.
+
+## Статические изображения
+
+Иллюстрации и фото храним в `apps/web/public/images/`. Next.js отдаёт `public/` как корень сайта, поэтому
+в коде путь пишется **без `public/`**: файл `apps/web/public/images/landing/product-demo.webp`
+подключается как `/images/landing/product-demo.webp`.
+
+- Внутри `images/` — тематические подпапки по месту использования: `landing/`, `auth/`, `common/` и т. п.
+  Изображение нужно на нескольких экранах — кладите в `common/`.
+- Вывод — только через `Image` из `next/image`, с явными `width`, `height` и содержательным `alt`:
+
+  ```tsx
+  import Image from "next/image";
+
+  export function ProductDemo() {
+    return (
+      <Image
+        src="/images/landing/product-demo.webp"
+        alt="Создание канала в мессенджере за три шага"
+        width={640}
+        height={400}
+      />
+    );
+  }
+  ```
+
+  Явные размеры резервируют место до загрузки файла (раскладка не прыгает), `next/image` отдаёт
+  изображение в подходящем размере и формате, а `alt` нужен для доступности и SEO.
+
+- Иконки интерфейса — не изображения: они берутся из `lucide-react` (см. [стек](./stack.md)) и не
+  кладутся в `public/images/`.
 
 ## Как всё связано
 
