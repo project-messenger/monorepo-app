@@ -20,8 +20,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Acme — SaaS-платформа",
-    template: "%s · Acme",
+    default: "синк — командный мессенджер",
+    template: "%s · синк",
   },
   description: "Демо-лендинг SaaS на shadcn/ui и Next.js",
 };

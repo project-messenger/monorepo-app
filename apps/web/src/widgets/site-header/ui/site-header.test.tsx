@@ -25,6 +25,20 @@ async function openMobileMenu() {
 }
 
 describe("SiteHeader: мобильное меню", () => {
+  it("закрывается после клика по логотипу-ссылке на главную", async () => {
+    render(<SiteHeader />);
+    const menu = await openMobileMenu();
+    const logoLink = within(menu).getByRole("button", { name: "синк /" });
+
+    expect(logoLink).toHaveAttribute("href", "/");
+
+    await userEvent.click(logoLink);
+
+    await waitFor(() =>
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument(),
+    );
+  });
+
   it.each(["Тарифы", "Войти", "Начать бесплатно"])(
     "закрывается после клика по «%s»",
     async (label) => {
