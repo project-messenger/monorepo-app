@@ -7,7 +7,11 @@ import { Container } from "@/shared/ui/container";
 
 function Features() {
   return (
-    <Section id="features" aria-labelledby="features-heading">
+    <Section
+      id="features"
+      aria-labelledby="features-heading"
+      className="max-w-none px-0 sm:px-0"
+    >
       <Container>
         <Typography as="h2" id="features-heading" variant="heading-steps">
           Не ещё один чат.
