@@ -2,6 +2,7 @@ import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 
+import { ROUTES } from "@/shared/config";
 import { SiteHeader } from "./site-header";
 
 // Вне App Router у next/link нет роутера. Заменяем простой ссылкой без
@@ -28,9 +29,9 @@ describe("SiteHeader: мобильное меню", () => {
   it("закрывается после клика по логотипу-ссылке на главную", async () => {
     render(<SiteHeader />);
     const menu = await openMobileMenu();
-    const logoLink = within(menu).getByRole("button", { name: "синк /" });
+    const logoLink = within(menu).getByRole("link", { name: "синк /" });
 
-    expect(logoLink).toHaveAttribute("href", "/");
+    expect(logoLink).toHaveAttribute("href", ROUTES.LANDING);
 
     await userEvent.click(logoLink);
 

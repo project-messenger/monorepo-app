@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import { Menu } from "lucide-react";
 
@@ -15,6 +18,8 @@ import { LogoLink } from "@/shared/ui/logo-link";
 import { navLinks } from "../config/nav-links";
 
 function SiteHeader() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   return (
     <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur supports-backdrop-filter:bg-background/60">
       <div className="mx-auto flex h-14 max-w-6xl items-center gap-6 px-4 sm:px-6">
@@ -52,7 +57,7 @@ function SiteHeader() {
             Начать бесплатно
           </Button>
 
-          <Sheet>
+          <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger
               render={
                 <Button
@@ -68,7 +73,7 @@ function SiteHeader() {
             <SheetContent side="right">
               <SheetHeader>
                 <SheetTitle>
-                  <SheetClose nativeButton={false} render={<LogoLink />} />
+                  <LogoLink onClick={() => setIsMobileMenuOpen(false)} />
                 </SheetTitle>
               </SheetHeader>
               <nav className="flex flex-col gap-1 px-4">
