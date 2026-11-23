@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
 import { Container } from "./container";
-import { Typography } from "./typography";
+import { Typography } from "@/shared/ui/typography";
 
 const meta = {
   title: "UI/Container",

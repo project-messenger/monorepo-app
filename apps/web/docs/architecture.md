@@ -15,7 +15,7 @@
 | `widgets`  | Крупные самостоятельные блоки интерфейса                                    | `site-header`, `footer`                             |
 | `features` | Действия пользователя, которые приносят ценность                            | `auth` (вход/регистрация), `theme-toggle`           |
 | `entities` | Бизнес-сущности: пользователь, канал, сообщение, задача                     | пока нет — появятся с первыми фичами чата           |
-| `shared`   | Переиспользуемое **без бизнес-логики**: UI-кит, утилиты, клиент API, конфиг | `ui/button.tsx`, `lib/utils.ts`, `api/`             |
+| `shared`   | Переиспользуемое **без бизнес-логики**: UI-кит, утилиты, клиент API, конфиг | `ui/button/`, `lib/utils.ts`, `api/`                |
 
 > `app` и `pages` в FSD у нас называются `_app` и `_pages`: папку `src/pages` Next.js принял бы за свой
 > старый роутер (Pages Router) и сборка бы упала. Так рекомендует [гайд FSD для Next.js](https://feature-sliced.design/docs/guides/tech/with-nextjs).
@@ -77,7 +77,7 @@ apps/web/
 │   ├── widgets/
 │   ├── features/
 │   └── shared/
-│       ├── ui/               # компоненты shadcn — UI-кит
+│       ├── ui/               # UI-кит: папка на компонент, наружу — index.ts
 │       ├── lib/              # cn() и другие утилиты
 │       ├── config/           # переменные окружения
 │       └── api/              # клиент бэкенда; generated/ — от Orval, руками не править
@@ -105,7 +105,7 @@ export { LoginPage as default, metadata } from "@/_pages/login";
 
 Группы в скобках — `(marketing)`, `(auth)` — не попадают в URL, они только выбирают лейаут.
 
-Алиас `@/` указывает на `src/`: `@/shared/ui/button` → `src/shared/ui/button.tsx`.
+Алиас `@/` указывает на `src/`: `@/shared/ui/button` → `src/shared/ui/button/index.ts`.
 
 ## Статические изображения
 
