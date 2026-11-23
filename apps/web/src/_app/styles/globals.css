@@ -4,6 +4,10 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@theme {
+  --breakpoint-landing-header: 72rem;
+}
+
 @theme inline {
   --container-page: 90rem;
   --color-background: var(--background);
