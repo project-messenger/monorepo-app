@@ -49,9 +49,9 @@ In addition to the root criteria:
 
 Figma file: https://www.figma.com/design/9bp5uwYGyaGIRCt1ycuqz3 (page `2004:2`, Light only; access via Figma MCP `https://mcp.figma.com/mcp`). Sections: `2004:233` colors, `2004:234` typography, `2004:235` sizes, `2004:236` components. The Starter plan limits MCP calls, so the implemented values and decisions are recorded in [ADR-0007](../../docs/adr/0007-figma-uikit-implementation.md) — check it before calling MCP.
 
-Never build whole pages or widgets from the mockup: only tokens and base components in `shared/ui`. The logo (`shared/ui/logo.tsx`) is not part of the design-system alignment.
+Never build whole pages or widgets from the mockup: only tokens and base components in `shared/ui`. The logo (`shared/ui/logo`) is not part of the design-system alignment.
 
-Typography: roles of the mockup are tokens `--text-<role>` in `@theme inline` and give short utilities (`text-heading-page`, `text-body`, `text-caption`). For text with a tag use `Typography` (`shared/ui/typography.tsx`, prop `as`, [ADR-0008](../../docs/adr/0008-typography-component.md)); don't create other typography components.
+Typography: roles of the mockup are tokens `--text-<role>` in `@theme inline` and give short utilities (`text-heading-page`, `text-body`, `text-caption`). For text with a tag use `Typography` (`shared/ui/typography`, prop `as`, [ADR-0008](../../docs/adr/0008-typography-component.md)); don't create other typography components.
 
 ### Rules
 
@@ -66,6 +66,7 @@ Typography: roles of the mockup are tokens `--text-<role>` in `@theme inline` an
 - **New components — via `shadcn add`.** First `pnpm --filter web exec shadcn add <component>` (when asked about overwriting existing files — "no"), then, if needed, styling per Figma (`get_design_context` / `get_variable_defs`). Don't write `src/shared/ui` components from scratch.
   **Exception — components that exist in the mockup but not in shadcn** (`search`, `task-card`, `metric-card`, `navigation-item`, `workspace-switcher`, `status-select`): build them by hand following existing ones (`cva`, `cn`, tokens, `data-slot`, no business logic, no new packages), with a story and a test.
   **Exception — agreed shared wrappers**: `Container` may be a plain `div` wrapper limited to page width, centering and horizontal padding; `Link` may wrap Next Link to share the presentation needed by existing consumers while preserving its API and link semantics. Use tokens, `cn`, `data-slot`, stories and tests; use `cva` for visual variants. These exceptions do not authorize new Base UI primitives or business logic in `shared/ui`.
+- **One folder per component.** Each `shared/ui` component lives in its own folder: `button/button.tsx`, `button/button.test.tsx`, `button/button.stories.tsx` and `button/index.ts` — the public API that re-exports only what consumers need (`export { Button, buttonVariants } from "./button";`). Helpers stay inside the folder. Import stays `@/shared/ui/button`. `shadcn add` creates a flat `shared/ui/<name>.tsx`: move it into `<name>/` and add `index.ts` in the same change. Inside `shared/ui`, one component imports another via `@/shared/ui/<name>`, not by relative path.
 - **Branding — via tokens**, not by editing component classes: change values of `--primary`, etc. in both themes. Radius is set by the fixed `--radius-*` values (see [ADR-0007](../../docs/adr/0007-figma-uikit-implementation.md)), not by `--radius`.
 - Dark theme is set by explicit values in `.dark` (not auto-inversion). The mockup has no dark theme: values are derived from the light palette. When changing light token, update dark one.
 - Code from Figma MCP — reference, not ready code: translate to tokens and existing components, absolute positioning — to flex/grid.

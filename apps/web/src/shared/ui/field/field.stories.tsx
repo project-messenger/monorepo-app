@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
-import { Checkbox } from "./checkbox";
+import { Checkbox } from "@/shared/ui/checkbox";
 import {
   Field,
   FieldDescription,
@@ -11,7 +11,7 @@ import {
   FieldSeparator,
   FieldSet,
 } from "./field";
-import { Input } from "./input";
+import { Input } from "@/shared/ui/input";
 
 const meta = {
   title: "UI/Field",
