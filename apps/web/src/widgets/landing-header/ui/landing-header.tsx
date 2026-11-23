@@ -3,6 +3,7 @@ import { Menu } from "lucide-react";
 import { ROUTES } from "@/shared/config";
 import { Button } from "@/shared/ui/button";
 import { Container } from "@/shared/ui/container";
+import { Link } from "@/shared/ui/link";
 import { Logo } from "@/shared/ui/logo";
 import {
   Sheet,
@@ -12,6 +13,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/shared/ui/sheet";
+import { authLinks } from "../config/auth-links";
 import { navLinks } from "../config/nav-links";
 
 function LandingHeader() {
@@ -36,33 +38,24 @@ function LandingHeader() {
         </nav>
 
         <div className="hidden items-center gap-[clamp(0.2rem,calc(10vw_-_6rem),2rem)] justify-self-end landing-header:flex">
-          <Button
-            variant="ghost"
-            size="landing"
-            nativeButton={false}
-            render={
-              <a
-                href={ROUTES.LOGIN}
-                target="_blank"
-                rel="noopener noreferrer"
-              />
-            }
-          >
-            Войти
-          </Button>
-          <Button
-            size="landing"
-            nativeButton={false}
-            render={
-              <a
-                href={ROUTES.REGISTER}
-                target="_blank"
-                rel="noopener noreferrer"
-              />
-            }
-          >
-            Создать пространство
-          </Button>
+          {authLinks.map(({ href, label }) => (
+            <Button
+              key={href}
+              variant={href === ROUTES.LOGIN ? "ghost" : "default"}
+              size="landing"
+              nativeButton={false}
+              render={
+                <Link
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  role="link"
+                />
+              }
+            >
+              {label}
+            </Button>
+          ))}
         </div>
 
         <div className="col-start-3 justify-self-end landing-header:hidden">
@@ -93,7 +86,7 @@ function LandingHeader() {
                         variant="ghost"
                         className="justify-start"
                         nativeButton={false}
-                        render={<a href={href} />}
+                        render={<Link href={href} role="link" />}
                       />
                     }
                   >
@@ -102,41 +95,28 @@ function LandingHeader() {
                 ))}
               </nav>
               <div className="mt-auto flex flex-col gap-2 p-4">
-                <SheetClose
-                  nativeButton={false}
-                  render={
-                    <Button
-                      variant="outline"
-                      nativeButton={false}
-                      render={
-                        <a
-                          href={ROUTES.LOGIN}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        />
-                      }
-                    />
-                  }
-                >
-                  Войти
-                </SheetClose>
-                <SheetClose
-                  nativeButton={false}
-                  render={
-                    <Button
-                      nativeButton={false}
-                      render={
-                        <a
-                          href={ROUTES.REGISTER}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        />
-                      }
-                    />
-                  }
-                >
-                  Создать пространство
-                </SheetClose>
+                {authLinks.map(({ href, label }) => (
+                  <SheetClose
+                    key={href}
+                    nativeButton={false}
+                    render={
+                      <Button
+                        variant={href === ROUTES.LOGIN ? "outline" : "default"}
+                        nativeButton={false}
+                        render={
+                          <Link
+                            href={href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            role="link"
+                          />
+                        }
+                      />
+                    }
+                  >
+                    {label}
+                  </SheetClose>
+                ))}
               </div>
             </SheetContent>
           </Sheet>
