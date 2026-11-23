@@ -72,6 +72,8 @@
 | `text-heading-steps-mobile` / `lg:text-heading-steps`     | 30 / 34 px | 600 | Заголовок секции «Три шага», line-height 1.4       |
 | `text-steps-number`                                       | 42 px      | 600 | Номер шага в секции «Три шага», line-height 1.4    |
 | `text-subtitle-landing`                                   | 17 px      | 400 | Подзаголовок лендинга, line-height 1.4             |
+| `text-subtitle-hero`                                      | 20 px      | 400 | Подзаголовок Hero-секции, line-height 1.4          |
+| `text-hero-card-text`                                     | 17 px      | 500 | Текст декоративной карточки Hero, line-height 1.4  |
 | `text-body-landing`                                       | 16 px      | 400 | Текст секции лендинга, line-height 1.4             |
 | `text-heading-auth`                                       | 36 px      | 600 | Заголовок формы входа и регистрации                |
 | `text-heading-page`                                       | 28 px      | 600 | Заголовок страницы                                 |

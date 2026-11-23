@@ -14,6 +14,8 @@ describe("Typography", () => {
     ["heading-steps", "text-heading-steps-mobile", "lg:text-heading-steps"],
     ["steps-number", "text-steps-number", null],
     ["subtitle-landing", "text-subtitle-landing", null],
+    ["subtitle-hero", "text-subtitle-hero", null],
+    ["hero-card-text", "text-hero-card-text", null],
     ["body-landing", "text-body-landing", null],
     ["body-footer", "text-body-footer", null],
   ] as const)(

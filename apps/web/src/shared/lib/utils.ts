@@ -17,6 +17,8 @@ const typographyRoles = [
   "heading-steps-mobile",
   "steps-number",
   "subtitle-landing",
+  "subtitle-hero",
+  "hero-card-text",
   "body-landing",
   "body-footer",
   "heading-auth",

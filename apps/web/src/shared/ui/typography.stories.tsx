@@ -29,6 +29,8 @@ const meta = {
         "display-cta",
         "heading-landing",
         "subtitle-landing",
+        "subtitle-hero",
+        "hero-card-text",
         "body-landing",
         "body-footer",
         "heading-auth",
@@ -65,6 +67,10 @@ export const LandingRoles: Story = {
         Landing section
       </Typography>
       <Typography variant="subtitle-landing">Supporting subtitle</Typography>
+      <Typography variant="subtitle-hero">Hero subtitle — 20px</Typography>
+      <Typography variant="hero-card-text">
+        В одном ритме, даже асинхронно.
+      </Typography>
       <Typography variant="body-landing">Section description</Typography>
       <Typography variant="body-footer">Footer description</Typography>
     </div>
