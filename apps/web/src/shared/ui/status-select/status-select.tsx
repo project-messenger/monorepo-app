@@ -8,7 +8,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./select";
+} from "@/shared/ui/select";
 
 type TaskStatus = "todo" | "in-progress" | "review" | "done";
 
