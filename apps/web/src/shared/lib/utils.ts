@@ -8,6 +8,8 @@ import { createCn } from "cn/config";
 // живут в разных группах и не конфликтуют.
 const typographyRoles = [
   "display-hero",
+  "display-hero-mobile",
+  "display-hero-tablet",
   "display-auth",
   "display-cta",
   "display-cta-mobile",

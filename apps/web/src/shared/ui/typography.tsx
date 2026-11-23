@@ -5,7 +5,8 @@ import { cn } from "@/shared/lib/utils";
 const typographyVariants = cva("", {
   variants: {
     variant: {
-      "display-hero": "text-display-hero",
+      "display-hero":
+        "text-display-hero max-sm:text-display-hero-mobile sm:max-lg:text-display-hero-tablet",
       "display-auth": "text-display-auth",
       "display-cta": "text-display-cta-mobile lg:text-display-cta",
       "heading-landing": "text-heading-landing-mobile lg:text-heading-landing",

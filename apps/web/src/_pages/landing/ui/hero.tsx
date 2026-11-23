@@ -5,13 +5,13 @@ import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { Button } from "@/shared/ui/button";
 import { Section } from "./section";
 import { Typography } from "@/shared/ui/typography";
-import { ROUTES } from "@/shared/config/routes";
+import { ROUTES } from "@/shared/config";
 
 function Hero() {
   return (
     <>
-      <Section className="min-h-105 max-w-page py-0 md:py-0 lg:pr-27.5 lg:pl-16">
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_300px]">
+      <Section className="min-h-105 max-w-page py-0 not-last:mb-8 md:py-0 lg:pr-27.5 lg:pl-16 xl:not-last:mb-0">
+        <div className="grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1fr)_300px]">
           <div className="pt-8.75">
             <Typography
               as="p"
@@ -41,7 +41,7 @@ function Hero() {
               </span>
             </Typography>
           </div>
-          <div className="hidden flex-col pt-10.5 lg:flex">
+          <div className="flex flex-col pt-0 sm:ml-auto sm:w-75 xl:pt-10.5">
             <div className="relative mr-2.5 ml-auto h-45 w-52.5 rounded-4xl bg-accent not-last:mb-14">
               <ArrowUpRight
                 size={80}
@@ -82,6 +82,7 @@ function Hero() {
           alt="Пример интерфейса командного мессенджера"
           width={1312}
           height={414}
+          loading="eager"
           className="block h-auto w-full not-last:mb-3.75"
         />
         <figcaption>

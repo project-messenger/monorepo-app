@@ -108,4 +108,27 @@ describe("Typography", () => {
     expect(element).toHaveAttribute("id", "hint");
     expect(element).toHaveAttribute("title", "Подсказка");
   });
+
+  it("сохраняет адаптивные размеры заголовка Hero", () => {
+    render(
+      <Typography
+        as="h1"
+        variant="display-hero"
+        className="text-muted-foreground"
+      >
+        Заголовок Hero
+      </Typography>,
+    );
+
+    const element = screen.getByRole("heading", { level: 1 });
+
+    expect(element).toHaveClass(
+      "text-display-hero",
+      "max-sm:text-display-hero-mobile",
+      "sm:max-lg:text-display-hero-tablet",
+      "text-muted-foreground",
+    );
+
+    expect(element).not.toHaveClass("text-heading-page");
+  });
 });

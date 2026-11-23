@@ -15,6 +15,8 @@
   --text-display-hero: 4rem;
   --text-display-hero--line-height: 1.4;
   --text-display-hero--font-weight: 600;
+  --text-display-hero-mobile: 2.1875rem;
+  --text-display-hero-tablet: 2.875rem;
   --text-display-auth: 3rem;
   --text-display-auth--line-height: 1.45;
   --text-display-auth--font-weight: 600;

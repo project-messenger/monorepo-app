@@ -63,35 +63,37 @@
 
 Для текста с тегом используйте компонент `Typography` (`src/shared/ui/typography.tsx`): проп `as` задаёт тег, роль по умолчанию берётся из тега, проп `variant` её переопределяет ([ADR-0008](../../../docs/adr/0008-typography-component.md)).
 
-| Класс                                                     | Размер     | Вес | Где применять                                      |
-| --------------------------------------------------------- | ---------- | --- | -------------------------------------------------- |
-| `text-display-hero`                                       | 64 px      | 600 | Заголовок лендинга                                 |
-| `text-display-auth`                                       | 48 px      | 600 | Крупный заголовок страниц входа                    |
-| `text-display-cta-mobile` / `lg:text-display-cta`         | 32 / 46 px | 600 | Заголовок финального CTA лендинга, line-height 1.4 |
-| `text-heading-landing-mobile` / `lg:text-heading-landing` | 26 / 30 px | 600 | Заголовок секции лендинга, line-height 1.4         |
-| `text-heading-steps-mobile` / `lg:text-heading-steps`     | 30 / 34 px | 600 | Заголовок секции «Три шага», line-height 1.4       |
-| `text-steps-number`                                       | 42 px      | 600 | Номер шага в секции «Три шага», line-height 1.4    |
-| `text-subtitle-landing`                                   | 17 px      | 400 | Подзаголовок лендинга, line-height 1.4             |
-| `text-subtitle-hero`                                      | 20 px      | 400 | Подзаголовок Hero-секции, line-height 1.4          |
-| `text-hero-card-text`                                     | 17 px      | 500 | Текст декоративной карточки Hero, line-height 1.4  |
-| `text-body-landing`                                       | 16 px      | 400 | Текст секции лендинга, line-height 1.4             |
-| `text-heading-auth`                                       | 36 px      | 600 | Заголовок формы входа и регистрации                |
-| `text-heading-page`                                       | 28 px      | 600 | Заголовок страницы                                 |
-| `text-heading-section`                                    | 24 px      | 600 | Заголовок раздела                                  |
-| `text-heading-panel`                                      | 20 px      | 600 | Заголовок панели, `Dialog`, `Sheet`                |
-| `text-heading-subsection`                                 | 17 px      | 600 | Заголовок подраздела, `CardTitle`                  |
-| `text-body`                                               | 14 px      | 400 | Основной текст, пункты списков                     |
-| `text-body-small`                                         | 13 px      | 400 | Вспомогательный текст, ошибки, описания полей      |
-| `text-label-button`                                       | 15 px      | 600 | Подпись кнопки, заголовок `TaskCard`               |
-| `text-label-field`                                        | 13 px      | 500 | Подпись поля формы, триггер вкладки                |
-| `text-label-sidebar-section`                              | 10 px      | 600 | Заголовок секции сайдбара                          |
-| `text-caption`                                            | 12 px      | 400 | Мелкие подсказки, шорткаты, `Badge`                |
-| `text-caption-small`                                      | 11 px      | 400 | Метаданные `TaskCard`                              |
-| `text-caption-task-id`                                    | 11 px      | 500 | Идентификатор задачи (`KAN-17`)                    |
-| `text-brand-app`                                          | 24 px      | 700 | Логотип в приложении                               |
-| `text-brand-auth`                                         | 24 px      | 700 | Логотип на страницах входа                         |
+| Класс                                                     | Размер          | Вес | Где применять                                      |
+| --------------------------------------------------------- | --------------- | --- | -------------------------------------------------- |
+| `text-display-hero`                                       | 35 / 46 / 64 px | 600 | Заголовок лендинга, адаптивный, line-height 1.4    |
+| `text-display-auth`                                       | 48 px           | 600 | Крупный заголовок страниц входа                    |
+| `text-display-cta-mobile` / `lg:text-display-cta`         | 32 / 46 px      | 600 | Заголовок финального CTA лендинга, line-height 1.4 |
+| `text-heading-landing-mobile` / `lg:text-heading-landing` | 26 / 30 px      | 600 | Заголовок секции лендинга, line-height 1.4         |
+| `text-heading-steps-mobile` / `lg:text-heading-steps`     | 30 / 34 px      | 600 | Заголовок секции «Три шага», line-height 1.4       |
+| `text-steps-number`                                       | 42 px           | 600 | Номер шага в секции «Три шага», line-height 1.4    |
+| `text-subtitle-landing`                                   | 17 px           | 400 | Подзаголовок лендинга, line-height 1.4             |
+| `text-subtitle-hero`                                      | 20 px           | 400 | Подзаголовок Hero-секции, line-height 1.4          |
+| `text-hero-card-text`                                     | 17 px           | 500 | Текст декоративной карточки Hero, line-height 1.4  |
+| `text-body-landing`                                       | 16 px           | 400 | Текст секции лендинга, line-height 1.4             |
+| `text-heading-auth`                                       | 36 px           | 600 | Заголовок формы входа и регистрации                |
+| `text-heading-page`                                       | 28 px           | 600 | Заголовок страницы                                 |
+| `text-heading-section`                                    | 24 px           | 600 | Заголовок раздела                                  |
+| `text-heading-panel`                                      | 20 px           | 600 | Заголовок панели, `Dialog`, `Sheet`                |
+| `text-heading-subsection`                                 | 17 px           | 600 | Заголовок подраздела, `CardTitle`                  |
+| `text-body`                                               | 14 px           | 400 | Основной текст, пункты списков                     |
+| `text-body-small`                                         | 13 px           | 400 | Вспомогательный текст, ошибки, описания полей      |
+| `text-label-button`                                       | 15 px           | 600 | Подпись кнопки, заголовок `TaskCard`               |
+| `text-label-field`                                        | 13 px           | 500 | Подпись поля формы, триггер вкладки                |
+| `text-label-sidebar-section`                              | 10 px           | 600 | Заголовок секции сайдбара                          |
+| `text-caption`                                            | 12 px           | 400 | Мелкие подсказки, шорткаты, `Badge`                |
+| `text-caption-small`                                      | 11 px           | 400 | Метаданные `TaskCard`                              |
+| `text-caption-task-id`                                    | 11 px           | 500 | Идентификатор задачи (`KAN-17`)                    |
+| `text-brand-app`                                          | 24 px           | 700 | Логотип в приложении                               |
+| `text-brand-auth`                                         | 24 px           | 700 | Логотип на страницах входа                         |
 
 Отдельной роли для 10 px заметки в `TaskCard` в макете нет, поэтому там задано произвольное значение (единственное исключение).
+
+Адаптивность display-hero: до 640 px — 35 px, от 640 до 1023 px — 46 px, от 1024 px — 64 px. Дополнительные классы: max-sm:text-display-hero-mobile, sm:max-lg:text-display-hero-tablet.
 
 ### Токены: назначение
 

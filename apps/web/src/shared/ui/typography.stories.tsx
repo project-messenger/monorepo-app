@@ -81,6 +81,14 @@ export const Heading: Story = {
   args: { as: "h1", children: "Заголовок страницы" },
 };
 
+export const HeroResponsive: Story = {
+  args: {
+    as: "h1",
+    variant: "display-hero",
+    children: "От «обсудим» до «готово». Вместе.",
+  },
+};
+
 export const HeadingLevels: Story = {
   render: () => (
     <div className="flex flex-col gap-2">
