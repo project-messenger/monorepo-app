@@ -80,7 +80,7 @@ describe("Button", () => {
     expect(screen.getByRole("button")).toHaveClass(expected);
   });
 
-  it("buttonVariants по умолчанию не меняет существующий вариант default", () => {
+  it("buttonVariants does not change the existing default option by default.", () => {
     expect(buttonVariants()).toContain("bg-primary");
     expect(buttonVariants()).toContain("h-8");
   });

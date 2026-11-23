@@ -6,7 +6,7 @@ export default defineConfig({
     globals: true,
     root: './',
     include: ['**/*.e2e-spec.ts'],
-    // Environment variables win over apps/api/.env, so a developer's local
+    // Environment variables win over the root .env, so a developer's local
     // .env can't change what the tests expect (CORS tests send this origin).
     env: { CORS_ORIGIN: 'http://localhost:3000' },
   },

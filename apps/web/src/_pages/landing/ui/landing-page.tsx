@@ -12,9 +12,10 @@ export function LandingPage() {
     <>
       <Hero />
       <Logos />
-      <Features />
+
       <Pricing />
       <Faq />
+      <Features />
       <Steps />
       <Security />
       <Cta />

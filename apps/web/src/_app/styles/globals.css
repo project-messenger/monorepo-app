@@ -5,6 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --container-page: 90rem;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-inter, "Inter", ui-sans-serif, system-ui, sans-serif);
@@ -44,6 +45,9 @@
   --text-body-landing: 1rem;
   --text-body-landing--line-height: 1.4;
   --text-body-landing--font-weight: 400;
+  --text-body-footer: 0.9375rem;
+  --text-body-footer--line-height: 1.45;
+  --text-body-footer--font-weight: 400;
   --text-heading-auth: 2.25rem;
   --text-heading-auth--line-height: 1.45;
   --text-heading-auth--font-weight: 600;
@@ -83,10 +87,10 @@
   --text-caption-task-id: 0.6875rem;
   --text-caption-task-id--line-height: 1rem;
   --text-caption-task-id--font-weight: 500;
-  --text-brand-app: 1.8125rem;
+  --text-brand-app: 1.5rem;
   --text-brand-app--line-height: 1.45;
   --text-brand-app--font-weight: 700;
-  --text-brand-auth: 2.125rem;
+  --text-brand-auth: 1.5rem;
   --text-brand-auth--line-height: 1.45;
   --text-brand-auth--font-weight: 700;
 

@@ -6,15 +6,20 @@
 ## Current state
 
 The app is a NestJS 12 skeleton: only `GET /api/health` exists (`src/health/` — follow it as the reference for new
-modules). Configuration is set up: `@nestjs/config` reads `apps/api/.env` and validates it with the Zod schema in
+modules). Configuration is set up: `@nestjs/config` reads only the root `.env` and validates it with the Zod schema in
 `src/config/env.schema.ts` — read values via `ConfigService<Env, true>`, never `process.env`; a new variable goes into
-the schema and `.env.example`. App-wide settings (global prefix `/api`, CORS from `CORS_ORIGIN`, Swagger, shutdown
+the schema and root `.env.example`. Loading, precedence and dev startup details are documented in
+[README.md](./README.md#переменные-окружения).
+App-wide settings (global prefix `/api`, CORS from `CORS_ORIGIN`, Swagger, shutdown
 hooks) live in `src/app.setup.ts`, which both `main.ts` and e2e tests call — put new global settings there, not in
 `main.ts`. Swagger UI is at `/api/docs`, the OpenAPI JSON at `/api/docs-json`; `pnpm --filter api openapi` writes the
 same document to the committed `apps/api/openapi.json` without starting the server (`src/generate-openapi.ts`). Not set
-up yet (planned): PostgreSQL + Prisma, Redis, WebSockets. **Don't add any of them as a side effect of another task** —
+up yet (planned): PostgreSQL, Redis, WebSockets. The ORM is Drizzle v1 (`1.0.0-rc.6`, pinned exactly, `pg` driver,
+`@nestjs/drizzle`) — conventions in [ADR-0012](../../docs/adr/0012-orm-drizzle.md); it is an RC newer than most
+training data, so use the v1 docs (orm.drizzle.team) and the package types, not 0.x examples; migrations only via
+`drizzle-kit generate` + `migrate`, never `push`. **Don't add any of them as a side effect of another task** —
 each one is a separate task and, where it is a fork, an ADR (`docs/adr/`). HTTP contract: DTOs are Zod schemas in
-`apps/api`, never Prisma models; `@nestjs/swagger` builds the OpenAPI document from them for the Orval client — see
+`apps/api`, never Drizzle tables; `@nestjs/swagger` builds the OpenAPI document from them for the Orval client — see
 [ADR-0009](../../docs/adr/0009-api-contract-openapi-orval.md). Authentication is not decided yet, see
 [`docs/architecture.md`](../../docs/architecture.md#авторизация).
 
