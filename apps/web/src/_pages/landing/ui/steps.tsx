@@ -6,8 +6,9 @@ import { Section } from "./section";
 function Steps() {
   return (
     <Section
+      id="teams"
       aria-labelledby="steps-heading"
-      className="max-w-[1440px] px-4 pt-6 pb-10 sm:px-6 md:py-12 lg:px-16 lg:pb-24"
+      className="max-w-[1440px] scroll-mt-20 px-4 pt-6 pb-10 sm:px-6 md:py-12 lg:px-16 lg:pb-24"
     >
       <Typography as="h2" id="steps-heading" variant="heading-steps">
         Три шага — и вы в одном ритме
