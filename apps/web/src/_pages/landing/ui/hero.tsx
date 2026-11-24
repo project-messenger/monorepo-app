@@ -16,7 +16,7 @@ function Hero() {
             <Typography
               as="p"
               variant="caption"
-              className="font-semibold text-primary uppercase not-last:mb-6.25"
+              className="text-primary uppercase not-last:mb-6.25"
             >
               Общение, которое двигает работу
             </Typography>
