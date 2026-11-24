@@ -64,15 +64,15 @@ Swagger UI — `/api/docs` на запущенном бэкенде, а файл
 
 ## Авторизация
 
-Способ входа и хранения сессии **ещё не выбран** — решение будет оформлено ADR. Код входа в
-`apps/web/src/features/auth` (кнопки Google/GitHub, формы) — заготовка из шаблона, а не принятый контракт: не
-стройте под него бэкенд, пока нет ADR. Что нужно решить — [docs/backlog/auth.md](./backlog/auth.md).
+Вход по email и паролю, сессия на сервере в `httpOnly`-cookie (пакет `@nestjs/authentication`), без JWT. Решение,
+контракт эндпоинтов `/api/auth/*` и формат ошибок — [ADR-0013](./adr/0013-auth-server-session.md). Фронтенд
+шлёт запросы к API с `credentials: 'include'` и не хранит токен сам. Вход через GitHub — позже, отдельной задачей.
 
 ## Переменные окружения
 
 | Где                   | Кто читает                             | Шаблон                                              |
 | --------------------- | -------------------------------------- | --------------------------------------------------- |
-| `.env` в корне        | Docker Compose и API (`ConfigModule`) | [`.env.example`](../.env.example)                   |
+| `.env` в корне        | Docker Compose и API (`ConfigModule`)  | [`.env.example`](../.env.example)                   |
 | `apps/web/.env.local` | Next.js (читает только из своей папки) | [`apps/web/.env.example`](../apps/web/.env.example) |
 
 Подготовка файлов окружения и запуск инфраструктуры — в [корневом README](../README.md#настройка-окружения-env).

@@ -30,3 +30,8 @@ Orval генерирует клиент из `apps/api/openapi.json` ([ADR-0009]
 - [ ] Проверить, что ответ 4xx/5xx попадает в `error` хука, а не в `data`.
 - [ ] Проверить первый реальный запрос (например, `GET /api/health`) в браузере на запущенных `web` и `api`.
 - [ ] Описать способ в `apps/web/docs/state-and-data.md`.
+- [ ] Вход ([ADR-0013](../adr/0013-auth-server-session.md)) держится на cookie сессии. При запросах напрямую на
+      `API_URL` в `fetch` нужен `credentials: 'include'` (бэкенд уже отвечает `Access-Control-Allow-Credentials`). При
+      `rewrites` запрос идёт на тот же origin, и cookie отправится сама.
+- [ ] Ответы 4xx у входа и регистрации несут тело с ошибкой (`ErrorResponse`, `ValidationErrorResponse`): ошибка хука
+      должна давать к нему доступ, чтобы форма показала, что не так.

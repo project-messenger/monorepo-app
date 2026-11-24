@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { resolve } from 'node:path';
+import { AuthModule } from './auth/auth.module.js';
 import { envSchema } from './config/env.schema.js';
 import { HealthModule } from './health/health.module.js';
 
@@ -15,6 +16,7 @@ import { HealthModule } from './health/health.module.js';
       validationSchema: envSchema,
     }),
     HealthModule,
+    AuthModule,
   ],
 })
 export class AppModule {}

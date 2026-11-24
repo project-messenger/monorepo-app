@@ -20,8 +20,9 @@ training data, so use the v1 docs (orm.drizzle.team) and the package types, not 
 `drizzle-kit generate` + `migrate`, never `push`. **Don't add any of them as a side effect of another task** —
 each one is a separate task and, where it is a fork, an ADR (`docs/adr/`). HTTP contract: DTOs are Zod schemas in
 `apps/api`, never Drizzle tables; `@nestjs/swagger` builds the OpenAPI document from them for the Orval client — see
-[ADR-0009](../../docs/adr/0009-api-contract-openapi-orval.md). Authentication is not decided yet, see
-[`docs/architecture.md`](../../docs/architecture.md#авторизация).
+[ADR-0009](../../docs/adr/0009-api-contract-openapi-orval.md). Authentication: server sessions in an httpOnly
+cookie via `@nestjs/authentication`, no JWT — [ADR-0013](../../docs/adr/0013-auth-server-session.md). `src/auth/`
+holds the contract only (501) until the database is connected; the package is added with the implementation.
 
 ## Commands
 
@@ -58,7 +59,12 @@ In addition to the root criteria:
   controllers thin: HTTP in the controller, logic in the service.
 - **Validation** works with Zod (Standard Schema) without classes: `StandardSchemaValidationPipe` with
   `@Body({ schema })` or `@Param('id', { schema })` (https://docs.nestjs.com/application/validation.md). The pipe is
-  not bound yet — bind it when the first endpoint with a body or params appears. HTTP request/response schemas (DTOs)
+  bound globally in `src/app.setup.ts` (`src/common/validation.ts`): a 400 answers `ValidationErrorResponse` with
+  `errors: [{ path, code, message }]`. Describe error responses with `ErrorResponseSchema` / `ValidationErrorResponseSchema`
+  from `src/common/error.schema.ts`.
+- **Error codes.** When the client must tell one error from another, give it an `errorCode`: add the code to
+  `ErrorCodeSchema` (`src/common/error.schema.ts`) and throw `new ConflictException('English text', { errorCode: 'x' })`.
+  `message` stays English and is for developers; user-facing texts live on the frontend (ADR-0013). HTTP request/response schemas (DTOs)
   live here, in `apps/api`: the frontend gets them via OpenAPI + Orval, so never move them to `@app/shared`. Only
   WebSocket event payload schemas live in `@app/shared` — import them, don't duplicate.
 - **Responses** are described for Swagger with the same Zod schemas: `@ApiOkResponse({ standardSchema: XSchema })`, the
