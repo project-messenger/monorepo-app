@@ -24,15 +24,13 @@ describe("LandingHeader", () => {
 
     const loginLink = screen.getByRole("link", { name: "Войти" });
     expect(loginLink).toHaveAttribute("href", ROUTES.LOGIN);
-    expect(loginLink).toHaveAttribute("target", "_blank");
-    expect(loginLink).toHaveAttribute("rel", "noopener noreferrer");
+    expect(loginLink).not.toHaveAttribute("target");
 
     const registerLink = screen.getByRole("link", {
       name: "Создать пространство",
     });
     expect(registerLink).toHaveAttribute("href", ROUTES.REGISTER);
-    expect(registerLink).toHaveAttribute("target", "_blank");
-    expect(registerLink).toHaveAttribute("rel", "noopener noreferrer");
+    expect(registerLink).not.toHaveAttribute("target");
   });
 
   it("closes the mobile menu after following a section anchor", async () => {
@@ -57,7 +55,7 @@ describe("LandingHeader", () => {
     });
   });
 
-  it("opens authentication destinations in a new tab and closes the mobile menu", async () => {
+  it("follows authentication links in the current tab and closes the mobile menu", async () => {
     const user = userEvent.setup();
     render(<LandingHeader />);
 
@@ -69,9 +67,11 @@ describe("LandingHeader", () => {
     });
 
     expect(registerLink).toHaveAttribute("href", ROUTES.REGISTER);
-    expect(registerLink).toHaveAttribute("target", "_blank");
-    expect(registerLink).toHaveAttribute("rel", "noopener noreferrer");
+    expect(registerLink).not.toHaveAttribute("target");
 
+    registerLink.addEventListener("click", (event) => event.preventDefault(), {
+      once: true,
+    });
     await user.click(registerLink);
 
     await waitFor(() => {

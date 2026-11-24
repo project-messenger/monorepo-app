@@ -17,9 +17,10 @@ describe("LandingHeaderAuthLinks", () => {
     });
 
     expect(loginLink).toHaveAttribute("href", ROUTES.LOGIN);
-    expect(loginLink).toHaveAttribute("target", "_blank");
+    expect(loginLink).not.toHaveAttribute("target");
     expect(loginLink).toHaveClass("hover:bg-muted");
     expect(registerLink).toHaveAttribute("href", ROUTES.REGISTER);
+    expect(registerLink).not.toHaveAttribute("target");
     expect(registerLink).toHaveClass("bg-primary");
     expect(screen.queryByRole("button")).not.toBeInTheDocument();
   });
@@ -45,10 +46,15 @@ describe("LandingHeaderAuthLinks", () => {
     });
 
     expect(loginLink).toHaveAttribute("href", ROUTES.LOGIN);
+    expect(loginLink).not.toHaveAttribute("target");
     expect(loginLink).toHaveClass("border-border");
     expect(registerLink).toHaveAttribute("href", ROUTES.REGISTER);
+    expect(registerLink).not.toHaveAttribute("target");
     expect(registerLink).toHaveClass("bg-primary");
 
+    registerLink.addEventListener("click", (event) => event.preventDefault(), {
+      once: true,
+    });
     await user.click(registerLink);
 
     await waitFor(() => {

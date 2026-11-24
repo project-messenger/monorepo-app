@@ -22,14 +22,7 @@ function LandingHeaderAuthLinks({ mode }: LandingHeaderAuthLinksProps) {
       {authLinks.map(({ href, label }) => {
         const variant =
           href === ROUTES.LOGIN ? (isMobile ? "outline" : "ghost") : "default";
-        const link = (
-          <Link
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            role="link"
-          />
-        );
+        const link = <Link href={href} role="link" />;
 
         if (isMobile) {
           return (
