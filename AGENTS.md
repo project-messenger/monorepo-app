@@ -109,6 +109,7 @@ creating a branch, a commit or a PR.
 | Topic                                        | Where                                            |
 | -------------------------------------------- | ------------------------------------------------ |
 | Product: features, requirements, order       | [`docs/product.md`](./docs/product.md)           |
+| Roles and permissions (RBAC)                 | [`docs/permissions.md`](./docs/permissions.md)   |
 | How the monorepo fits together, API contract | [`docs/architecture.md`](./docs/architecture.md) |
 | Git, PR, review                              | [`docs/workflow.md`](./docs/workflow.md)         |
 | Architecture decisions                       | [`docs/adr/`](./docs/adr/README.md)              |
