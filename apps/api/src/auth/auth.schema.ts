@@ -1,9 +1,19 @@
 import { z } from 'zod';
 
-// Email is stored and compared in lower case: `Foo@Bar.com` and `foo@bar.com`
-// are one account. `.toLowerCase()` runs after the format check and keeps
-// `format: email` in OpenAPI (a `.pipe()` would drop it).
-const email = z.email().toLowerCase().max(254);
+// One rule for register, login and the stored value (PR 2: the unique index is
+// on the normalized email): trim → Unicode NFC → lower case, the same rule
+// @nestjs/authentication uses. ` Foo@Bar.com ` and `foo@bar.com` are one
+// account. The overwrites run in order before `.check(z.email())`; `z.email()`
+// as the base type would check the format first and reject the spaces. The
+// check keeps `format: email` in OpenAPI (a `.pipe()` would drop it).
+// https://zod.dev/packages/core?id=checks
+const email = z
+  .string()
+  .trim()
+  .normalize('NFC')
+  .toLowerCase()
+  .check(z.email())
+  .max(254);
 
 export const UserSchema = z
   .object({

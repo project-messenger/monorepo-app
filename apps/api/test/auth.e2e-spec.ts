@@ -70,6 +70,13 @@ describe('Auth (e2e)', () => {
       ]);
     });
 
+    it('accepts an email with spaces around it (501 until implemented)', async () => {
+      await request(app.getHttpServer())
+        .post('/api/auth/login')
+        .send({ email: '  Ann@Example.com ', password: 'x' })
+        .expect(501);
+    });
+
     it('accepts a valid body (501 until implemented)', async () => {
       await request(app.getHttpServer())
         .post('/api/auth/login')
