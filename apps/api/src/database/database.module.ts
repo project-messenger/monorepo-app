@@ -25,6 +25,8 @@ import type { Env } from '../config/env.schema.js';
           database: config.get('POSTGRES_DB', { infer: true }),
           user: config.get('POSTGRES_USER', { infer: true }),
           password: config.get('POSTGRES_PASSWORD', { infer: true }),
+          // pg waits forever by default; without a limit a silent server hangs the startup check.
+          connectionTimeoutMillis: 5000,
         },
       }),
     }),
