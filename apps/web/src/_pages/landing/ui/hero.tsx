@@ -1,81 +1,101 @@
 import Link from "next/link";
-import { ArrowRight, Sparkles } from "lucide-react";
+import Image from "next/image";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 
-import { Badge } from "@/shared/ui/badge";
 import { Button } from "@/shared/ui/button";
 import { Section } from "./section";
+import { Typography } from "@/shared/ui/typography";
+import { ROUTES } from "@/shared/config";
 
 function Hero() {
   return (
-    <Section
-      id="product"
-      className="flex scroll-mt-20 flex-col items-center gap-8 pt-24 text-center md:pt-32"
-    >
-      <Badge variant="outline" className="gap-1.5">
-        <Sparkles />
-        Новое: автоматизации на ИИ
-      </Badge>
-      <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-balance sm:text-5xl md:text-6xl">
-        Все процессы команды — в одной платформе
-      </h1>
-      <p className="max-w-xl text-lg text-balance text-muted-foreground">
-        Задачи, аналитика и интеграции без лишних инструментов. Текст-заглушка
-        для демонстрации лейаута.
-      </p>
-      <div className="flex flex-col gap-3 sm:flex-row">
-        <Button
-          size="lg"
-          nativeButton={false}
-          render={<Link href="/register" />}
-        >
-          Попробовать бесплатно
-          <ArrowRight data-icon="inline-end" />
-        </Button>
-        <Button
-          size="lg"
-          variant="outline"
-          nativeButton={false}
-          render={<Link href="/#features" />}
-        >
-          Узнать больше
-        </Button>
-      </div>
-
-      {/* Плейсхолдер скриншота продукта */}
-      <div className="mt-8 w-full rounded-xl border bg-card p-2 shadow-sm">
-        <div className="grid aspect-video w-full grid-cols-[180px_1fr] gap-2 overflow-hidden rounded-lg bg-muted/50 p-2 max-sm:grid-cols-1">
-          <div className="flex flex-col gap-2 rounded-md bg-background p-3 max-sm:hidden">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div
-                key={i}
-                className="h-3 rounded bg-muted"
-                style={{ width: `${90 - i * 8}%` }}
-              />
-            ))}
+    <>
+      <Section className="min-h-105 max-w-page py-0 not-last:mb-8 md:py-0 lg:pr-27.5 lg:pl-16 xl:not-last:mb-0">
+        <div className="grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1fr)_18.75rem]">
+          <div className="pt-8.75">
+            <Typography
+              as="p"
+              variant="caption"
+              className="text-primary uppercase not-last:mb-6.25"
+            >
+              Общение, которое двигает работу
+            </Typography>
+            <Typography
+              as="h1"
+              variant="display-hero"
+              className="max-w-225 not-last:mb-3.25"
+            >
+              <span className="lg:block">От «обсудим»</span>{" "}
+              <span className="lg:block">до «готово». Вместе.</span>
+            </Typography>
+            <Typography
+              as="p"
+              variant="subtitle-hero"
+              className="max-w-180 text-muted-foreground"
+            >
+              <span className="lg:block">
+                Чаты, задачи и GitHub в одном контексте.
+              </span>{" "}
+              <span className="lg:block">
+                Меньше переключений. Больше общего результата.
+              </span>
+            </Typography>
           </div>
-          <div className="grid grid-cols-3 grid-rows-[auto_1fr] gap-2">
-            {Array.from({ length: 3 }).map((_, i) => (
-              <div
-                key={i}
-                className="flex flex-col gap-2 rounded-md bg-background p-3 text-left"
+          <div className="flex flex-col pt-0 sm:ml-auto sm:w-75 xl:pt-10.5">
+            <div className="relative mr-2.5 ml-auto h-45 w-52.5 rounded-4xl bg-accent not-last:mb-14">
+              <ArrowUpRight
+                size={80}
+                strokeWidth={1.5}
+                className="absolute top-1 right-4 text-primary"
+                aria-hidden="true"
+              />
+              <Typography
+                as="p"
+                variant="hero-card-text"
+                className="absolute bottom-5 left-5 w-45 text-accent-foreground"
               >
-                <div className="h-2.5 w-1/2 rounded bg-muted" />
-                <div className="h-5 w-3/4 rounded bg-primary/15" />
-              </div>
-            ))}
-            <div className="col-span-3 flex items-end gap-2 rounded-md bg-background p-4">
-              {[40, 65, 50, 80, 60, 90, 70, 85, 55, 75].map((h, i) => (
-                <div
-                  key={i}
-                  className="flex-1 rounded-t bg-chart-2"
-                  style={{ height: `${h}%` }}
-                />
-              ))}
+                В одном ритме, даже асинхронно.
+              </Typography>
             </div>
+            <Button
+              size="landing-cta"
+              className="w-full not-last:mb-3.5"
+              nativeButton={false}
+              render={<Link href={ROUTES.REGISTER} />}
+            >
+              Начать с командой
+              <ArrowRight data-icon="inline-end" />
+            </Button>
+            <Typography
+              as="p"
+              variant="body-small"
+              className="ml-1 text-muted-foreground"
+            >
+              Без карты · Настройка за пару минут
+            </Typography>
           </div>
         </div>
-      </div>
-    </Section>
+      </Section>
+      <figure className="mx-auto w-full max-w-page px-4 sm:px-6 lg:px-16">
+        <Image
+          src="/images/landing/kan21-demo.png"
+          alt="Пример интерфейса командного мессенджера"
+          width={1312}
+          height={414}
+          loading="eager"
+          className="block h-auto w-full not-last:mb-3.75"
+        />
+        <figcaption>
+          <Typography
+            as="p"
+            variant="caption"
+            className="text-muted-foreground uppercase"
+          >
+            Один контекст для всей команды
+          </Typography>
+        </figcaption>
+      </figure>
+    </>
   );
 }
 

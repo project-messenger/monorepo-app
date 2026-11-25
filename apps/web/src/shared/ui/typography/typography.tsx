@@ -5,13 +5,16 @@ import { cn } from "@/shared/lib/utils";
 const typographyVariants = cva("", {
   variants: {
     variant: {
-      "display-hero": "text-display-hero",
+      "display-hero":
+        "text-display-hero max-sm:text-display-hero-mobile sm:max-lg:text-display-hero-tablet",
       "display-auth": "text-display-auth",
       "display-cta": "text-display-cta-mobile lg:text-display-cta",
       "heading-landing": "text-heading-landing-mobile lg:text-heading-landing",
       "heading-steps": "text-heading-steps-mobile lg:text-heading-steps",
       "steps-number": "text-steps-number",
       "subtitle-landing": "text-subtitle-landing",
+      "subtitle-hero": "text-subtitle-hero",
+      "hero-card-text": "text-hero-card-text",
       "body-landing": "text-body-landing",
       "body-footer": "text-body-footer",
       "heading-auth": "text-heading-auth",
