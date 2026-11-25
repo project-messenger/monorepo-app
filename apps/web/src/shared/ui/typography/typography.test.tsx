@@ -14,6 +14,8 @@ describe("Typography", () => {
     ["heading-steps", "text-heading-steps-mobile", "lg:text-heading-steps"],
     ["steps-number", "text-steps-number", null],
     ["subtitle-landing", "text-subtitle-landing", null],
+    ["subtitle-hero", "text-subtitle-hero", null],
+    ["hero-card-text", "text-hero-card-text", null],
     ["body-landing", "text-body-landing", null],
     ["body-footer", "text-body-footer", null],
   ] as const)(
@@ -105,5 +107,28 @@ describe("Typography", () => {
     const element = screen.getByText("Текст");
     expect(element).toHaveAttribute("id", "hint");
     expect(element).toHaveAttribute("title", "Подсказка");
+  });
+
+  it("сохраняет адаптивные размеры заголовка Hero", () => {
+    render(
+      <Typography
+        as="h1"
+        variant="display-hero"
+        className="text-muted-foreground"
+      >
+        Заголовок Hero
+      </Typography>,
+    );
+
+    const element = screen.getByRole("heading", { level: 1 });
+
+    expect(element).toHaveClass(
+      "text-display-hero",
+      "max-sm:text-display-hero-mobile",
+      "sm:max-lg:text-display-hero-tablet",
+      "text-muted-foreground",
+    );
+
+    expect(element).not.toHaveClass("text-heading-page");
   });
 });

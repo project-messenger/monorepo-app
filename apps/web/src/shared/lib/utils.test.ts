@@ -27,4 +27,19 @@ describe("cn", () => {
   it("игнорирует ложные значения", () => {
     expect(cn("a", false, undefined, null, "b")).toBe("a b");
   });
+
+  it("сохраняет адаптивные размеры Hero вместе с цветом текста", () => {
+    const result = cn(
+      "text-display-hero",
+      "max-sm:text-display-hero-mobile",
+      "sm:max-lg:text-display-hero-tablet",
+      "text-muted-foreground",
+    );
+
+    expect(classes(result)).toEqual(
+      classes(
+        "text-display-hero max-sm:text-display-hero-mobile sm:max-lg:text-display-hero-tablet text-muted-foreground",
+      ),
+    );
+  });
 });
