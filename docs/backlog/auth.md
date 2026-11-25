@@ -1,6 +1,7 @@
 # Авторизация
 
-[← к бэклогу](./README.md) · Jira: [KAN-51](https://project-group-11.atlassian.net/browse/KAN-51) (бэкенд),
+[← к бэклогу](./README.md) · Jira: [KAN-51](https://project-group-11.atlassian.net/browse/KAN-51) (ADR и контракт),
+[KAN-58](https://project-group-11.atlassian.net/browse/KAN-58) (реализация на бэкенде),
 [KAN-56](https://project-group-11.atlassian.net/browse/KAN-56) (вход через GitHub)
 
 ## Зачем
