@@ -99,6 +99,64 @@ describe('Auth (e2e)', () => {
     expect(response.headers['access-control-allow-credentials']).toBe('true');
   });
 
+  // app.enableCsrfProtection() in src/app.setup.ts, see ADR-0013. A browser on
+  // the frontend (:3000 → :3001) sends `Sec-Fetch-Site: same-site` and its
+  // Origin; another site sends its own Origin. Tests without these headers
+  // (above) pass, like curl.
+  describe('CSRF', () => {
+    const frontend = 'http://localhost:3000';
+    const foreign = 'https://evil.example';
+
+    it('rejects register from a foreign origin before validation', async () => {
+      // An invalid body would give 400: 403 shows the request never reached the
+      // handler, so a foreign site cannot create a user.
+      const response = await request(app.getHttpServer())
+        .post('/api/auth/register')
+        .set('Origin', foreign)
+        .set('Sec-Fetch-Site', 'cross-site')
+        .send({})
+        .expect(403);
+
+      expect(response.body).toMatchObject({
+        statusCode: 403,
+        error: 'Forbidden',
+      });
+    });
+
+    it('rejects a foreign origin even without Sec-Fetch-Site', async () => {
+      await request(app.getHttpServer())
+        .post('/api/auth/login')
+        .set('Origin', foreign)
+        .send({ email: 'ann@example.com', password: 'x' })
+        .expect(403);
+    });
+
+    it('rejects another site on localhost: same-site is not enough', async () => {
+      await request(app.getHttpServer())
+        .post('/api/auth/logout')
+        .set('Origin', 'http://localhost:4000')
+        .set('Sec-Fetch-Site', 'same-site')
+        .expect(403);
+    });
+
+    it('lets the frontend origin through (501 until implemented)', async () => {
+      await request(app.getHttpServer())
+        .post('/api/auth/login')
+        .set('Origin', frontend)
+        .set('Sec-Fetch-Site', 'same-site')
+        .send({ email: 'ann@example.com', password: 'x' })
+        .expect(501);
+    });
+
+    it('does not check GET requests', async () => {
+      await request(app.getHttpServer())
+        .get('/api/auth/me')
+        .set('Origin', foreign)
+        .set('Sec-Fetch-Site', 'cross-site')
+        .expect(501);
+    });
+  });
+
   describe('OpenAPI', () => {
     it('describes request bodies and responses with named schemas', async () => {
       const { body: doc } = await request(app.getHttpServer())
@@ -119,7 +177,11 @@ describe('Auth (e2e)', () => {
         register.responses['409'].content['application/json'].schema,
       ).toEqual({ $ref: '#/components/schemas/ErrorResponse' });
 
-      for (const path of ['/api/auth/register', '/api/auth/login']) {
+      for (const path of [
+        '/api/auth/register',
+        '/api/auth/login',
+        '/api/auth/logout',
+      ]) {
         expect(
           doc.paths[path].post.responses['403'].content['application/json']
             .schema,

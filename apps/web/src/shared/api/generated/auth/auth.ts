@@ -371,11 +371,22 @@ export type authControllerLogoutResponse204 = {
   status: 204;
 };
 
+export type authControllerLogoutResponse403 = {
+  data: ErrorResponse;
+  status: 403;
+};
+
 export type authControllerLogoutResponseSuccess =
   authControllerLogoutResponse204 & {
     headers: Headers;
   };
-export type authControllerLogoutResponse = authControllerLogoutResponseSuccess;
+export type authControllerLogoutResponseError =
+  authControllerLogoutResponse403 & {
+    headers: Headers;
+  };
+
+export type authControllerLogoutResponse =
+  authControllerLogoutResponseSuccess | authControllerLogoutResponseError;
 
 export const getAuthControllerLogoutUrl = () => {
   return `/api/auth/logout`;
@@ -405,7 +416,7 @@ export const getAuthControllerLogoutMutationKey = () =>
   ["authControllerLogout"] as const;
 
 export const getAuthControllerLogoutMutationOptions = <
-  TError = unknown,
+  TError = ErrorResponse,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -444,9 +455,12 @@ export type AuthControllerLogoutMutationResult = NonNullable<
   Awaited<ReturnType<typeof authControllerLogout>>
 >;
 
-export type AuthControllerLogoutMutationError = unknown;
+export type AuthControllerLogoutMutationError = ErrorResponse;
 
-export const useAuthControllerLogout = <TError = unknown, TContext = unknown>(
+export const useAuthControllerLogout = <
+  TError = ErrorResponse,
+  TContext = unknown,
+>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof authControllerLogout>>,

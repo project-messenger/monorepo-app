@@ -10,8 +10,8 @@ modules). Configuration is set up: `@nestjs/config` reads only the root `.env` a
 `src/config/env.schema.ts` — read values via `ConfigService<Env, true>`, never `process.env`; a new variable goes into
 the schema and root `.env.example`. Loading, precedence and dev startup details are documented in
 [README.md](./README.md#переменные-окружения).
-App-wide settings (global prefix `/api`, CORS from `CORS_ORIGIN`, Swagger, shutdown
-hooks) live in `src/app.setup.ts`, which both `main.ts` and e2e tests call — put new global settings there, not in
+App-wide settings (global prefix `/api`, CORS and CSRF protection from `CORS_ORIGIN`,
+Swagger, shutdown hooks) live in `src/app.setup.ts`, which both `main.ts` and e2e tests call — put new global settings there, not in
 `main.ts`. Swagger UI is at `/api/docs`, the OpenAPI JSON at `/api/docs-json`; `pnpm --filter api openapi` writes the
 same document to the committed `apps/api/openapi.json` without starting the server (`src/generate-openapi.ts`). Not set
 up yet (planned): PostgreSQL, Redis, WebSockets. The ORM is Drizzle v1 (`1.0.0-rc.6`, pinned exactly, `pg` driver,

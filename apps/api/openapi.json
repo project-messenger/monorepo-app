@@ -151,6 +151,16 @@
         "responses": {
           "204": {
             "description": "The session is ended and the cookie is cleared. Also 204 when there was no session."
+          },
+          "403": {
+            "description": "The request came from an untrusted origin (not CORS_ORIGIN). Not a user error: the frontend address is misconfigured, or it is a CSRF attempt.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           }
         },
         "tags": [

@@ -29,8 +29,9 @@ import {
   type User,
 } from './auth.schema.js';
 
-// `SignInService.signIn()` of @nestjs/authentication refuses to set a session
-// for a request from an origin that is not in `trustedOrigins` (CSRF).
+// Every state-changing request (POST, PUT, PATCH, DELETE) from an origin other
+// than CORS_ORIGIN gets 403 from `app.enableCsrfProtection()` (src/app.setup.ts)
+// before it reaches a handler. Describe it on every such endpoint.
 const CROSS_ORIGIN_REFUSED =
   'The request came from an untrusted origin (not CORS_ORIGIN). Not a user error: the frontend address is misconfigured, or it is a CSRF attempt.';
 
@@ -86,6 +87,10 @@ export class AuthController {
   @ApiNoContentResponse({
     description:
       'The session is ended and the cookie is cleared. Also 204 when there was no session.',
+  })
+  @ApiForbiddenResponse({
+    standardSchema: ErrorResponseSchema,
+    description: CROSS_ORIGIN_REFUSED,
   })
   logout(): void {
     throw new NotImplementedException();
