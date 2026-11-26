@@ -3,16 +3,66 @@ import { describe, expect, it } from "vitest";
 
 import { LandingPage } from "./landing-page";
 
-describe("LandingPage: security and registration CTA", () => {
-  it("offers registration as a real link that opens a separate tab", () => {
+describe("LandingPage", () => {
+  it("renders landing sections in the correct order without unused sections", () => {
     render(<LandingPage />);
 
-    const link = screen.getByRole("link", { name: /Создать пространство/ });
+    const sections = [
+      screen.getByRole("heading", {
+        level: 1,
+        name: /От «обсудим»/,
+      }),
+      screen.getByRole("img", {
+        name: "Пример интерфейса командного мессенджера",
+      }),
+      screen.getByRole("region", {
+        name: /Не ещё один чат/,
+      }),
+      screen.getByRole("region", {
+        name: /Три шага — и вы в одном ритме/,
+      }),
+      screen.getByRole("region", {
+        name: /Контекст общий/,
+      }),
+      screen.getByRole("region", {
+        name: /Пусть разговоры/,
+      }),
+    ];
+
+    for (let i = 0; i < sections.length - 1; i++) {
+      expect(
+        sections[i].compareDocumentPosition(sections[i + 1]) &
+          Node.DOCUMENT_POSITION_FOLLOWING,
+      ).toBeTruthy();
+    }
+
+    expect(
+      screen.queryByText(/Нам доверяют команды из/),
+    ).not.toBeInTheDocument();
+
+    expect(
+      screen.queryByRole("heading", {
+        name: "Простые и прозрачные цены",
+      }),
+    ).not.toBeInTheDocument();
+
+    expect(
+      screen.queryByRole("heading", {
+        name: "Частые вопросы",
+      }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("offers registration as a real link that opens in the same tab", () => {
+    render(<LandingPage />);
+
+    const link = screen.getByRole("link", {
+      name: /Создать пространство/,
+    });
 
     expect(link.tagName).toBe("A");
     expect(link).toHaveAttribute("href", "/register");
-    expect(link).toHaveAttribute("target", "_blank");
-    expect(link).toHaveAttribute("rel", "noopener noreferrer");
+    expect(link).not.toHaveAttribute("target");
     expect(within(link).queryByRole("button")).not.toBeInTheDocument();
     expect(link.closest("button")).toBeNull();
   });
@@ -50,5 +100,38 @@ describe("LandingPage: security and registration CTA", () => {
     expect(
       security.compareDocumentPosition(cta) & Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy();
+  });
+
+  it("provides anchor targets for all header navigation links", () => {
+    render(<LandingPage />);
+
+    const productImage = screen.getByRole("img", {
+      name: "Пример интерфейса командного мессенджера",
+    });
+
+    expect(productImage.closest("figure")).toHaveAttribute("id", "product");
+
+    expect(
+      screen.getByRole("region", {
+        name: /Три шага — и вы в одном ритме/,
+      }),
+    ).toHaveAttribute("id", "teams");
+
+    expect(
+      screen.getByRole("region", {
+        name: /Контекст общий\. Доступ — под контролем/,
+      }),
+    ).toHaveAttribute("id", "security");
+  });
+
+  it("provides a registration link in the hero section", () => {
+    render(<LandingPage />);
+
+    const link = screen.getByRole("link", {
+      name: /Начать с командой/,
+    });
+
+    expect(link).toHaveAttribute("href", "/register");
+    expect(link).not.toHaveAttribute("target");
   });
 });

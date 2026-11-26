@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 
-import { Button } from "@/shared/ui/button";
+import { buttonVariants } from "@/shared/ui/button";
 import { Section } from "./section";
 import { Typography } from "@/shared/ui/typography";
 import { ROUTES } from "@/shared/config";
@@ -57,15 +57,16 @@ function Hero() {
                 В одном ритме, даже асинхронно.
               </Typography>
             </div>
-            <Button
-              size="landing-cta"
-              className="w-full not-last:mb-3.5"
-              nativeButton={false}
-              render={<Link href={ROUTES.REGISTER} />}
+            <Link
+              href={ROUTES.REGISTER}
+              className={buttonVariants({
+                size: "landing-cta",
+                className: "w-full not-last:mb-3.5",
+              })}
             >
               Начать с командой
               <ArrowRight data-icon="inline-end" />
-            </Button>
+            </Link>
             <Typography
               as="p"
               variant="body-small"
@@ -76,7 +77,10 @@ function Hero() {
           </div>
         </div>
       </Section>
-      <figure className="mx-auto w-full max-w-page px-4 sm:px-6 lg:px-16">
+      <figure
+        id="product"
+        className="mx-auto w-full max-w-page scroll-mt-20 px-4 sm:px-6 lg:px-16"
+      >
         <Image
           src="/images/landing/kan21-demo.png"
           alt="Пример интерфейса командного мессенджера"
