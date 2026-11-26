@@ -17,8 +17,8 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import {
+  BadRequestResponseSchema,
   ErrorResponseSchema,
-  ValidationErrorResponseSchema,
 } from '../common/error.schema.js';
 import {
   LoginRequestSchema,
@@ -35,6 +35,10 @@ import {
 const CROSS_ORIGIN_REFUSED =
   'The request came from an untrusted origin (not CORS_ORIGIN). Not a user error: the frontend address is misconfigured, or it is a CSRF attempt.';
 
+// A 400 has two shapes, see BadRequestResponseSchema.
+const BAD_REQUEST =
+  'Invalid fields: `ValidationErrorResponse` with `errorCode: validation_failed` and `errors`. A body that is not valid JSON: `ErrorResponse` without `errorCode`.';
+
 // KAN-51, PR 1: only the contract. Every endpoint validates its body and
 // answers 501 until the implementation lands (PR 2, after the database is
 // connected). The session is an httpOnly cookie set by the server, see ADR-0013:
@@ -47,7 +51,10 @@ export class AuthController {
     description:
       'The account is created and signed in: the session cookie is set.',
   })
-  @ApiBadRequestResponse({ standardSchema: ValidationErrorResponseSchema })
+  @ApiBadRequestResponse({
+    standardSchema: BadRequestResponseSchema,
+    description: BAD_REQUEST,
+  })
   @ApiConflictResponse({
     standardSchema: ErrorResponseSchema,
     description: 'The email is already taken: `errorCode: email_taken`.',
@@ -68,7 +75,10 @@ export class AuthController {
     standardSchema: UserSchema,
     description: 'Signed in: the session cookie is set.',
   })
-  @ApiBadRequestResponse({ standardSchema: ValidationErrorResponseSchema })
+  @ApiBadRequestResponse({
+    standardSchema: BadRequestResponseSchema,
+    description: BAD_REQUEST,
+  })
   @ApiUnauthorizedResponse({
     standardSchema: ErrorResponseSchema,
     description:

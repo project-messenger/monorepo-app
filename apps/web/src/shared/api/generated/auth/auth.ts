@@ -21,11 +21,11 @@ import type {
 } from "@tanstack/react-query";
 
 import type {
+  BadRequestResponse,
   ErrorResponse,
   LoginRequest,
   RegisterRequest,
   User,
-  ValidationErrorResponse,
 } from "../model";
 
 const withQueryKey = <T extends object, K>(
@@ -52,7 +52,7 @@ export type authControllerRegisterResponse201 = {
 };
 
 export type authControllerRegisterResponse400 = {
-  data: ValidationErrorResponse;
+  data: BadRequestResponse;
   status: 400;
 };
 
@@ -136,7 +136,7 @@ export const getAuthControllerRegisterMutationKey = () =>
   ["authControllerRegister"] as const;
 
 export const getAuthControllerRegisterMutationOptions = <
-  TError = ValidationErrorResponse | ErrorResponse,
+  TError = BadRequestResponse | ErrorResponse,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -178,11 +178,11 @@ export type AuthControllerRegisterMutationResult = NonNullable<
 >;
 export type AuthControllerRegisterMutationBody = RegisterRequest;
 export type AuthControllerRegisterMutationError =
-  ValidationErrorResponse | ErrorResponse;
+  BadRequestResponse | ErrorResponse;
 export type AuthControllerRegisterMutationVariables = { data: RegisterRequest };
 
 export const useAuthControllerRegister = <
-  TError = ValidationErrorResponse | ErrorResponse,
+  TError = BadRequestResponse | ErrorResponse,
   TContext = unknown,
 >(
   options?: {
@@ -212,7 +212,7 @@ export type authControllerLoginResponse200 = {
 };
 
 export type authControllerLoginResponse400 = {
-  data: ValidationErrorResponse;
+  data: BadRequestResponse;
   status: 400;
 };
 
@@ -296,7 +296,7 @@ export const getAuthControllerLoginMutationKey = () =>
   ["authControllerLogin"] as const;
 
 export const getAuthControllerLoginMutationOptions = <
-  TError = ValidationErrorResponse | ErrorResponse,
+  TError = BadRequestResponse | ErrorResponse,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -338,11 +338,11 @@ export type AuthControllerLoginMutationResult = NonNullable<
 >;
 export type AuthControllerLoginMutationBody = LoginRequest;
 export type AuthControllerLoginMutationError =
-  ValidationErrorResponse | ErrorResponse;
+  BadRequestResponse | ErrorResponse;
 export type AuthControllerLoginMutationVariables = { data: LoginRequest };
 
 export const useAuthControllerLogin = <
-  TError = ValidationErrorResponse | ErrorResponse,
+  TError = BadRequestResponse | ErrorResponse,
   TContext = unknown,
 >(
   options?: {

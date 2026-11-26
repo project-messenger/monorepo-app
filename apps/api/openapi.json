@@ -48,11 +48,11 @@
             }
           },
           "400": {
-            "description": "",
+            "description": "Invalid fields: `ValidationErrorResponse` with `errorCode: validation_failed` and `errors`. A body that is not valid JSON: `ErrorResponse` without `errorCode`.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                  "$ref": "#/components/schemas/BadRequestResponse"
                 }
               }
             }
@@ -109,11 +109,11 @@
             }
           },
           "400": {
-            "description": "",
+            "description": "Invalid fields: `ValidationErrorResponse` with `errorCode: validation_failed` and `errors`. A body that is not valid JSON: `ErrorResponse` without `errorCode`.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                  "$ref": "#/components/schemas/BadRequestResponse"
                 }
               }
             }
@@ -274,6 +274,16 @@
           "name"
         ],
         "additionalProperties": false
+      },
+      "BadRequestResponse": {
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/ValidationErrorResponse"
+          },
+          {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        ]
       },
       "ValidationErrorResponse": {
         "type": "object",

@@ -33,5 +33,6 @@ Orval генерирует клиент из `apps/api/openapi.json` ([ADR-0009]
 - [ ] Вход ([ADR-0013](../adr/0013-auth-server-session.md)) держится на cookie сессии. При запросах напрямую на
       `API_URL` в `fetch` нужен `credentials: 'include'` (бэкенд уже отвечает `Access-Control-Allow-Credentials`). При
       `rewrites` запрос идёт на тот же origin, и cookie отправится сама.
-- [ ] Ответы 4xx у входа и регистрации несут тело с ошибкой (`ErrorResponse`, `ValidationErrorResponse`): ошибка хука
-      должна давать к нему доступ, чтобы форма показала, что не так.
+- [ ] Ответы 4xx у входа и регистрации несут тело с ошибкой (`ErrorResponse`, у 400 — `BadRequestResponse`: поля
+      формы есть, только если `errorCode === 'validation_failed'`): ошибка хука должна давать к нему доступ, чтобы
+      форма показала, что не так.

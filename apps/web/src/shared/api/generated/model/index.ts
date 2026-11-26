@@ -5,6 +5,7 @@
  * OpenAPI spec version: 1.0
  */
 
+export * from "./badRequestResponse";
 export * from "./errorCode";
 export * from "./errorResponse";
 export * from "./fieldError";

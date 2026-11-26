@@ -60,8 +60,9 @@ In addition to the root criteria:
 - **Validation** works with Zod (Standard Schema) without classes: `StandardSchemaValidationPipe` with
   `@Body({ schema })` or `@Param('id', { schema })` (https://docs.nestjs.com/application/validation.md). The pipe is
   bound globally in `src/app.setup.ts` (`src/common/validation.ts`): a 400 answers `ValidationErrorResponse` with
-  `errors: [{ path, code, message }]`. Describe error responses with `ErrorResponseSchema` / `ValidationErrorResponseSchema`
-  from `src/common/error.schema.ts`.
+  `errors: [{ path, code, message }]`. A body that is not valid JSON fails before the pipe and gets Nest's plain
+  `ErrorResponse`, so describe a 400 with `BadRequestResponseSchema` (both shapes) and other errors with
+  `ErrorResponseSchema`, all from `src/common/error.schema.ts`.
 - **Error codes.** When the client must tell one error from another, give it an `errorCode`: add the code to
   `ErrorCodeSchema` (`src/common/error.schema.ts`) and throw `new ConflictException('English text', { errorCode: 'x' })`.
   `message` stays English and is for developers; user-facing texts live on the frontend (ADR-0013). HTTP request/response schemas (DTOs)

@@ -50,6 +50,23 @@ describe('Auth (e2e)', () => {
       expect(response.body.errors.length).toBeGreaterThan(0);
     });
 
+    // The JSON parser fails before the validation pipe, so Nest answers its
+    // plain 400: `ErrorResponse` without `errorCode` and `errors`. The contract
+    // describes both shapes (BadRequestResponseSchema).
+    it('answers 400 without errorCode when the body is not valid JSON', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/api/auth/register')
+        .set('Content-Type', 'application/json')
+        .send('{"name": "Ann",')
+        .expect(400);
+
+      expect(response.body).toEqual({
+        statusCode: 400,
+        message: expect.any(String),
+        error: 'Bad Request',
+      });
+    });
+
     it('accepts a valid body (501 until implemented)', async () => {
       await request(app.getHttpServer())
         .post('/api/auth/register')
@@ -179,7 +196,11 @@ describe('Auth (e2e)', () => {
       ).toEqual({ $ref: '#/components/schemas/User' });
       expect(
         register.responses['400'].content['application/json'].schema,
-      ).toEqual({ $ref: '#/components/schemas/ValidationErrorResponse' });
+      ).toEqual({ $ref: '#/components/schemas/BadRequestResponse' });
+      expect(doc.components.schemas.BadRequestResponse.anyOf).toEqual([
+        { $ref: '#/components/schemas/ValidationErrorResponse' },
+        { $ref: '#/components/schemas/ErrorResponse' },
+      ]);
       expect(
         register.responses['409'].content['application/json'].schema,
       ).toEqual({ $ref: '#/components/schemas/ErrorResponse' });
