@@ -53,15 +53,16 @@ describe("LandingPage", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("offers registration as a real link that opens a separate tab", () => {
+  it("offers registration as a real link that opens in the same tab", () => {
     render(<LandingPage />);
 
-    const link = screen.getByRole("link", { name: /Создать пространство/ });
+    const link = screen.getByRole("link", {
+      name: /Создать пространство/,
+    });
 
     expect(link.tagName).toBe("A");
     expect(link).toHaveAttribute("href", "/register");
-    expect(link).toHaveAttribute("target", "_blank");
-    expect(link).toHaveAttribute("rel", "noopener noreferrer");
+    expect(link).not.toHaveAttribute("target");
     expect(within(link).queryByRole("button")).not.toBeInTheDocument();
     expect(link.closest("button")).toBeNull();
   });

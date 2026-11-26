@@ -79,7 +79,7 @@ function Hero() {
       </Section>
       <figure
         id="product"
-        className="mx-auto w-full max-w-page px-4 sm:px-6 lg:px-16"
+        className="mx-auto w-full max-w-page scroll-mt-20 px-4 sm:px-6 lg:px-16"
       >
         <Image
           src="/images/landing/kan21-demo.png"

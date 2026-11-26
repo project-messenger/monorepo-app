@@ -10,7 +10,7 @@ function Features() {
     <Section
       id="features"
       aria-labelledby="features-heading"
-      className="max-w-none px-0 sm:px-0"
+      className="max-w-page px-0 pt-6 pb-6 sm:px-0 md:pt-9.25 md:pb-6"
     >
       <Container>
         <Typography as="h2" id="features-heading" variant="heading-steps">
