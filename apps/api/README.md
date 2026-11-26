@@ -93,8 +93,14 @@ export class UsersService {
 4. Закоммитьте папку миграции целиком. Руками её не правьте, `drizzle-kit push` не используйте.
 
 После `git merge origin/main` запустите `pnpm --filter api db:check` (миграции веток не конфликтуют), затем
-`db:migrate`. Если `db:check` нашёл конфликт: удалите папки миграций своей ветки, пересоздайте локальную базу
-(`docker compose down -v` удалит все её данные, затем `pnpm infra:up` и `db:migrate`) и снова сделайте `db:generate`.
+`db:migrate`. Если `db:check` нашёл конфликт:
+
+1. Удалите папки миграций своей ветки.
+2. Пересоздайте локальную базу: `docker compose down -v`, затем `pnpm infra:up`. `-v` удаляет тома, то есть все
+   локальные данные PostgreSQL **и Redis**, не только миграции.
+3. `pnpm --filter api db:migrate` — применит миграции из `main`.
+4. `pnpm --filter api db:generate` — заново создаст миграцию вашей ветки поверх них.
+5. `pnpm --filter api db:migrate` — применит её, иначе в базе не будет изменений вашей ветки.
 
 ## Команды
 
