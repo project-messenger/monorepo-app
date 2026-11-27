@@ -2,17 +2,21 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
 import { Button } from "@/shared/ui/button";
-import { Logo } from "@/shared/ui/logo";
+import { LogoLink } from "@/shared/ui/logo-link";
 import { ThemeToggle } from "@/features/theme-toggle";
+import { AuthStory } from "@/widgets/auth-story";
 
 export function AuthLayout({ children }: LayoutProps<"/">) {
   return (
-    <div className="grid flex-1 lg:grid-cols-2">
-      <div className="flex flex-col p-4 sm:p-6">
+    <div className="grid flex-1 lg:grid-cols-[minmax(0,35.5rem)_minmax(0,1fr)]">
+      <AuthStory />
+      <div className="flex min-w-0 flex-col p-4 sm:p-6">
         <div className="flex items-center justify-between">
+          <LogoLink className="rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring lg:hidden" />
           <Button
             variant="ghost"
             size="sm"
+            className="hidden lg:inline-flex"
             nativeButton={false}
             render={<Link href="/" />}
           >
@@ -21,24 +25,10 @@ export function AuthLayout({ children }: LayoutProps<"/">) {
           </Button>
           <ThemeToggle />
         </div>
-        <div className="flex flex-1 items-center justify-center py-10">
+        <main className="flex flex-1 items-center justify-center py-10">
           <div className="w-full max-w-sm">{children}</div>
-        </div>
+        </main>
       </div>
-
-      {/* Декоративная панель — только на широких экранах */}
-      <aside className="relative hidden flex-col justify-between bg-primary p-10 text-primary-foreground lg:flex">
-        <Logo />
-        <blockquote className="flex max-w-md flex-col gap-3">
-          <p className="text-xl font-medium text-balance">
-            «синк помог нам сократить время на рутину вдвое и наконец увидеть
-            картину по проектам».
-          </p>
-          <footer className="text-sm text-primary-foreground/70">
-            Анна Смирнова, руководитель продукта · текст-заглушка
-          </footer>
-        </blockquote>
-      </aside>
     </div>
   );
 }
