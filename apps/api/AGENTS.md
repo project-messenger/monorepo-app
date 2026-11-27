@@ -13,15 +13,29 @@ the schema and root `.env.example`. Loading, precedence and dev startup details 
 App-wide settings (global prefix `/api`, CORS from `CORS_ORIGIN`, Swagger, shutdown
 hooks) live in `src/app.setup.ts`, which both `main.ts` and e2e tests call — put new global settings there, not in
 `main.ts`. Swagger UI is at `/api/docs`, the OpenAPI JSON at `/api/docs-json`; `pnpm --filter api openapi` writes the
-same document to the committed `apps/api/openapi.json` without starting the server (`src/generate-openapi.ts`). Not set
-up yet (planned): PostgreSQL, Redis, WebSockets. The ORM is Drizzle v1 (`1.0.0-rc.6`, pinned exactly, `pg` driver,
-`@nestjs/drizzle`) — conventions in [ADR-0012](../../docs/adr/0012-orm-drizzle.md); it is an RC newer than most
-training data, so use the v1 docs (orm.drizzle.team) and the package types, not 0.x examples; migrations only via
-`drizzle-kit generate` + `migrate`, never `push`. **Don't add any of them as a side effect of another task** —
-each one is a separate task and, where it is a fork, an ADR (`docs/adr/`). HTTP contract: DTOs are Zod schemas in
+same document to the committed `apps/api/openapi.json` without starting the server (`src/generate-openapi.ts`).
+PostgreSQL is connected through Drizzle, no tables yet — see [Database](#database). Not set up yet (planned): Redis,
+WebSockets.
+**Don't add any of them as a side effect of another task** — each one is a separate task and, where it is a fork, an
+ADR (`docs/adr/`). HTTP contract: DTOs are Zod schemas in
 `apps/api`, never Drizzle tables; `@nestjs/swagger` builds the OpenAPI document from them for the Orval client — see
 [ADR-0009](../../docs/adr/0009-api-contract-openapi-orval.md). Authentication is not decided yet, see
 [`docs/architecture.md`](../../docs/architecture.md#авторизация).
+
+### Database
+
+Drizzle v1 RC (`1.0.0-rc.6`, pinned), `pg` driver, `@nestjs/drizzle`; conventions — [ADR-0012](../../docs/adr/0012-orm-drizzle.md).
+The RC is newer than most training data: check the v1 docs (orm.drizzle.team) and package types, not 0.x examples.
+
+- Inject: `@InjectDrizzle() private readonly db: Database` (`src/database/database.ts`).
+- Tables: `src/<domain>/<domain>.table.ts`, explicit snake_case names; re-export each file from
+  `src/database/schema.ts`, otherwise drizzle-kit doesn't see it.
+- Migrations: `db:generate` → read `migration.sql` → `db:migrate`; commit the whole folder, never edit it, never
+  `drizzle-kit push`. After merging main — `db:check`.
+- Unique violations — only `isUniqueViolation(err, constraint)` (`src/database/unique-violation.ts`).
+- The connection check stays in `main.ts`: e2e tests and `openapi` (CI) build `AppModule` without a DB.
+
+Workflow for people — [README.md](./README.md#база-данных).
 
 ## Commands
 
@@ -37,6 +51,9 @@ Run from monorepo root, not from `apps/api`:
 | Build (also type-checks) | `pnpm --filter api build`                  |
 | Format                   | `pnpm --filter api format`                 |
 | Write `openapi.json`     | `pnpm --filter api openapi`                |
+| New migration            | `pnpm --filter api db:generate`            |
+| Apply migrations         | `pnpm --filter api db:migrate`             |
+| Check migrations         | `pnpm --filter api db:check`               |
 
 ## Done (backend)
 
@@ -45,6 +62,7 @@ In addition to the root criteria:
 1. `pnpm --filter api lint && pnpm --filter api test && pnpm --filter api build` are green — attach the output.
    Changed HTTP behaviour — `pnpm --filter api test:e2e` too.
 2. New service logic — unit test next to it (`*.spec.ts`); new endpoint — e2e test in `test/`.
+   Changed a `*.table.ts` — the generated migration folder is in the change and `pnpm --filter api db:check` is green.
 3. Endpoint or its schema added or changed — run `pnpm --filter api openapi && pnpm --filter web generate-api` and
    commit `openapi.json` and the Orval client (`apps/web/src/shared/api/generated/`), otherwise CI fails; the PR says
    what the frontend has to update (see `docs/architecture.md`).

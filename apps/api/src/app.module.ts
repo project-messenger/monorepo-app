@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { resolve } from 'node:path';
 import { envSchema } from './config/env.schema.js';
+import { DatabaseModule } from './database/database.module.js';
 import { HealthModule } from './health/health.module.js';
 
 @Module({
@@ -14,6 +15,7 @@ import { HealthModule } from './health/health.module.js';
       envFilePath: resolve(import.meta.dirname, '../../../.env'),
       validationSchema: envSchema,
     }),
+    DatabaseModule,
     HealthModule,
   ],
 })
