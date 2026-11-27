@@ -5,6 +5,7 @@ import {
   SwaggerModule,
   type OpenAPIObject,
 } from '@nestjs/swagger';
+import { createValidationPipe } from './common/validation.js';
 import type { Env } from './config/env.schema.js';
 
 /**
@@ -18,8 +19,28 @@ export function setupApp(app: INestApplication): void {
   app.setGlobalPrefix('api');
 
   // An array (not a string) makes the server answer only to a matching Origin;
-  // other origins get no Access-Control-Allow-Origin header.
-  app.enableCors({ origin: [config.get('CORS_ORIGIN', { infer: true })] });
+  // other origins get no Access-Control-Allow-Origin header. `credentials` lets
+  // the frontend (another origin: :3000 → :3001) send and receive the session
+  // cookie with `fetch(..., { credentials: 'include' })`, see ADR-0013.
+  const frontendOrigin = config.get('CORS_ORIGIN', { infer: true });
+  app.enableCors({
+    origin: [frontendOrigin],
+    credentials: true,
+  });
+
+  // CSRF: CORS alone does not stop a foreign site — the browser still sends its
+  // POST, CORS only hides the answer. This rejects state-changing requests
+  // (POST, PUT, PATCH, DELETE) from other origins with 403 before body parsing,
+  // guards and handlers, so `register` cannot create a user for a foreign site.
+  // :3000 → :3001 is cross-origin (though same-site), so the frontend has to be
+  // listed: CORS origins are not trusted here automatically. Requests without
+  // browser headers (curl, tests) pass. See ADR-0013 and
+  // https://docs.nestjs.com/security/csrf.md
+  app.enableCsrfProtection({ trustedOrigins: [frontendOrigin] });
+
+  // Validates `@Body({ schema })` and friends with Zod; a 400 lists field errors
+  // as `errors: [{ path, message }]` (src/common/validation.ts).
+  app.useGlobalPipes(createValidationPipe());
 
   // Swagger UI at /api/docs, the OpenAPI JSON at /api/docs-json. Must run after
   // setGlobalPrefix: the document reads the prefix into its paths.
