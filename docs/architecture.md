@@ -35,7 +35,9 @@ flowchart LR
     Shared -. "импорт" .-> API
 ```
 
-PostgreSQL, Redis и WebSocket на бэкенде ещё не подключены — это план, а не текущее состояние.
+PostgreSQL подключён к бэкенду через Drizzle ([ADR-0012](./adr/0012-orm-drizzle.md),
+[README API](../apps/api/README.md#база-данных)), таблиц пока нет. Redis и WebSocket ещё не подключены — это план, а
+не текущее состояние.
 Локальные PostgreSQL и Redis запускаются через Docker Compose; приложения работают на компьютере разработчика.
 Инструкция — в [корневом README](../README.md#локальные-postgresql-и-redis),
 решение и его причины — в [ADR-0010](./adr/0010-local-infrastructure.md).

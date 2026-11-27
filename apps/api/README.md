@@ -12,9 +12,9 @@ API командного мессенджера на **NestJS 12** (ESM, Vitest)
 ниже), префикс `/api` у всех путей, CORS и защита от CSRF для адреса фронтенда и корректная остановка — общие
 настройки лежат в [`src/app.setup.ts`](./src/app.setup.ts), их вызывают и `main.ts`, и e2e-тесты. Описание API — Swagger UI на
 [`localhost:3001/api/docs`](http://localhost:3001/api/docs) и файл [`openapi.json`](./openapi.json), из которого
-фронтенд генерирует клиент ([ADR-0009](../../docs/adr/0009-api-contract-openapi-orval.md)). Ещё не подключены
-PostgreSQL (ORM — Drizzle, [ADR-0012](../../docs/adr/0012-orm-drizzle.md)), Redis и WebSocket — каждое из этого
-отдельная задача. Открытые решения, которые касаются бэкенда, — в [`docs/adr/`](../../docs/adr/README.md).
+фронтенд генерирует клиент ([ADR-0009](../../docs/adr/0009-api-contract-openapi-orval.md)). PostgreSQL подключён
+через Drizzle (см. [«База данных»](#база-данных)), таблиц пока нет. Ещё не подключены Redis и WebSocket — каждое из
+этого отдельная задача. Открытые решения, которые касаются бэкенда, — в [`docs/adr/`](../../docs/adr/README.md).
 
 ## Переменные окружения
 
@@ -55,22 +55,70 @@ PostgreSQL (ORM — Drizzle, [ADR-0012](../../docs/adr/0012-orm-drizzle.md)), Re
 
 Переменные файлов не используют подстановки `${...}`: хост, порт и учётные данные хранятся отдельными полями.
 
-Это только конфигурация: ORM, Redis-клиент и подключения к сервисам добавляются отдельными задачами.
+Эти же переменные `POSTGRES_*` читают и API, и `drizzle-kit` (см. [«База данных»](#база-данных)). Redis-клиент
+подключается отдельной задачей.
+
+## База данных
+
+PostgreSQL через Drizzle v1 (`1.0.0-rc.6`) и `@nestjs/drizzle`. Почему Drizzle и какие соглашения — в
+[ADR-0012](../../docs/adr/0012-orm-drizzle.md). Это RC, поэтому сверяйтесь с
+[документацией v1](https://orm.drizzle.team/docs/overview), а не с примерами для 0.x.
+
+- [`src/database/`](./src/database/) — подключение (`DatabaseModule`), тип `Database`, `isUniqueViolation`.
+- `src/<домен>/<домен>.table.ts` — таблицы домена. Каждый такой файл добавьте в
+  [`src/database/schema.ts`](./src/database/schema.ts), иначе `drizzle-kit` его не увидит.
+- [`migrations/`](./migrations/) — миграции, по папке на каждую. Настройки `drizzle-kit` —
+  [`drizzle.config.ts`](./drizzle.config.ts).
+
+Сервис получает базу так:
+
+```ts
+import { InjectDrizzle } from '@nestjs/drizzle';
+import type { Database } from '../database/database.js';
+
+@Injectable()
+export class UsersService {
+  constructor(@InjectDrizzle() private readonly db: Database) {}
+}
+```
+
+При старте API проверяет подключение: если база не запущена, сервер сразу останавливается с ошибкой
+`Cannot connect to PostgreSQL…`. Поднимите её: `pnpm infra:up`.
+
+**Новая таблица или изменение схемы:**
+
+1. Опишите таблицу в `src/<домен>/<домен>.table.ts` (имена — явно, в snake_case) и добавьте файл в `schema.ts`.
+2. `pnpm --filter api db:generate` — создаст папку миграции. Прочитайте `migration.sql`: этот SQL уйдёт в базу.
+3. `pnpm --filter api db:migrate` — применит миграции к локальной базе.
+4. Закоммитьте папку миграции целиком. Руками её не правьте, `drizzle-kit push` не используйте.
+
+После `git merge origin/main` запустите `pnpm --filter api db:check` (миграции веток не конфликтуют), затем
+`db:migrate`. Если `db:check` нашёл конфликт:
+
+1. Удалите папки миграций своей ветки.
+2. Пересоздайте локальную базу: `docker compose down -v`, затем `pnpm infra:up`. `-v` удаляет тома, то есть все
+   локальные данные PostgreSQL **и Redis**, не только миграции.
+3. `pnpm --filter api db:migrate` — применит миграции из `main`.
+4. `pnpm --filter api db:generate` — заново создаст миграцию вашей ветки поверх них.
+5. `pnpm --filter api db:migrate` — применит её, иначе в базе не будет изменений вашей ветки.
 
 ## Команды
 
 Все команды — **из корня репозитория**:
 
-| Команда                      | Что делает                                              |
-| ---------------------------- | ------------------------------------------------------- |
-| `pnpm dev:api`               | Dev-сервер с перезапуском на :3001                      |
-| `pnpm --filter api lint`     | oxlint                                                  |
-| `pnpm --filter api test`     | Unit-тесты (Vitest, `src/**/*.spec.ts`)                 |
-| `pnpm --filter api test:e2e` | e2e-тесты (`test/`)                                     |
-| `pnpm --filter api test:cov` | Покрытие тестами                                        |
-| `pnpm --filter api build`    | Сборка в `dist/` (заодно проверка типов)                |
-| `pnpm --filter api format`   | Prettier                                                |
-| `pnpm --filter api openapi`  | Записать схему API в `openapi.json` без запуска сервера |
+| Команда                         | Что делает                                              |
+| ------------------------------- | ------------------------------------------------------- |
+| `pnpm dev:api`                  | Dev-сервер с перезапуском на :3001                      |
+| `pnpm --filter api lint`        | oxlint                                                  |
+| `pnpm --filter api test`        | Unit-тесты (Vitest, `src/**/*.spec.ts`)                 |
+| `pnpm --filter api test:e2e`    | e2e-тесты (`test/`)                                     |
+| `pnpm --filter api test:cov`    | Покрытие тестами                                        |
+| `pnpm --filter api build`       | Сборка в `dist/` (заодно проверка типов)                |
+| `pnpm --filter api format`      | Prettier                                                |
+| `pnpm --filter api openapi`     | Записать схему API в `openapi.json` без запуска сервера |
+| `pnpm --filter api db:generate` | Создать миграцию по изменениям в таблицах               |
+| `pnpm --filter api db:migrate`  | Применить миграции к базе из `POSTGRES_*`               |
+| `pnpm --filter api db:check`    | Проверить миграции на конфликты (после merge main)      |
 
 Перед PR: `pnpm --filter api lint && pnpm --filter api test && pnpm --filter api build`.
 
