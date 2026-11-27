@@ -71,8 +71,10 @@ export type ValidationErrorResponse = z.infer<
  * `ValidationErrorResponse`. A body that is not valid JSON never reaches the
  * pipe: Nest turns the parser's `SyntaxError` into a plain `BadRequestException`,
  * so it comes as `ErrorResponse` with no `errorCode` and no `errors`. Our
- * frontend always sends valid JSON, so that case is a developer error; the client
- * tells the two apart by `errorCode === 'validation_failed'`.
+ * frontend always sends valid JSON, so that case is a developer error. The client
+ * tells the two apart by `errorCode === 'validation_failed' && 'errors' in response`:
+ * the `errorCode` check alone does not narrow the type, because
+ * `ErrorResponse.errorCode` is any `ErrorCode`, `validation_failed` included.
  */
 export const BadRequestResponseSchema = z
   .union([ValidationErrorResponseSchema, ErrorResponseSchema])
