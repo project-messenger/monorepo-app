@@ -1,0 +1,60 @@
+# The official image substitutes only API_DOMAIN; Nginx variables remain intact.
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    '' close;
+}
+
+# Docker DNS must be queried again when Compose gives a recreated API a new IP.
+resolver 127.0.0.11 valid=5s ipv6=off;
+upstream messenger_api {
+    zone messenger_api 64k;
+    server api:3001 resolve;
+}
+
+# No query strings, cookies, authorization headers or request/response bodies.
+log_format service '$remote_addr $request_method $uri $status $body_bytes_sent $request_time';
+access_log /dev/stdout service;
+error_log /dev/stderr warn;
+server_tokens off;
+
+server {
+    listen 80;
+    server_name ${API_DOMAIN};
+    return 308 https://${API_DOMAIN}$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name ${API_DOMAIN};
+    ssl_certificate /etc/nginx/tls/fullchain.pem;
+    ssl_certificate_key /etc/nginx/tls/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+
+    location / {
+        # No URI suffix: preserve /api/* and the Socket.IO path, including polling.
+        proxy_pass http://messenger_api;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+        # Must exceed the Socket.IO server's pingInterval + pingTimeout.
+        proxy_read_timeout 75s;
+        proxy_send_timeout 75s;
+        proxy_buffering off;
+    }
+}
+
+# Internal process check, not published on the host. API has its own healthcheck.
+server {
+    listen 8080;
+    access_log off;
+    location = /healthz {
+        return 200 'ok';
+    }
+    location / {
+        return 404;
+    }
+}

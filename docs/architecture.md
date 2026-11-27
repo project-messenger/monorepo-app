@@ -42,6 +42,10 @@ PostgreSQL подключён к бэкенду через Drizzle ([ADR-0012](.
 Инструкция — в [корневом README](../README.md#локальные-postgresql-и-redis),
 решение и его причины — в [ADR-0010](./adr/0010-local-infrastructure.md).
 
+Общий dev-стенд имеет отдельную конфигурацию в `deploy/dev/`: готовый образ API, PostgreSQL, Redis и Nginx.
+Секреты и TLS-ключи передаются с сервера, данные сохраняются в volumes. Структура и выбор proxy —
+[ADR-0013](./adr/0013-shared-dev-environment.md), запуск и ограничения — [инструкция](../deploy/README.md).
+
 ## Контракт фронтенд ↔ бэкенд
 
 Решение и его причины — [ADR-0009](./adr/0009-api-contract-openapi-orval.md).

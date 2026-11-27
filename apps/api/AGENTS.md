@@ -39,6 +39,11 @@ Workflow for people — [README.md](./README.md#база-данных).
 
 ## Commands
 
+Container image: `docker build -f apps/api/Dockerfile -t messenger-api:kan47 .` from the monorepo root.
+Shared dev stack, runtime environment and container smoke test — [`deploy/README.md`](../../deploy/README.md).
+Keep secrets outside the image and repository. The Dockerfile compiles `@app/shared` only inside the build;
+the workspace package remains TypeScript sources.
+
 Run from monorepo root, not from `apps/api`:
 
 | Task                     | Command                                    |

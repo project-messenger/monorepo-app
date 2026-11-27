@@ -16,6 +16,6 @@
 
 ## Что сделать
 
-- [ ] Dockerfile для `web` и `api` (продолжение [Docker](./docker.md)).
+- [ ] Dockerfile для `web`; для API использовать [Dockerfile из KAN-47](../../apps/api/Dockerfile).
 - [ ] Workflow релиза в `.github/workflows/`, секреты — в GitHub Secrets.
 - [ ] Описать процесс в `docs/workflow.md`.

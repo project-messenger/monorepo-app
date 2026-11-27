@@ -14,6 +14,7 @@
 | Бэкенд (`apps/api`)             | [apps/api/README.md](./apps/api/README.md)               | Документация NestJS-приложения                                                                                                                          |
 | Общий пакет (`packages/shared`) | [packages/shared/AGENTS.md](./packages/shared/AGENTS.md) | Что можно класть в `@app/shared` и как менять контракт                                                                                                  |
 | Весь проект                     | [docs/README.md](./docs/README.md)                       | Архитектура монорепы, процесс работы (git, PR, ревью), ADR, ИИ-агенты                                                                                   |
+| Общий dev-стенд                  | [deploy/README.md](./deploy/README.md)           | Образ API, отдельный Compose с PostgreSQL, Redis и Nginx, переменные окружения и проверки                                                              |
 | Правила для ИИ-агентов          | [AGENTS.md](./AGENTS.md)                                 | Общие правила; в каждом пакете свой `AGENTS.md` с дополнениями. Как устроено — [docs/ai-agents.md](./docs/ai-agents.md)                                 |
 
 ---
