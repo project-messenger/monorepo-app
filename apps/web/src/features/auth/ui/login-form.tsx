@@ -56,7 +56,7 @@ function LoginForm() {
       <form noValidate onSubmit={handleSubmit(onSubmit)}>
         <FieldGroup>
           <Field data-invalid={!!errors.email || undefined}>
-            <FieldLabel htmlFor="email">Email</FieldLabel>
+            <FieldLabel htmlFor="email">Рабочий email</FieldLabel>
             <Input
               id="email"
               type="email"
