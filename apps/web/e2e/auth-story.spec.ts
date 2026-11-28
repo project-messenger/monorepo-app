@@ -1,39 +1,44 @@
 import { expect, test } from "@playwright/test";
 
-import { LANDING_VIEWPORT_WIDTHS } from "./viewports";
+import { AUTH_VIEWPORTS } from "./viewports";
 
 for (const route of ["login", "register"]) {
-  for (const [name, width] of Object.entries(LANDING_VIEWPORT_WIDTHS)) {
+  for (const [name, viewport] of Object.entries(AUTH_VIEWPORTS)) {
     test(`${route} story and form at ${name}`, async ({ page }) => {
-      await page.setViewportSize({
-        width,
-        height: name === "desktop" ? 1000 : 900,
-      });
+      await page.setViewportSize(viewport);
       await page.goto(`/${route}`);
       await page.evaluate(() => document.fonts.ready);
 
       const story = page.getByRole("complementary");
       const main = page.getByRole("main");
+      const home = page.getByRole("button", { name: "На главную" });
       for (const theme of ["light", "dark"]) {
         await page.evaluate((value) => {
           document.documentElement.classList.toggle("dark", value === "dark");
         }, theme);
-        await expect(main.getByRole("heading", { level: 1 })).toBeVisible();
-        await expect(
-          main.getByLabel(route === "login" ? "Email" : "Рабочий email", {
-            exact: true,
-          }),
-        ).toBeVisible();
+        expect(
+          await page.evaluate(() => document.documentElement.scrollHeight),
+        ).toBeLessThanOrEqual(viewport.height);
         expect(
           await page.evaluate(() => document.documentElement.scrollWidth),
-        ).toBeLessThanOrEqual(width);
-        if (name === "desktop") {
+        ).toBeLessThanOrEqual(viewport.width);
+        await expect(main.getByRole("heading", { level: 1 })).toBeVisible();
+        const email = main.getByLabel("Рабочий email", { exact: true });
+        await expect(email).toBeVisible();
+        expect((await email.boundingBox())?.width).toBeGreaterThan(240);
+        await expect(home).toBeVisible();
+        await expect(home).toHaveAttribute("href", "/");
+        await home.focus();
+        await page.keyboard.press("Tab");
+        await page.keyboard.press("Shift+Tab");
+        await expect(home).toBeFocused();
+        await home.blur();
+
+        if (viewport.width >= AUTH_VIEWPORTS.desktopBoundary.width) {
           await expect(story).toBeVisible();
-          const box = await story.boundingBox();
-          expect(box?.x).toBe(0);
-          expect(box?.width).toBe(568);
-          expect(box?.height).toBe(1000);
-          expect((await main.boundingBox())?.x).toBeGreaterThanOrEqual(568);
+          const storyBox = await story.boundingBox();
+          const mainBox = await main.boundingBox();
+          expect(storyBox!.x + storyBox!.width).toBeLessThanOrEqual(mainBox!.x);
           await expect(story.getByRole("heading", { level: 2 })).toHaveCSS(
             "font-size",
             "48px",
@@ -53,9 +58,7 @@ for (const route of ["login", "register"]) {
           await page.keyboard.press("Shift+Tab");
           await expect(logo).toBeFocused();
           await expect(logo).toHaveCSS("outline-style", "solid");
-          expect(
-            await page.evaluate(() => document.documentElement.scrollHeight),
-          ).toBeLessThan(1000);
+          await logo.blur();
         }
         await page.screenshot({
           path: test.info().outputPath(`${route}-${name}-${theme}.png`),

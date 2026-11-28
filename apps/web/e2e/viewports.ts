@@ -5,4 +5,15 @@ const LANDING_VIEWPORT_WIDTHS = {
   narrowMobile: 320,
 } as const;
 
-export { LANDING_VIEWPORT_WIDTHS };
+const AUTH_VIEWPORTS = {
+  desktop: { width: LANDING_VIEWPORT_WIDTHS.desktop, height: 1000 },
+  desktopShort: { width: LANDING_VIEWPORT_WIDTHS.desktop, height: 900 },
+  laptop: { width: 1280, height: 800 },
+  desktopBoundary: { width: 1024, height: 900 },
+  belowDesktop: { width: 1023, height: 900 },
+  tablet: { width: 768, height: 900 },
+  mobile: { width: LANDING_VIEWPORT_WIDTHS.mobile, height: 900 },
+  narrowMobile: { width: LANDING_VIEWPORT_WIDTHS.narrowMobile, height: 900 },
+} as const;
+
+export { AUTH_VIEWPORTS, LANDING_VIEWPORT_WIDTHS };

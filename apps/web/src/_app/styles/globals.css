@@ -140,6 +140,12 @@
   --color-inverse-foreground: var(--inverse-foreground);
   --color-inverse-muted-foreground: var(--inverse-muted-foreground);
 
+  --color-auth-story: var(--auth-story);
+  --color-auth-story-foreground: var(--auth-story-foreground);
+  --color-auth-story-muted-foreground: var(--auth-story-muted-foreground);
+  --color-auth-story-card: var(--auth-story-card);
+  --color-auth-story-accent: var(--auth-story-accent);
+
   --color-input-background: var(--input-background);
   --color-input-search: var(--input-search);
   --color-input-placeholder: var(--input-placeholder);
@@ -230,6 +236,12 @@
   --inverse-foreground: #bcd1c5;
   --inverse-muted-foreground: #b8cec1;
 
+  --auth-story: #172d29;
+  --auth-story-foreground: #e2ebe5;
+  --auth-story-muted-foreground: #bcd1c5;
+  --auth-story-card: #244338;
+  --auth-story-accent: #d8f59a;
+
   --input-background: #f7f9f6;
   --input-search: #f3f6f2;
   --input-placeholder: #6b7872;
@@ -312,6 +324,12 @@
   --inverse-surface: #d8f59a;
   --inverse-foreground: #172d29;
   --inverse-muted-foreground: #365647;
+
+  --auth-story: #0b1613;
+  --auth-story-foreground: #e2ebe5;
+  --auth-story-muted-foreground: #c9dcd0;
+  --auth-story-card: #274137;
+  --auth-story-accent: #d8f59a;
 
   --input-background: #12231f;
   --input-search: #152a25;
