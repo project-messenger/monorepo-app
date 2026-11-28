@@ -1,0 +1,237 @@
+import { Test, TestingModule } from '@nestjs/testing';
+import { INestApplication } from '@nestjs/common';
+import request from 'supertest';
+import { App } from 'supertest/types.js';
+import { AppModule } from './../src/app.module.js';
+import { setupApp } from './../src/app.setup.js';
+
+// KAN-51, PR 1: the contract only. These tests check validation and the
+// OpenAPI document; the 501 answers are replaced by real ones in PR 2.
+describe('Auth (e2e)', () => {
+  let app: INestApplication<App>;
+
+  beforeEach(async () => {
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [AppModule],
+    }).compile();
+
+    app = moduleFixture.createNestApplication();
+    setupApp(app);
+    await app.init();
+  });
+
+  afterEach(async () => {
+    await app.close();
+  });
+
+  describe('POST /api/auth/register', () => {
+    it('answers 400 with an error for every invalid field', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/api/auth/register')
+        .send({ name: 'A', email: 'not-an-email', password: 'short' })
+        .expect(400);
+
+      expect(response.body).toMatchObject({
+        statusCode: 400,
+        message: 'Validation failed',
+        error: 'Bad Request',
+        errorCode: 'validation_failed',
+      });
+      expect(
+        response.body.errors.map((e: { path: string }) => e.path).sort(),
+      ).toEqual(['email', 'name', 'password']);
+    });
+
+    it('answers 400 when the body is missing', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/api/auth/register')
+        .expect(400);
+
+      expect(response.body.errors.length).toBeGreaterThan(0);
+    });
+
+    // The JSON parser fails before the validation pipe, so Nest answers its
+    // plain 400: `ErrorResponse` without `errorCode` and `errors`. The contract
+    // describes both shapes (BadRequestResponseSchema).
+    it('answers 400 without errorCode when the body is not valid JSON', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/api/auth/register')
+        .set('Content-Type', 'application/json')
+        .send('{"name": "Ann",')
+        .expect(400);
+
+      expect(response.body).toEqual({
+        statusCode: 400,
+        message: expect.any(String),
+        error: 'Bad Request',
+      });
+    });
+
+    it('accepts a valid body (501 until implemented)', async () => {
+      await request(app.getHttpServer())
+        .post('/api/auth/register')
+        .send({ name: 'Ann', email: 'Ann@Example.com', password: 'secret-123' })
+        .expect(501);
+    });
+  });
+
+  describe('POST /api/auth/login', () => {
+    it('answers 400 for an invalid email', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/api/auth/login')
+        .send({ email: 'nope', password: 'x' })
+        .expect(400);
+
+      expect(response.body.errors).toEqual([
+        { path: 'email', code: 'invalid_format', message: expect.any(String) },
+      ]);
+    });
+
+    it('accepts an email with spaces around it (501 until implemented)', async () => {
+      await request(app.getHttpServer())
+        .post('/api/auth/login')
+        .send({ email: '  Ann@Example.com ', password: 'x' })
+        .expect(501);
+    });
+
+    it('accepts a valid body (501 until implemented)', async () => {
+      await request(app.getHttpServer())
+        .post('/api/auth/login')
+        .send({ email: 'ann@example.com', password: 'x' })
+        .expect(501);
+    });
+  });
+
+  it('POST /api/auth/logout exists (501 until implemented)', async () => {
+    await request(app.getHttpServer()).post('/api/auth/logout').expect(501);
+  });
+
+  it('GET /api/auth/me exists (501 until implemented)', async () => {
+    await request(app.getHttpServer()).get('/api/auth/me').expect(501);
+  });
+
+  it('lets the frontend origin send cookies', async () => {
+    const response = await request(app.getHttpServer())
+      .options('/api/auth/login')
+      .set('Origin', 'http://localhost:3000')
+      .set('Access-Control-Request-Method', 'POST')
+      .expect(204);
+
+    expect(response.headers['access-control-allow-origin']).toBe(
+      'http://localhost:3000',
+    );
+    expect(response.headers['access-control-allow-credentials']).toBe('true');
+  });
+
+  // app.enableCsrfProtection() in src/app.setup.ts, see ADR-0013. A browser on
+  // the frontend (:3000 → :3001) sends `Sec-Fetch-Site: same-site` and its
+  // Origin; another site sends its own Origin. Tests without these headers
+  // (above) pass, like curl.
+  describe('CSRF', () => {
+    const frontend = 'http://localhost:3000';
+    const foreign = 'https://evil.example';
+
+    it('rejects register from a foreign origin before validation', async () => {
+      // An invalid body would give 400: 403 shows the request never reached the
+      // handler, so a foreign site cannot create a user.
+      const response = await request(app.getHttpServer())
+        .post('/api/auth/register')
+        .set('Origin', foreign)
+        .set('Sec-Fetch-Site', 'cross-site')
+        .send({})
+        .expect(403);
+
+      expect(response.body).toMatchObject({
+        statusCode: 403,
+        error: 'Forbidden',
+      });
+    });
+
+    it('rejects a foreign origin even without Sec-Fetch-Site', async () => {
+      await request(app.getHttpServer())
+        .post('/api/auth/login')
+        .set('Origin', foreign)
+        .send({ email: 'ann@example.com', password: 'x' })
+        .expect(403);
+    });
+
+    it('rejects another site on localhost: same-site is not enough', async () => {
+      await request(app.getHttpServer())
+        .post('/api/auth/logout')
+        .set('Origin', 'http://localhost:4000')
+        .set('Sec-Fetch-Site', 'same-site')
+        .expect(403);
+    });
+
+    it('lets the frontend origin through (501 until implemented)', async () => {
+      await request(app.getHttpServer())
+        .post('/api/auth/login')
+        .set('Origin', frontend)
+        .set('Sec-Fetch-Site', 'same-site')
+        .send({ email: 'ann@example.com', password: 'x' })
+        .expect(501);
+    });
+
+    it('does not check GET requests', async () => {
+      await request(app.getHttpServer())
+        .get('/api/auth/me')
+        .set('Origin', foreign)
+        .set('Sec-Fetch-Site', 'cross-site')
+        .expect(501);
+    });
+  });
+
+  describe('OpenAPI', () => {
+    it('describes request bodies and responses with named schemas', async () => {
+      const { body: doc } = await request(app.getHttpServer())
+        .get('/api/docs-json')
+        .expect(200);
+
+      const register = doc.paths['/api/auth/register'].post;
+      expect(register.requestBody.content['application/json'].schema).toEqual({
+        $ref: '#/components/schemas/RegisterRequest',
+      });
+      expect(
+        register.responses['201'].content['application/json'].schema,
+      ).toEqual({ $ref: '#/components/schemas/User' });
+      expect(
+        register.responses['400'].content['application/json'].schema,
+      ).toEqual({ $ref: '#/components/schemas/BadRequestResponse' });
+      expect(doc.components.schemas.BadRequestResponse.anyOf).toEqual([
+        { $ref: '#/components/schemas/ValidationErrorResponse' },
+        { $ref: '#/components/schemas/ErrorResponse' },
+      ]);
+      expect(
+        register.responses['409'].content['application/json'].schema,
+      ).toEqual({ $ref: '#/components/schemas/ErrorResponse' });
+
+      for (const path of [
+        '/api/auth/register',
+        '/api/auth/login',
+        '/api/auth/logout',
+      ]) {
+        expect(
+          doc.paths[path].post.responses['403'].content['application/json']
+            .schema,
+        ).toEqual({ $ref: '#/components/schemas/ErrorResponse' });
+      }
+      expect(
+        doc.paths['/api/auth/login'].post.responses['200'].content[
+          'application/json'
+        ].schema,
+      ).toEqual({ $ref: '#/components/schemas/User' });
+      expect(doc.components.schemas.ErrorCode.enum).toEqual([
+        'validation_failed',
+        'email_taken',
+        'invalid_credentials',
+        'missing_credentials',
+      ]);
+      expect(doc.paths['/api/auth/logout'].post.responses['204']).toBeDefined();
+      expect(
+        doc.paths['/api/auth/me'].get.responses['401'].content[
+          'application/json'
+        ].schema,
+      ).toEqual({ $ref: '#/components/schemas/ErrorResponse' });
+    });
+  });
+});

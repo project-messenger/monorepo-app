@@ -24,6 +24,7 @@ ADR (Architecture Decision Record) — короткая запись одног�
 | [0010](./0010-local-infrastructure.md)          | Локальные PostgreSQL и Redis через Docker Compose   | весь проект      | принято |
 | [0011](./0011-realtime-messaging.md)            | Realtime: id от клиента, права в БД, счётчик канала | api, web, shared | принято |
 | [0012](./0012-orm-drizzle.md)                   | ORM для бэкенда: Drizzle v1                         | api              | принято |
+| [0013](./0013-auth-server-session.md)           | Вход: серверная сессия в cookie                     | api, web         | принято |
 
 ## Когда писать ADR
 
