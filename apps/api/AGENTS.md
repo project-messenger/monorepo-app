@@ -10,8 +10,8 @@ modules). Configuration is set up: `@nestjs/config` reads only the root `.env` a
 `src/config/env.schema.ts` — read values via `ConfigService<Env, true>`, never `process.env`; a new variable goes into
 the schema and root `.env.example`. Loading, precedence and dev startup details are documented in
 [README.md](./README.md#переменные-окружения).
-App-wide settings (global prefix `/api`, CORS from `CORS_ORIGIN`, Swagger, shutdown
-hooks) live in `src/app.setup.ts`, which both `main.ts` and e2e tests call — put new global settings there, not in
+App-wide settings (global prefix `/api`, CORS and CSRF protection from `CORS_ORIGIN`,
+Swagger, shutdown hooks) live in `src/app.setup.ts`, which both `main.ts` and e2e tests call — put new global settings there, not in
 `main.ts`. Swagger UI is at `/api/docs`, the OpenAPI JSON at `/api/docs-json`; `pnpm --filter api openapi` writes the
 same document to the committed `apps/api/openapi.json` without starting the server (`src/generate-openapi.ts`).
 PostgreSQL is connected through Drizzle, no tables yet — see [Database](#database). Not set up yet (planned): Redis,
@@ -19,8 +19,9 @@ WebSockets.
 **Don't add any of them as a side effect of another task** — each one is a separate task and, where it is a fork, an
 ADR (`docs/adr/`). HTTP contract: DTOs are Zod schemas in
 `apps/api`, never Drizzle tables; `@nestjs/swagger` builds the OpenAPI document from them for the Orval client — see
-[ADR-0009](../../docs/adr/0009-api-contract-openapi-orval.md). Authentication is not decided yet, see
-[`docs/architecture.md`](../../docs/architecture.md#авторизация).
+[ADR-0009](../../docs/adr/0009-api-contract-openapi-orval.md). Authentication: server sessions in an httpOnly
+cookie via `@nestjs/authentication`, no JWT — [ADR-0013](../../docs/adr/0013-auth-server-session.md). `src/auth/`
+holds the contract only (501) until the database is connected; the package is added with the implementation.
 
 ### Database
 
@@ -76,7 +77,13 @@ In addition to the root criteria:
   controllers thin: HTTP in the controller, logic in the service.
 - **Validation** works with Zod (Standard Schema) without classes: `StandardSchemaValidationPipe` with
   `@Body({ schema })` or `@Param('id', { schema })` (https://docs.nestjs.com/application/validation.md). The pipe is
-  not bound yet — bind it when the first endpoint with a body or params appears. HTTP request/response schemas (DTOs)
+  bound globally in `src/app.setup.ts` (`src/common/validation.ts`): a 400 answers `ValidationErrorResponse` with
+  `errors: [{ path, code, message }]`. A body that is not valid JSON fails before the pipe and gets Nest's plain
+  `ErrorResponse`, so describe a 400 with `BadRequestResponseSchema` (both shapes) and other errors with
+  `ErrorResponseSchema`, all from `src/common/error.schema.ts`.
+- **Error codes.** When the client must tell one error from another, give it an `errorCode`: add the code to
+  `ErrorCodeSchema` (`src/common/error.schema.ts`) and throw `new ConflictException('English text', { errorCode: 'x' })`.
+  `message` stays English and is for developers; user-facing texts live on the frontend (ADR-0013). HTTP request/response schemas (DTOs)
   live here, in `apps/api`: the frontend gets them via OpenAPI + Orval, so never move them to `@app/shared`. Only
   WebSocket event payload schemas live in `@app/shared` — import them, don't duplicate.
 - **Responses** are described for Swagger with the same Zod schemas: `@ApiOkResponse({ standardSchema: XSchema })`, the

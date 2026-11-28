@@ -5,5 +5,15 @@
  * OpenAPI spec version: 1.0
  */
 
+export * from "./badRequestResponse";
+export * from "./errorCode";
+export * from "./errorResponse";
+export * from "./fieldError";
 export * from "./healthStatus";
 export * from "./healthStatusStatus";
+export * from "./loginRequest";
+export * from "./registerRequest";
+export * from "./user";
+export * from "./validationErrorResponse";
+export * from "./validationErrorResponseErrorCode";
+export * from "./validationErrorResponseStatusCode";
